@@ -1,0 +1,82 @@
+[
+  {
+    "question_text": "What is the result of executing the following Java code snippet?",
+    "code_snippet": "long x = 10L;\nint y = 5;\ny += x;\nSystem.out.println(y);",
+    "options": {
+      "a": "15",
+      "b": "Compilation error due to possible lossy conversion from long to int",
+      "c": "10",
+      "d": "A runtime exception is thrown"
+    },
+    "correct_answer": "a",
+    "explanation": "In Java, compound assignment operators (like +=, -=, *=, etc.) include an implicit cast to the type of the left-hand operand. The expression 'y += x' is functionally equivalent to 'y = (int)(y + x)'. This prevents the compilation error that would occur with the simple assignment 'y = y + x', which requires an explicit cast to convert a long to an int.",
+    "question_id": "q1",
+    "difficulty": 0.5,
+    "part": 1,
+    "concept": "Basic Syntax & Data Types"
+  },
+  {
+    "question_text": "Consider the following Java code snippet. What will be the output when this code is executed?",
+    "code_snippet": "int a = 9;\nint b = 2;\ndouble result = a / b;\nSystem.out.print(result);",
+    "options": {
+      "a": "4.5",
+      "b": "4",
+      "c": "4.0",
+      "d": "0.0"
+    },
+    "correct_answer": "c",
+    "explanation": "In Java, the division operator (/) performs integer division when both operands are integers. Therefore, 9 / 2 evaluates to 4, with the remainder discarded. This integer result is then implicitly promoted to a double (4.0) when it is assigned to the variable 'result'.",
+    "question_id": "q2",
+    "difficulty": 0.5,
+    "part": 1,
+    "concept": "Basic Syntax & Data Types"
+  },
+  {
+    "question_text": "What will be the result of attempting to compile and run the following Java code snippet?",
+    "code_snippet": "int x = 10;\nlong y = 20;\nx += y;\nx = x + y;\nSystem.out.println(x);",
+    "options": {
+      "a": "The code prints 30",
+      "b": "The code prints 50",
+      "c": "A compilation error occurs at the line: x += y;",
+      "d": "A compilation error occurs at the line: x = x + y;"
+    },
+    "correct_answer": "d",
+    "explanation": "In Java, compound assignment operators (like +=) automatically include an implicit cast to the type of the variable on the left. Thus, 'x += y' is treated as 'x = (int)(x + y)' and compiles. However, a standard assignment 'x = x + y' does not include this cast. Since the addition of an int and a long results in a long, assigning that result back to an int variable without an explicit cast causes a 'possible lossy conversion' compilation error.",
+    "question_id": "q3",
+    "difficulty": 0.5,
+    "part": 1,
+    "concept": "Basic Syntax & Data Types"
+  },
+  {
+    "question_text": "What will be the output of the following Java code snippet?",
+    "code_snippet": "int x = 7;\nint y = 2;\ndouble z = x / y;\nSystem.out.println(z + x % y);",
+    "options": {
+      "a": "3.0",
+      "b": "3.5",
+      "c": "4.0",
+      "d": "4.5"
+    },
+    "correct_answer": "c",
+    "explanation": "In Java, when two integers are divided using the / operator, the result is an integer (truncating any decimal portion). Therefore, 7 / 2 equals 3. This value is then implicitly cast to a double when assigned to variable 'z', making it 3.0. The modulo operator (%) returns the remainder of the division 7 / 2, which is 1. Adding 3.0 (double) and 1 (int) results in 4.0.",
+    "question_id": "q4",
+    "difficulty": 0.5,
+    "part": 1,
+    "concept": "Basic Syntax & Data Types"
+  },
+  {
+    "question_text": "What will be the output of the following Java code snippet?",
+    "code_snippet": "int i = 7;\ndouble d = 2.0;\nint j = (int) (i / d);\ndouble result = i / 2 + j;\nSystem.out.print(result);",
+    "options": {
+      "a": "6.0",
+      "b": "6.5",
+      "c": "7.0",
+      "d": "5.0"
+    },
+    "correct_answer": "a",
+    "explanation": "First, 'i / d' (7 / 2.0) performs floating-point division because 'd' is a double, resulting in 3.5. This is cast to an int, so 'j' becomes 3. Next, 'i / 2' (7 / 2) performs integer division because both operands are integers, resulting in 3. Finally, '3 + 3' equals 6, which is stored in the double variable 'result' as 6.0.",
+    "question_id": "q5",
+    "difficulty": 0.5,
+    "part": 1,
+    "concept": "Basic Syntax & Data Types"
+  }
+]

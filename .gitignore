@@ -1,0 +1,107 @@
+# ========================
+# Python
+# ========================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+*.whl
+
+# Virtual environments
+venv/
+.venv/
+env/
+.env
+
+# ========================
+# ML / Data Artifacts
+# ========================
+# Trained models & checkpoints
+*.pth
+*.pt
+*.h5
+*.onnx
+*.pkl
+*.zip
+student_simulator.pth
+student_simulator_best.pth
+ppo_ednet_teacher.zip
+
+# Large datasets & preprocessed data
+*.npy
+*.npz
+processed_ednet_sequences.npy
+ednet_metadata.npz
+Data/
+
+# Training logs
+ppo_ednet_logs/
+simulation_log.csv
+validation_log.csv
+
+# Training / evaluation plots (regenerable)
+training_progress.png
+evaluation_results.png
+lstm_training_history.png
+graphs/
+
+# ========================
+# Node.js / Frontend
+# ========================
+node_modules/
+package-lock.json
+bun.lockb
+.DS_Store
+
+# ========================
+# IDE / Editor
+# ========================
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.project
+.classpath
+.settings/
+
+# ========================
+# OS Files
+# ========================
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# ========================
+# Office temp files
+# ========================
+~$*
+~WRL*.tmp
+
+# ========================
+# Report (large binary)
+# ========================
+report/
+
+# ========================
+# Old versioned snapshots
+# ========================
+final_v1/
+final_v2_random_data/
+final_v3_147_features/
+final_v4/
+
+# ========================
+# History / scratch
+# ========================
+history/
+
+# ========================
+# Misc
+# ========================
+*.log
+.env.example

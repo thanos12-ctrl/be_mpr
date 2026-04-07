@@ -1,0 +1,163 @@
+[
+  {
+    "lesson_number": 1,
+    "title": "Basic Syntax & Data Types",
+    "slug": "basic-syntax-data-types",
+    "difficulty_level": "beginner",
+    "estimated_time_minutes": 45,
+    "introduction": "Welcome to the world of Java programming! This lesson lays the foundation for everything you'll build in this course. We'll be diving into the fundamental building blocks of any Java program: variables and data types. Think of variables as containers that hold information – numbers, text, true/false values, and more. Understanding data types is crucial because it tells the computer *what kind* of information each container holds, and how to work with it efficiently.  \n\nLearning these concepts isn't just about memorizing keywords; it's about learning to think like a programmer – breaking down problems into manageable pieces and representing them in a way the computer understands.  Mastering variables and data types will empower you to store, manipulate, and display information, which is at the heart of almost every program you'll ever write.  We'll also touch upon how to handle different types of data together and how to define values that shouldn't change during program execution. Get ready to write your first meaningful Java code!",
+    "code_example": "public class BasicSyntax {\n    public static void main(String[] args) {\n\n        // Variables and Data Types\n        int age = 30; // Integer - whole number\n        double price = 19.99; // Double - floating-point number (decimal)\n        boolean isStudent = true; // Boolean - true or false\n        char initial = 'J'; // Character - single letter or symbol\n        String name = \"John Doe\"; // String - sequence of characters\n\n        // Displaying variable values\n        System.out.println(\"Name: \" + name);\n        System.out.println(\"Age: \" + age);\n        System.out.println(\"Price: \" + price);\n        System.out.println(\"Is Student: \" + isStudent);\n        System.out.println(\"Initial: \" + initial);\n\n        // Type Casting\n        double anotherPrice = 10;\n        int roundedPrice = (int) anotherPrice; // Explicitly casting double to int (truncates decimal)\n        System.out.println(\"Rounded Price: \" + roundedPrice); // Output: 10\n\n        int num1 = 5;\n        double result = num1; // Implicit casting from int to double (no data loss)\n        System.out.println(\"Result: \" + result); // Output: 5.0\n\n        // Constants\n        final double PI = 3.14159; // 'final' keyword makes PI a constant\n        // PI = 3.14; // This would cause a compilation error because you can't change a constant\n        System.out.println(\"PI: \" + PI);\n\n        //String Concatenation\n        String greeting = \"Hello, \" + name + \"!\";\n        System.out.println(greeting);\n\n    }\n}",
+    "key_takeaways": [
+      "Variables are used to store data in a program, and each variable has a specific data type.",
+      "Java has primitive data types like int, double, boolean, and char for storing different kinds of data.",
+      "Type casting allows you to convert data from one type to another, but be mindful of potential data loss.",
+      "Strings are used to represent text and are created using double quotes.",
+      "The `final` keyword is used to declare constants, which are variables whose values cannot be changed after initialization."
+    ],
+    "topics": [
+      "Variables and naming conventions",
+      "Primitive data types (int, double, boolean, char)",
+      "Type casting and conversion",
+      "String basics",
+      "Constants with final keyword"
+    ]
+  },
+  {
+    "lesson_number": 2,
+    "title": "Operators & Expressions",
+    "slug": "operators-expressions",
+    "difficulty_level": "beginner",
+    "estimated_time_minutes": 40,
+    "introduction": "Welcome to the world of operators and expressions in Java! Think of operators as the tools that allow you to manipulate data – to perform calculations, make comparisons, and assign values.  Just like you use tools in everyday life, operators are fundamental to writing any meaningful program. Without them, your code would simply store data without being able to *do* anything with it. This lesson will equip you with the essential operators you'll use constantly throughout your Java journey.\n\nWe'll explore arithmetic operators for basic math, comparison operators to check conditions, and logical operators to combine those conditions. You'll also learn how assignment operators streamline variable updates and how operator precedence dictates the order in which operations are performed. Finally, we'll cover increment and decrement operators, which provide concise ways to modify variable values. Mastering these concepts is crucial for building programs that can solve problems and respond to user input.\n\nBy the end of this lesson, you’ll be able to write expressions that perform calculations, evaluate conditions, and control the flow of your programs.  Let's dive in and start building!",
+    "code_example": "public class OperatorsAndExpressions {\n\n    public static void main(String[] args) {\n\n        // Arithmetic Operators\n        int num1 = 10;\n        int num2 = 5;\n        int sum = num1 + num2; // Addition\n        int difference = num1 - num2; // Subtraction\n        int product = num1 * num2; // Multiplication\n        int quotient = num1 / num2; // Integer Division\n        double remainder = num1 % num2; // Modulus (remainder of division)\n\n        System.out.println(\"Sum: \" + sum);\n        System.out.println(\"Difference: \" + difference);\n        System.out.println(\"Product: \" + product);\n        System.out.println(\"Quotient: \" + quotient);\n        System.out.println(\"Remainder: \" + remainder);\n\n        // Comparison Operators\n        boolean isEqual = (num1 == num2); // Equal to\n        boolean isNotEqual = (num1 != num2); // Not equal to\n        boolean isGreaterThan = (num1 > num2); // Greater than\n        boolean isLessThan = (num1 < num2); // Less than\n        boolean isGreaterOrEqual = (num1 >= num2); // Greater than or equal to\n        boolean isLessOrEqual = (num1 <= num2); // Less than or equal to\n\n        System.out.println(\"Is equal: \" + isEqual);\n        System.out.println(\"Is not equal: \" + isNotEqual);\n\n        // Logical Operators\n        boolean condition1 = true;\n        boolean condition2 = false;\n        boolean andResult = condition1 && condition2; // Logical AND\n        boolean orResult = condition1 || condition2; // Logical OR\n        boolean notResult = !condition1; // Logical NOT\n\n        System.out.println(\"AND: \" + andResult);\n        System.out.println(\"OR: \" + orResult);\n        System.out.println(\"NOT: \" + notResult);\n\n        // Assignment Operators\n        int x = 5;\n        x += 3; // Equivalent to x = x + 3\n        System.out.println(\"x += 3: \" + x);\n\n        // Operator Precedence (PEMDAS/BODMAS)\n        int result = 2 + 3 * 4; // Multiplication happens before addition\n        System.out.println(\"2 + 3 * 4 = \" + result); // Output: 14\n\n        // Increment/Decrement Operators\n        int count = 0;\n        count++; // Post-increment (count is incremented after the expression)\n        System.out.println(\"count++: \" + count);\n\n        int y = 5;\n        --y; // Pre-decrement (y is decremented before the expression)\n        System.out.println(\"--y: \" + y);\n    }\n}\n",
+    "key_takeaways": [
+      "Arithmetic operators (+, -, *, /, %) allow you to perform mathematical calculations with numbers.",
+      "Comparison operators (==, !=, >, <, >=, <=) evaluate conditions and return boolean values (true or false).",
+      "Logical operators (&&, ||, !) combine or negate boolean expressions to create more complex conditions.",
+      "Operator precedence determines the order in which operators are evaluated in an expression; understanding this is crucial for accurate results.",
+      "Increment (++) and decrement (--) operators provide a concise way to increase or decrease the value of a variable by one."
+    ],
+    "topics": [
+      "Arithmetic operators",
+      "Comparison and logical operators",
+      "Assignment operators",
+      "Operator precedence",
+      "Increment/decrement operators"
+    ]
+  },
+  {
+    "lesson_number": 3,
+    "title": "Control Flow (If/Else, Loops)",
+    "slug": "control-flow",
+    "difficulty_level": "beginner",
+    "estimated_time_minutes": 50,
+    "introduction": "So far, you've learned how to store data and perform basic operations in Java. But what if you want your program to *make decisions* or *repeat actions*? That's where control flow comes in! Control flow statements allow you to control the order in which your code is executed. Imagine a simple game: the program needs to check if the player has won, and if not, continue asking for input. Or think about processing a list of items – you might need to do something different for each item based on its value. \n\nIn this lesson, we'll explore the fundamental control flow structures in Java: `if-else` statements for making choices, `switch` statements for handling multiple options, and loops (`for`, `while`, `do-while`) for repeating blocks of code. We'll also learn how to fine-tune loop behavior with `break` and `continue`. Mastering these concepts is crucial because they form the backbone of almost every program you'll ever write. Without control flow, your programs would simply execute line by line, unable to adapt to different situations or handle repetitive tasks efficiently.",
+    "code_example": "public class ControlFlowExample {\n\n    public static void main(String[] args) {\n\n        // If-Else Statement\n        int age = 20;\n        if (age >= 18) {\n            System.out.println(\"You are eligible to vote!\");\n        } else {\n            System.out.println(\"You are not yet eligible to vote.\");\n        }\n\n        // Switch Statement\n        String dayOfWeek = \"Monday\";\n        switch (dayOfWeek) {\n            case \"Monday\":\n                System.out.println(\"Start of the work week.\");\n                break;\n            case \"Friday\":\n                System.out.println(\"Almost weekend!\");\n                break;\n            default:\n                System.out.println(\"Just another day.\");\n        }\n\n        // For Loop\n        System.out.println(\"\\nCounting from 1 to 5 using a for loop:\");\n        for (int i = 1; i <= 5; i++) {\n            System.out.println(i);\n        }\n\n        // While Loop\n        System.out.println(\"\\nCounting down from 5 to 1 using a while loop:\");\n        int count = 5;\n        while (count > 0) {\n            System.out.println(count);\n            count--;\n        }\n\n        // Do-While Loop\n        System.out.println(\"\\nDo-While loop example (always executes at least once):\");\n        int j = 0;\n        do {\n            System.out.println(j);\n            j++;\n        } while (j < 3);\n\n        // Break Statement\n        System.out.println(\"\\nUsing break to exit a loop early:\");\n        for (int k = 1; k <= 10; k++) {\n            if (k == 5) {\n                break; // Exit the loop when k is 5\n            }\n            System.out.println(k);\n        }\n\n        // Continue Statement\n        System.out.println(\"\\nUsing continue to skip an iteration:\");\n        for (int l = 1; l <= 5; l++) {\n            if (l == 3) {\n                continue; // Skip printing 3\n            }\n            System.out.println(l);\n        }\n    }\n}",
+    "key_takeaways": [
+      "You can use `if-else` statements to execute different code blocks based on a condition.",
+      "`switch` statements provide a concise way to handle multiple possible values of a variable.",
+      "`for` loops are ideal for repeating a block of code a specific number of times.",
+      "`while` and `do-while` loops are used for repeating code as long as a condition is true, with `do-while` guaranteeing at least one execution.",
+      "`break` and `continue` statements allow you to control the flow of loops, exiting them prematurely or skipping specific iterations."
+    ],
+    "topics": [
+      "If-else statements",
+      "Switch statements",
+      "For loops",
+      "While and do-while loops",
+      "Break and continue"
+    ]
+  },
+  {
+    "lesson_number": 4,
+    "title": "Arrays & Strings",
+    "slug": "arrays-strings",
+    "difficulty_level": "intermediate",
+    "estimated_time_minutes": 55,
+    "introduction": "Arrays and Strings are fundamental building blocks in Java programming, and mastering them is crucial for handling collections of data and text. While you've likely encountered them before, this lesson dives deeper into their capabilities, moving beyond basic usage to explore efficient manipulation and advanced techniques. We'll cover how to declare, initialize, and work with both single and multi-dimensional arrays, enabling you to store and access data in organized ways.  Furthermore, we'll dissect the powerful String class, examining its numerous methods for text processing.  Finally, we'll address the performance implications of String manipulation and introduce `StringBuilder` and `StringBuffer` for scenarios demanding mutable string operations.  Understanding these concepts will empower you to write more robust, efficient, and maintainable Java applications, particularly when dealing with large datasets or complex text-based tasks.",
+    "code_example": "public class ArraysAndStrings {\n\n    public static void main(String[] args) {\n\n        // Array Declaration and Initialization\n        int[] numbers = {10, 20, 30, 40, 50};\n        String[] names = new String[3]; // Declaring an array of Strings with a size of 3\n        names[0] = \"Alice\";\n        names[1] = \"Bob\";\n        names[2] = \"Charlie\";\n\n        // Array Manipulation\n        System.out.println(\"Original array: \");\n        printArray(numbers);\n\n        // Adding a new element (requires creating a new array)\n        int[] newNumbers = new int[numbers.length + 1];\n        System.arraycopy(numbers, 0, newNumbers, 0, numbers.length);\n        newNumbers[numbers.length] = 60;\n        numbers = newNumbers; // Update the reference\n        System.out.println(\"Array after adding 60: \");\n        printArray(numbers);\n\n        // Multi-dimensional Array\n        int[][] matrix = {{\n            1, 2, 3\n        }, {\n            4, 5, 6\n        }, {\n            7, 8, 9\n        }};\n\n        System.out.println(\"Matrix element at [1][1]: \" + matrix[1][1]);\n\n        // String Methods\n        String message = \"  Hello, World!  \";\n        String trimmedMessage = message.trim(); // Removes leading and trailing whitespace\n        String upperCaseMessage = trimmedMessage.toUpperCase();\n        String subString = trimmedMessage.substring(0, 5); // Extracts \"Hello\"\n        int index = trimmedMessage.indexOf(\"World\");\n\n        System.out.println(\"Trimmed: \" + trimmedMessage);\n        System.out.println(\"Uppercase: \" + upperCaseMessage);\n        System.out.println(\"Substring: \" + subString);\n        System.out.println(\"Index of 'World': \" + index);\n\n        // StringBuilder and StringBuffer\n        StringBuilder sb = new StringBuilder();\n        sb.append(\"This is a\");\n        sb.append(\" StringBuilder.\");\n        System.out.println(\"StringBuilder: \" + sb.toString());\n\n        StringBuffer sf = new StringBuffer();\n        sf.append(\"This is a\");\n        sf.append(\" StringBuffer.\");\n        System.out.println(\"StringBuffer: \" + sf.toString());\n\n    }\n\n    // Helper method to print an array\n    public static void printArray(int[] arr) {\n        for (int i = 0; i < arr.length; i++) {\n            System.out.print(arr[i] + \" \");\n        }\n        System.out.println();\n    }\n}",
+    "key_takeaways": [
+      "Arrays provide a fixed-size, contiguous block of memory for storing elements of the same data type.",
+      "String objects are immutable in Java, meaning their value cannot be changed after creation.  Operations appear to modify strings but actually create new String objects.",
+      "Multi-dimensional arrays allow you to represent data in a tabular format, such as matrices.",
+      "StringBuilder and StringBuffer are mutable string classes, offering better performance than repeated String concatenation, especially within loops.",
+      "Understanding the difference between StringBuilder and StringBuffer (thread-safety) is crucial for choosing the appropriate class based on the application's concurrency requirements."
+    ],
+    "topics": [
+      "Array declaration and initialization",
+      "Array manipulation",
+      "Multi-dimensional arrays",
+      "String methods",
+      "StringBuilder and StringBuffer"
+    ]
+  },
+  {
+    "lesson_number": 5,
+    "title": "Methods & Encapsulation",
+    "slug": "methods-encapsulation",
+    "difficulty_level": "intermediate",
+    "estimated_time_minutes": 50,
+    "introduction": "Congratulations on reaching the intermediate stage of your Java journey! Up until now, you've been building programs as a single, continuous flow of instructions. But real-world applications are far more complex. This lesson introduces methods and encapsulation – the cornerstones of organized, reusable, and maintainable code. Methods allow you to break down large tasks into smaller, manageable units, promoting code clarity and reducing redundancy. Encapsulation, on the other hand, protects your data by bundling it with the methods that operate on it, controlling access and preventing accidental modification. \n\nMastering these concepts is crucial for building robust and scalable applications. Imagine trying to build a car by welding every single part together without any pre-assembled components – it would be chaotic and prone to errors! Methods are like those pre-assembled components, and encapsulation is the protective shell around them. By the end of this lesson, you’ll be able to design classes with well-defined methods, control data access using access modifiers, and write code that is easier to understand, debug, and extend. This will significantly improve your ability to tackle larger and more complex programming challenges.",
+    "code_example": "public class BankAccount {\n\n    private double balance; // Private instance variable - encapsulation\n    private String accountHolderName;\n\n    // Constructor\n    public BankAccount(String name, double initialBalance) {\n        this.accountHolderName = name;\n        this.balance = initialBalance;\n    }\n\n    // Getter for balance - controlled access\n    public double getBalance() {\n        return balance;\n    }\n\n    // Setter for balance - controlled modification\n    public void deposit(double amount) {\n        if (amount > 0) {\n            balance += amount;\n            System.out.println(\"Deposited: \" + amount);\n        } else {\n            System.out.println(\"Invalid deposit amount.\");\n        }\n    }\n\n    public void withdraw(double amount) {\n        if (amount > 0 && amount <= balance) {\n            balance -= amount;\n            System.out.println(\"Withdrawn: \" + amount);\n        } else {\n            System.out.println(\"Insufficient funds or invalid withdrawal amount.\");\n        }\n    }\n\n    // Method overloading - same name, different parameters\n    public void displayAccountInfo() {\n        System.out.println(\"Account Holder: \" + accountHolderName);\n        System.out.println(\"Balance: \" + balance);\n    }\n\n    public void displayAccountInfo(String currency) {\n        System.out.println(\"Account Holder: \" + accountHolderName);\n        System.out.println(\"Balance: \" + balance + \" \" + currency);\n    }\n\n    public static void main(String[] args) {\n        BankAccount myAccount = new BankAccount(\"Alice Smith\", 1000.0);\n        myAccount.displayAccountInfo(); // Calls the first overloaded method\n        myAccount.displayAccountInfo(\"USD\"); // Calls the second overloaded method\n        myAccount.deposit(500.0);\n        myAccount.withdraw(200.0);\n        System.out.println(\"Current Balance: \" + myAccount.getBalance());\n    }\n}",
+    "key_takeaways": [
+      "Methods allow you to modularize your code, making it more readable, reusable, and easier to maintain.",
+      "Return types specify the type of data a method sends back to the caller, while parameters allow you to pass data into a method.",
+      "Method overloading enables you to define multiple methods with the same name but different parameter lists, providing flexibility.",
+      "Access modifiers (private, public, protected, default) control the visibility and accessibility of class members, crucial for encapsulation.",
+      "Encapsulation protects data integrity by bundling data with methods and controlling access through getters and setters, promoting data hiding and preventing direct manipulation."
+    ],
+    "topics": [
+      "Method declaration and parameters",
+      "Return types and values",
+      "Method overloading",
+      "Access modifiers",
+      "Getters and setters"
+    ]
+  },
+  {
+    "lesson_number": 6,
+    "title": "Object-Oriented Programming",
+    "slug": "oop-basics",
+    "difficulty_level": "intermediate",
+    "estimated_time_minutes": 60,
+    "introduction": "Welcome to the world of Object-Oriented Programming (OOP)! Up until now, you've likely been writing code that follows a procedural style – a series of instructions executed in order. OOP takes a different approach, modeling your code around 'objects' that contain both data (attributes) and the actions that can be performed on that data (methods). This paradigm shift isn't just about syntax; it's about how you *think* about problems.  OOP allows you to create more modular, reusable, and maintainable code, especially for larger projects. \n\nIn this lesson, we'll dive deep into the core principles of OOP: classes, objects, constructors, inheritance, polymorphism, abstract classes, and interfaces. You'll learn how to define your own custom data types (classes), create instances of those types (objects), and build relationships between them.  Understanding these concepts is crucial for any serious Java developer, as they form the foundation of most Java applications and libraries.\n\nBy the end of this lesson, you’ll be able to design and implement object-oriented solutions to real-world problems, making your code more organized, flexible, and easier to understand. Get ready to unlock a powerful set of tools for building robust and scalable Java applications!",
+    "code_example": "public class Animal {\n    // Attributes (data)\n    private String name;\n    private String sound;\n\n    // Constructor\n    public Animal(String name, String sound) {\n        this.name = name;\n        this.sound = sound;\n    }\n\n    // Method\n    public void makeSound() {\n        System.out.println(this.name + \" says \" + this.sound + \"!\");\n    }\n\n    // Getter for name\n    public String getName() {\n        return name;\n    }\n\n    // Setter for name\n    public void setName(String name) {\n        this.name = name;\n    }\n\n}\n\n// Inheritance: Dog extends Animal\nclass Dog extends Animal {\n    private String breed;\n\n    public Dog(String name, String breed) {\n        super(name, \"Woof!\"); // Call the Animal constructor\n        this.breed = breed;\n    }\n\n    public String getBreed() {\n        return breed;\n    }\n\n    @Override // Override the makeSound method\n    public void makeSound() {\n        System.out.println(getName() + \" the \" + breed + \" barks: \" + getSound() + \"!\");\n    }\n}\n\n// Inheritance: Cat extends Animal\nclass Cat extends Animal {\n    public Cat(String name) {\n        super(name, \"Meow!\");\n    }\n\n    @Override\n    public void makeSound() {\n        System.out.println(getName() + \" says: \" + getSound() + \"!\");\n    }\n}\n\n// Interface\ninterface Flyable {\n    void fly();\n}\n\n// Abstract Class\nabstract class Bird extends Animal implements Flyable {\n    public Bird(String name) {\n        super(name, \"Chirp!\");\n    }\n\n    @Override\n    public void fly() {\n        System.out.println(getName() + \" is flying!\");\n    }\n\n    // Abstract method - must be implemented by subclasses\n    public abstract void migrate();\n}\n\n// Concrete subclass of Bird\nclass Eagle extends Bird {\n    @Override\n    public void migrate() {\n        System.out.println(\"Eagle is migrating south for the winter.\");\n    }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        Animal genericAnimal = new Animal(\"Generic Animal\", \"Generic Sound\");\n        genericAnimal.makeSound();\n\n        Dog myDog = new Dog(\"Buddy\", \"Golden Retriever\");\n        myDog.makeSound();\n        System.out.println(\"Dog's breed: \" + myDog.getBreed());\n\n        Cat myCat = new Cat(\"Whiskers\");\n        myCat.makeSound();\n\n        Eagle myEagle = new Eagle(\"Baldy\");\n        myEagle.makeSound();\n        myEagle.fly();\n        myEagle.migrate();\n\n        // Polymorphism in action\n        Animal animal1 = new Dog(\"Rover\", \"Labrador\");\n        Animal animal2 = new Cat(\"Mittens\");\n        animal1.makeSound(); // Calls Dog's makeSound()\n        animal2.makeSound(); // Calls Cat's makeSound()\n    }\n}",
+    "key_takeaways": [
+      "Classes serve as blueprints for creating objects, defining their attributes and behaviors.",
+      "Constructors are special methods used to initialize objects when they are created.",
+      "Inheritance allows you to create new classes (subclasses) based on existing classes (superclasses), promoting code reuse and establishing 'is-a' relationships.",
+      "Polymorphism enables objects of different classes to be treated as objects of a common type, allowing for flexible and extensible code.",
+      "Abstract classes and interfaces define contracts for subclasses to implement, enforcing a specific structure and promoting loose coupling."
+    ],
+    "topics": [
+      "Classes and objects",
+      "Constructors",
+      "Inheritance",
+      "Polymorphism",
+      "Abstract classes and interfaces"
+    ]
+  },
+  {
+    "lesson_number": 7,
+    "title": "Exception Handling & Collections",
+    "slug": "exceptions-collections",
+    "difficulty_level": "advanced",
+    "estimated_time_minutes": 60,
+    "introduction": "Robust and efficient Java applications aren't just about writing code that *works* – they're about writing code that handles unexpected situations gracefully. This lesson dives into the critical concepts of Exception Handling and Collections, two pillars of professional Java development. Exception handling allows you to anticipate and manage errors, preventing crashes and ensuring your program remains stable even when faced with invalid input or unforeseen circumstances.  We'll explore how to use `try-catch` blocks, and how to create and `throw` your own custom exceptions for more specific error management. \n\nBeyond error handling, we'll explore Java Collections – powerful data structures that go far beyond simple arrays.  We'll focus on `ArrayList`, `LinkedList`, `HashMap`, and `HashSet`, understanding their strengths and weaknesses, and when to choose one over another.  Finally, we'll learn how to effectively traverse these collections using Iterators. Mastering these concepts will empower you to build more reliable, scalable, and maintainable Java applications, essential skills for any serious Java developer.",
+    "code_example": "import java.util.*;\n\nclass InsufficientFundsException extends Exception {\n    public InsufficientFundsException(String message) {\n        super(message);\n    }\n}\n\npublic class ExceptionCollections {\n\n    public static void main(String[] args) {\n        // Demonstrate Exception Handling\n        double balance = 100.0;\n        double withdrawalAmount = 150.0;\n\n        try {\n            withdraw(balance, withdrawalAmount);\n            System.out.println(\"Withdrawal successful.\");\n        } catch (InsufficientFundsException e) {\n            System.err.println(\"Error: \" + e.getMessage());\n        } finally {\n            System.out.println(\"Transaction attempt completed.\"); //Always executes\n        }\n\n        // Demonstrate ArrayList\n        ArrayList<String> names = new ArrayList<>();\n        names.add(\"Alice\");\n        names.add(\"Bob\");\n        names.add(\"Charlie\");\n\n        System.out.println(\"ArrayList: \" + names);\n\n        // Demonstrate LinkedList\n        LinkedList<String> linkedList = new LinkedList<>(names); //Initialize with ArrayList\n        linkedList.addFirst(\"David\");\n        linkedList.addLast(\"Eve\");\n        System.out.println(\"LinkedList: \" + linkedList);\n\n        // Demonstrate HashMap\n        HashMap<String, Integer> ageMap = new HashMap<>();\n        ageMap.put(\"Alice\", 30);\n        ageMap.put(\"Bob\", 25);\n        ageMap.put(\"Charlie\", 35);\n\n        System.out.println(\"HashMap: \" + ageMap);\n\n        // Demonstrate HashSet\n        HashSet<String> uniqueNames = new HashSet<>(names); //Initialize with ArrayList\n        uniqueNames.add(\"Alice\"); //Duplicate - won't be added\n        System.out.println(\"HashSet: \" + uniqueNames);\n\n        // Demonstrate Iterator\n        Iterator<String> iterator = names.iterator();\n        System.out.println(\"Iterating through ArrayList:\");\n        while (iterator.hasNext()) {\n            String name = iterator.next();\n            System.out.println(name);\n        }\n    }\n\n    public static void withdraw(double balance, double amount) throws InsufficientFundsException {\n        if (amount > balance) {\n            throw new InsufficientFundsException(\"Insufficient funds. Balance: \" + balance + \", Withdrawal amount: \" + amount);\n        }\n        // Simulate withdrawal\n        balance -= amount;\n    }\n}",
+    "key_takeaways": [
+      "Exception handling using `try-catch-finally` blocks is crucial for writing robust and reliable Java applications.",
+      "Custom exceptions can be created by extending the `Exception` class, allowing for more specific error management and improved code clarity.",
+      "`ArrayList` provides efficient random access, while `LinkedList` excels at insertions and deletions, especially at the beginning or middle of the list.",
+      "`HashMap` offers fast key-value lookups, but does not maintain insertion order, while `HashSet` ensures uniqueness of elements.",
+      "Iterators provide a standardized way to traverse collections, enabling efficient and flexible access to elements without exposing the underlying implementation."
+    ],
+    "topics": [
+      "Try-catch blocks",
+      "Throwing exceptions",
+      "ArrayList and LinkedList",
+      "HashMap and HashSet",
+      "Iterators"
+    ]
+  }
+]

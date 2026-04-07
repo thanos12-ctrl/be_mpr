@@ -1,0 +1,328 @@
+
+
+
+
+-- ==========================================
+-- USERS & AUTHENTICATION
+-- ==========================================
+
+CREATE TYPE user_role AS ENUM ('student', 'teacher', 'admin');
+
+CREATE TABLE users (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    email VARCHAR(255) UNIQUE NOT NULL,
+    password_hash VARCHAR(255) NOT NULL,
+    full_name VARCHAR(255) NOT NULL,
+    role user_role NOT NULL DEFAULT 'student',
+    created_at TIMESTAMP DEFAULT NOW(),
+    last_login TIMESTAMP,
+    is_active BOOLEAN DEFAULT TRUE
+);
+
+CREATE INDEX idx_users_email ON users(email);
+CREATE INDEX idx_users_role ON users(role);
+
+
+-- ==========================================
+-- SUBJECTS & CURRICULUM
+-- ==========================================
+
+CREATE TABLE subjects (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    subject_id VARCHAR(50) UNIQUE NOT NULL,  -- e.g., 'java_programming'
+    name VARCHAR(255) NOT NULL,
+    description TEXT,
+    icon VARCHAR(10),
+    is_published BOOLEAN DEFAULT FALSE,
+    created_by UUID REFERENCES users(id),
+    created_at TIMESTAMP DEFAULT NOW()
+);
+
+
+CREATE TABLE lessons (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    subject_id UUID REFERENCES subjects(id) ON DELETE CASCADE,
+    lesson_number INTEGER NOT NULL,  -- Order in curriculum
+    title VARCHAR(255) NOT NULL,
+    slug VARCHAR(255) NOT NULL,
+    
+    -- Content
+    introduction TEXT NOT NULL,
+    code_example TEXT,  -- Can be JSON for syntax highlighting
+    key_takeaways TEXT[],  -- Array of bullet points
+    
+    -- Metadata
+    estimated_time_minutes INTEGER DEFAULT 10,
+    difficulty_level INTEGER DEFAULT 1,  -- 1-5
+    prerequisites UUID[],  -- Array of lesson IDs
+    
+    -- Settings
+    is_published BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP DEFAULT NOW(),
+    updated_at TIMESTAMP DEFAULT NOW(),
+    
+    UNIQUE(subject_id, lesson_number)
+);
+
+CREATE INDEX idx_lessons_subject ON lessons(subject_id);
+CREATE INDEX idx_lessons_slug ON lessons(slug);
+
+
+CREATE TABLE quizzes (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    lesson_id UUID REFERENCES lessons(id) ON DELETE CASCADE,
+    title VARCHAR(255) NOT NULL,
+    description TEXT,
+    
+    -- AI Settings (per quiz override)
+    allow_rl_adaptation BOOLEAN DEFAULT TRUE,
+    default_num_questions INTEGER DEFAULT 10,
+    passing_score DECIMAL(3,2) DEFAULT 0.70,
+    
+    created_at TIMESTAMP DEFAULT NOW()
+);
+
+
+CREATE TABLE questions (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    quiz_id UUID REFERENCES quizzes(id) ON DELETE CASCADE,
+    
+    -- EdNet mapping
+    ednet_question_id VARCHAR(50),  -- Original q1, q2, etc.
+    
+    -- Content
+    question_text TEXT NOT NULL,
+    code_snippet TEXT,
+    options JSONB NOT NULL,  -- {"a": "...", "b": "...", "c": "...", "d": "..."}
+    correct_answer VARCHAR(1) NOT NULL,
+    explanation TEXT,
+    
+    -- Metadata from EdNet
+    difficulty DECIMAL(3,2) NOT NULL,  -- 0.00-1.00
+    concept VARCHAR(255),
+    part INTEGER,
+    
+    created_at TIMESTAMP DEFAULT NOW()
+);
+
+CREATE INDEX idx_questions_quiz ON questions(quiz_id);
+CREATE INDEX idx_questions_difficulty ON questions(difficulty);
+CREATE INDEX idx_questions_ednet_id ON questions(ednet_question_id);
+
+
+-- ==========================================
+-- STUDENT PROGRESS & ACTIVITY
+-- ==========================================
+
+CREATE TABLE enrollments (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    student_id UUID REFERENCES users(id) ON DELETE CASCADE,
+    subject_id UUID REFERENCES subjects(id) ON DELETE CASCADE,
+    enrolled_at TIMESTAMP DEFAULT NOW(),
+    completed_at TIMESTAMP,
+    
+    -- Settings
+    rl_enabled BOOLEAN DEFAULT TRUE,  -- Can be toggled by teacher
+    
+    UNIQUE(student_id, subject_id)
+);
+
+CREATE INDEX idx_enrollments_student ON enrollments(student_id);
+
+
+CREATE TABLE lesson_progress (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    student_id UUID REFERENCES users(id) ON DELETE CASCADE,
+    lesson_id UUID REFERENCES lessons(id) ON DELETE CASCADE,
+    
+    -- Timing
+    started_at TIMESTAMP DEFAULT NOW(),
+    completed_at TIMESTAMP,
+    time_spent_seconds INTEGER DEFAULT 0,
+    
+    -- Progress
+    last_position TEXT,  -- JSON: section viewed
+    is_completed BOOLEAN DEFAULT FALSE,
+    
+    UNIQUE(student_id, lesson_id)
+);
+
+CREATE INDEX idx_lesson_progress_student ON lesson_progress(student_id);
+
+
+CREATE TABLE quiz_sessions (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    student_id UUID REFERENCES users(id) ON DELETE CASCADE,
+    quiz_id UUID REFERENCES quizzes(id) ON DELETE CASCADE,
+    
+    -- Session details
+    started_at TIMESTAMP DEFAULT NOW(),
+    completed_at TIMESTAMP,
+    
+    -- AI Configuration
+    rl_enabled BOOLEAN DEFAULT TRUE,
+    max_questions INTEGER DEFAULT 10,
+    
+    -- Results
+    questions_answered INTEGER DEFAULT 0,
+    correct_answers INTEGER DEFAULT 0,
+    total_reward DECIMAL(10,2) DEFAULT 0,
+    
+    -- State (for resuming)
+    session_state JSONB,  -- Stores RL agent state
+    
+    is_completed BOOLEAN DEFAULT FALSE
+);
+
+CREATE INDEX idx_quiz_sessions_student ON quiz_sessions(student_id);
+
+
+CREATE TABLE question_attempts (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    session_id UUID REFERENCES quiz_sessions(id) ON DELETE CASCADE,
+    question_id UUID REFERENCES questions(id),
+    
+    -- Attempt details
+    attempt_number INTEGER DEFAULT 1,
+    user_answer VARCHAR(1) NOT NULL,
+    is_correct BOOLEAN NOT NULL,
+    time_elapsed_ms INTEGER NOT NULL,
+    
+    -- AI metrics
+    lstm_confidence DECIMAL(3,2),  -- Predicted P(correct)
+    difficulty_presented DECIMAL(3,2),
+    reward DECIMAL(10,2),
+    
+    attempted_at TIMESTAMP DEFAULT NOW()
+);
+
+CREATE INDEX idx_question_attempts_session ON question_attempts(session_id);
+
+
+-- ==========================================
+-- TEACHER DASHBOARD DATA
+-- ==========================================
+
+CREATE TABLE teacher_assignments (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    teacher_id UUID REFERENCES users(id) ON DELETE CASCADE,
+    subject_id UUID REFERENCES subjects(id) ON DELETE CASCADE,
+    
+    assigned_at TIMESTAMP DEFAULT NOW(),
+    
+    UNIQUE(teacher_id, subject_id)
+);
+
+
+CREATE TABLE teacher_student_groups (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    teacher_id UUID REFERENCES users(id) ON DELETE CASCADE,
+    group_name VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT NOW()
+);
+
+
+CREATE TABLE group_members (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    group_id UUID REFERENCES teacher_student_groups(id) ON DELETE CASCADE,
+    student_id UUID REFERENCES users(id) ON DELETE CASCADE,
+    added_at TIMESTAMP DEFAULT NOW(),
+    
+    UNIQUE(group_id, student_id)
+);
+
+
+-- ==========================================
+-- ANALYTICS & AGGREGATES
+-- ==========================================
+
+CREATE TABLE daily_student_stats (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    student_id UUID REFERENCES users(id) ON DELETE CASCADE,
+    subject_id UUID REFERENCES subjects(id) ON DELETE CASCADE,
+    date DATE NOT NULL,
+    
+    -- Activity
+    lessons_completed INTEGER DEFAULT 0,
+    quizzes_completed INTEGER DEFAULT 0,
+    questions_answered INTEGER DEFAULT 0,
+    correct_answers INTEGER DEFAULT 0,
+    
+    -- Time
+    total_time_seconds INTEGER DEFAULT 0,
+    
+    -- Performance
+    average_difficulty DECIMAL(3,2),
+    total_reward DECIMAL(10,2) DEFAULT 0,
+    
+    UNIQUE(student_id, subject_id, date)
+);
+
+CREATE INDEX idx_daily_stats_date ON daily_student_stats(date);
+
+CREATE TABLE student_knowledge_state (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    student_id UUID REFERENCES users(id) ON DELETE CASCADE,
+    subject_id UUID REFERENCES subjects(id) ON DELETE CASCADE,
+    
+    -- LSTM/RL state
+    knowledge_vector JSONB,  -- Stores learned embeddings
+    estimated_mastery DECIMAL(3,2) DEFAULT 0.50,
+    learning_velocity DECIMAL(3,2),  -- How fast they're improving
+    
+    -- Metadata
+    last_updated TIMESTAMP DEFAULT NOW(),
+    total_interactions INTEGER DEFAULT 0,
+    
+    UNIQUE(student_id, subject_id)
+);
+
+CREATE TABLE rl_interventions (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    session_id UUID REFERENCES quiz_sessions(id) ON DELETE CASCADE,
+    
+    intervention_type VARCHAR(50) NOT NULL,  -- 'difficulty_adjust', 'hint_provided', 'skip_question'
+    context JSONB,  -- What triggered it
+    student_state_before JSONB,
+    action_taken JSONB,
+    
+    created_at TIMESTAMP DEFAULT NOW()
+);
+
+ALTER TABLE lessons ADD COLUMN content_version INTEGER DEFAULT 1;
+ALTER TABLE lessons ADD COLUMN parent_version_id UUID REFERENCES lessons(id);
+
+
+SELECT id, subject_id, name, description, icon, is_published, created_by, created_at
+        FROM subjects;
+
+
+SELECT * FROM lessons;
+
+SELECT DISTINCT
+            u.id as student_id,
+            u.full_name as student_name,
+            u.email as student_email,
+            COUNT(DISTINCT lp.id) FILTER (WHERE lp.is_completed = TRUE) as lessons_completed,
+            COUNT(DISTINCT qs.id) FILTER (WHERE qs.is_completed = TRUE) as quizzes_completed,
+            AVG(CASE WHEN qs.questions_answered > 0 THEN qs.correct_answers::float / qs.questions_answered ELSE 0 END) as average_score,
+            COALESCE(SUM(lp.time_spent_seconds), 0) as total_time_seconds,
+            MAX(GREATEST(lp.started_at, qs.started_at)) as last_activity,
+            e.rl_enabled
+        FROM users u
+        INNER JOIN group_members gm ON u.id = gm.student_id
+        INNER JOIN teacher_student_groups tsg ON gm.group_id = tsg.id
+        LEFT JOIN enrollments e ON u.id = e.student_id
+        LEFT JOIN lesson_progress lp ON u.id = lp.student_id
+        LEFT JOIN quiz_sessions qs ON u.id = qs.student_id
+        WHERE tsg.teacher_id = UUID('8850cfd1-11e0-4497-a75d-fe4c96f8a22b')
+        GROUP BY u.id, u.full_name, u.email, e.rl_enabled
+        ORDER BY last_activity DESC;
+
+		
+
+select * from users;
+select * from group_members;
+select * from enrollments;
+select * from subjects;
+Delete from subjects where is_published = false;

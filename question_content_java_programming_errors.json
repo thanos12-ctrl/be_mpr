@@ -1,0 +1,22 @@
+[
+  {
+    "question_id": "q1",
+    "error": "404 models/gemma-3-27b is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods."
+  },
+  {
+    "question_id": "q2",
+    "error": "404 models/gemma-3-27b is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods."
+  },
+  {
+    "question_id": "q3",
+    "error": "404 models/gemma-3-27b is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods."
+  },
+  {
+    "question_id": "q4",
+    "error": "404 models/gemma-3-27b is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods."
+  },
+  {
+    "question_id": "q5",
+    "error": "404 models/gemma-3-27b is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods."
+  }
+]
