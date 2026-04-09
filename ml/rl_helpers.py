@@ -112,21 +112,31 @@ def select_next_question(session: Dict) -> Dict:
     if not content_lib:
         raise HTTPException(500, f"No content available for this session")
 
-    # Find questions in difficulty range
+    # Find unused questions in difficulty range
     candidates = [
         q for q in content_lib.values()
         if target_diff_min <= q['difficulty'] < target_diff_max
            and q['question_id'] not in session['used_questions']
     ]
 
-    # If no unused questions in range, allow repeats
+    # Fallback 1: unused questions in expanded difficulty range (±0.2)
+    if not candidates:
+        expanded_min = max(0.0, target_diff_min - 0.2)
+        expanded_max = min(1.0, target_diff_max + 0.2)
+        candidates = [
+            q for q in content_lib.values()
+            if expanded_min <= q['difficulty'] < expanded_max
+               and q['question_id'] not in session['used_questions']
+        ]
+
+    # Fallback 2: any unused question regardless of difficulty
     if not candidates:
         candidates = [
             q for q in content_lib.values()
-            if target_diff_min <= q['difficulty'] < target_diff_max
+            if q['question_id'] not in session['used_questions']
         ]
 
-    # Fallback to any question
+    # Fallback 3: allow repeats only when ALL questions have been used
     if not candidates:
         candidates = list(content_lib.values())
 

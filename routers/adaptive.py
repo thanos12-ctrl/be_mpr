@@ -112,12 +112,14 @@ async def start_session(request: SessionCreate):
         'used_questions': set(),
         'total_reward': 0.0,
         'trajectory': [],
-        'n_concepts': n_concepts
+        'n_concepts': n_concepts,
+        'warmup_count': 0
     }
 
-    # Warm-up history
+    # Warm-up history (used to seed LSTM, not counted in quiz metrics)
     content_lib = CONTENT_LIBRARIES[request.subject]
     sample_questions = list(content_lib.values())[:5]
+    sessions[session_id]['warmup_count'] = len(sample_questions)
 
     for q in sample_questions:
         concept_id = q.get('part', 1) - 1
@@ -150,12 +152,15 @@ async def start_lesson_session(
     Fetches questions from the database and uses RL agent for selection.
     """
     
-    # Get the quiz for this lesson
-    quiz_query = "SELECT id FROM quizzes WHERE lesson_id = :lesson_id LIMIT 1"
+    # Get the quiz for this lesson (including its configured question count)
+    quiz_query = "SELECT id, default_num_questions FROM quizzes WHERE lesson_id = :lesson_id LIMIT 1"
     quiz = await database.fetch_one(query=quiz_query, values={"lesson_id": lesson_id})
     
     if not quiz:
         raise HTTPException(status_code=404, detail="No quiz found for this lesson")
+    
+    # Quiz length set by teacher (how many questions the student sees)
+    quiz_num_questions = quiz["default_num_questions"] or max_questions
     
     # Fetch all questions for this quiz
     questions_query = """
@@ -213,7 +218,7 @@ async def start_lesson_session(
         'student_id': student_id,
         'created_at': datetime.now(),
         'current_step': 0,
-        'max_steps': min(max_questions, len(lesson_questions)),  # Don't exceed available questions
+        'max_steps': min(quiz_num_questions, len(lesson_questions)),  # Quiz length (capped to pool size)
         'history': [],
         'concept_attempts': np.zeros(141),
         'concept_correct': np.zeros(141),
@@ -224,11 +229,13 @@ async def start_lesson_session(
         'trajectory': [],
         'n_concepts': 141,
         'lesson_questions': lesson_questions,  # Store lesson-specific questions
-        'is_lesson_quiz': True  # Flag to indicate this is a lesson quiz
+        'is_lesson_quiz': True,  # Flag to indicate this is a lesson quiz
+        'warmup_count': 0
     }
     
-    # Warm-up history with sample questions
+    # Warm-up history with sample questions (used to seed LSTM, not counted in quiz metrics)
     sample_questions = list(lesson_questions.values())[:min(3, len(lesson_questions))]
+    sessions[session_id]['warmup_count'] = len(sample_questions)
     
     for q in sample_questions:
         concept_id = min(q.get('part', 1) - 1, n_concepts - 1) if n_concepts > 0 else 0
@@ -246,7 +253,7 @@ async def start_lesson_session(
         student_id=str(student_id),
         current_step=0,
         max_steps=sessions[session_id]['max_steps'],
-        message=f"Lesson quiz started with {len(lesson_questions)} questions"
+        message=f"Quiz: {sessions[session_id]['max_steps']} questions selected from pool of {len(lesson_questions)}"
     )
 
 
@@ -470,15 +477,19 @@ async def get_progress(session_id: str):
 
     session = sessions[session_id]
     history = np.array(session['history'])
+    warmup_count = session.get('warmup_count', 0)
 
-    if len(history) == 0:
+    if len(history) <= warmup_count:
         raise HTTPException(400, "No questions answered yet")
 
-    # Overall accuracy
-    overall_accuracy = float(np.mean(history[:, 0]))
+    # Exclude warm-up entries from metrics
+    real_history = history[warmup_count:]
 
-    # Difficulty progression
-    difficulty_progression = [float(x) for x in history[:, 1]]
+    # Overall accuracy (real answers only)
+    overall_accuracy = float(np.mean(real_history[:, 0]))
+
+    # Difficulty progression (real answers only)
+    difficulty_progression = [float(x) for x in real_history[:, 1]]
 
     # Concept mastery
     concept_mastery_dict = {}

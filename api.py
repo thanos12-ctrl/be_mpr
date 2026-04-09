@@ -189,7 +189,7 @@ if __name__ == "__main__":
     print("\n" + "=" * 60)
     print("  Starting Adaptive Learning API")
     print("=" * 60)
-    print("\n  📋 Prerequisites:")
+    print("\n  Prerequisites:")
     print("  1. LSTM model: student_simulator.pth")
     print("  2. RL model: ppo_ednet_teacher.zip")
     print("  3. Question content JSON files")

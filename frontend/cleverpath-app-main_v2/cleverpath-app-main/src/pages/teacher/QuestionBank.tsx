@@ -9,6 +9,9 @@ import {
     QuizResponse,
     QuestionResponse,
     QuestionCreate,
+    createQuiz,
+    fetchLessons,
+    Lesson,
 } from '@/services/api';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -38,12 +41,23 @@ const QuestionBank = () => {
     const [quizzes, setQuizzes] = useState<QuizResponse[]>([]);
     const [questions, setQuestions] = useState<QuestionResponse[]>([]);
     const [filteredQuestions, setFilteredQuestions] = useState<QuestionResponse[]>([]);
+    const [lessons, setLessons] = useState<Lesson[]>([]);
     const [loading, setLoading] = useState(true);
     const [isDialogOpen, setIsDialogOpen] = useState(false);
+    const [isQuizDialogOpen, setIsQuizDialogOpen] = useState(false);
     const [editingQuestion, setEditingQuestion] = useState<QuestionResponse | null>(null);
     const [submitting, setSubmitting] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedQuiz, setSelectedQuiz] = useState<string>('all');
+
+    const [quizFormData, setQuizFormData] = useState({
+        lesson_id: '',
+        title: '',
+        description: '',
+        default_num_questions: 10,
+        allow_rl_adaptation: true,
+        passing_score: 0.7,
+    });
 
     const [formData, setFormData] = useState({
         quiz_id: '',
@@ -67,13 +81,15 @@ const QuestionBank = () => {
 
     const loadData = async () => {
         try {
-            const [quizzesData, questionsData] = await Promise.all([
+            const [quizzesData, questionsData, lessonsData] = await Promise.all([
                 listQuizzes(),
                 listQuestions(),
+                fetchLessons(),
             ]);
             setQuizzes(quizzesData);
             setQuestions(questionsData);
             setFilteredQuestions(questionsData);
+            setLessons(lessonsData);
         } catch (error) {
             console.error('Failed to load data:', error);
             toast.error('Failed to load data');
@@ -182,6 +198,36 @@ const QuestionBank = () => {
         }
     };
 
+    const handleCreateQuizSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+
+        if (!quizFormData.lesson_id || !quizFormData.title) {
+            toast.error('Please fill in required fields (Lesson and Title)');
+            return;
+        }
+
+        setSubmitting(true);
+        try {
+            await createQuiz(quizFormData);
+            toast.success('Quiz created successfully!');
+            setIsQuizDialogOpen(false);
+            setQuizFormData({
+                lesson_id: '',
+                title: '',
+                description: '',
+                default_num_questions: 10,
+                allow_rl_adaptation: true,
+                passing_score: 0.7,
+            });
+            loadData();
+        } catch (error: any) {
+            console.error('Failed to save quiz:', error);
+            toast.error(error.response?.data?.detail || 'Failed to create quiz');
+        } finally {
+            setSubmitting(false);
+        }
+    };
+
     const handleDelete = async (questionId: string) => {
         if (!confirm('Are you sure you want to delete this question?')) return;
 
@@ -211,14 +257,20 @@ const QuestionBank = () => {
             {/* Header */}
             <div className="flex items-center justify-between">
                 <div>
-                    <h1 className="text-3xl font-bold">Question Bank</h1>
-                    <p className="text-muted-foreground mt-2">Manage your quiz questions</p>
-                </div>
-                <Button onClick={() => handleOpenDialog()} className="bg-gradient-to-r from-primary to-primary-glow">
-                    <Plus className="h-4 w-4 mr-2" />
-                    Add Question
-                </Button>
-            </div>
+                     <h1 className="text-3xl font-bold">Question Bank</h1>
+                     <p className="text-muted-foreground mt-2">Manage your quizzes and questions</p>
+                 </div>
+                 <div className="flex space-x-2">
+                     <Button variant="outline" onClick={() => setIsQuizDialogOpen(true)}>
+                         <Plus className="h-4 w-4 mr-2" />
+                         Create Quiz
+                     </Button>
+                     <Button onClick={() => handleOpenDialog()} className="bg-gradient-to-r from-primary to-primary-glow">
+                         <Plus className="h-4 w-4 mr-2" />
+                         Add Question
+                     </Button>
+                 </div>
+             </div>
 
             {/* Filters */}
             <Card className="p-4 bg-card border-border">
@@ -486,6 +538,95 @@ const QuestionBank = () => {
                             </Button>
                             <Button type="submit" disabled={submitting} className="bg-gradient-to-r from-primary to-primary-glow">
                                 {submitting ? 'Saving...' : editingQuestion ? 'Update Question' : 'Create Question'}
+                            </Button>
+                        </DialogFooter>
+                    </form>
+                </DialogContent>
+            </Dialog>
+
+            {/* Create Quiz Dialog */}
+            <Dialog open={isQuizDialogOpen} onOpenChange={setIsQuizDialogOpen}>
+                <DialogContent className="sm:max-w-[600px]">
+                    <form onSubmit={handleCreateQuizSubmit}>
+                        <DialogHeader>
+                            <DialogTitle>Create New Quiz</DialogTitle>
+                            <DialogDescription>
+                                Create a quiz for a lesson. You can define the maximum number of selected questions for students.
+                            </DialogDescription>
+                        </DialogHeader>
+
+                        <div className="space-y-4 py-4">
+                            <div className="space-y-2">
+                                <Label htmlFor="quiz_lesson">Lesson *</Label>
+                                <Select
+                                    value={quizFormData.lesson_id}
+                                    onValueChange={(value) => {
+                                        const lesson = lessons.find((l) => l.id === value);
+                                        setQuizFormData({ 
+                                            ...quizFormData, 
+                                            lesson_id: value,
+                                            title: lesson ? `${lesson.title} - Quiz` : ''
+                                        });
+                                    }}
+                                >
+                                    <SelectTrigger>
+                                        <SelectValue placeholder="Select a lesson" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        {lessons.map((lesson) => (
+                                            <SelectItem key={lesson.id} value={lesson.id}>
+                                                Lesson {lesson.lesson_number}: {lesson.title}
+                                            </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                            </div>
+
+                            <div className="space-y-2">
+                                <Label htmlFor="quiz_title">Quiz Title *</Label>
+                                <Input
+                                    id="quiz_title"
+                                    placeholder="e.g., Syntax and Variables Quiz"
+                                    value={quizFormData.title}
+                                    onChange={(e) => setQuizFormData({ ...quizFormData, title: e.target.value })}
+                                    required
+                                />
+                            </div>
+
+                            <div className="space-y-2">
+                                <Label htmlFor="quiz_desc">Description</Label>
+                                <Textarea
+                                    id="quiz_desc"
+                                    placeholder="Optional description..."
+                                    value={quizFormData.description}
+                                    onChange={(e) => setQuizFormData({ ...quizFormData, description: e.target.value })}
+                                    rows={2}
+                                />
+                            </div>
+
+                            <div className="space-y-2">
+                                <Label htmlFor="quiz_length">Target Number of Questions (Quiz Length) *</Label>
+                                <p className="text-xs text-muted-foreground mb-2">
+                                    Students will be served this many questions, dynamically selected from the pool you create using RL.
+                                </p>
+                                <Input
+                                    id="quiz_length"
+                                    type="number"
+                                    min="1"
+                                    max="100"
+                                    value={quizFormData.default_num_questions}
+                                    onChange={(e) => setQuizFormData({ ...quizFormData, default_num_questions: parseInt(e.target.value) || 1 })}
+                                    required
+                                />
+                            </div>
+                        </div>
+
+                        <DialogFooter>
+                            <Button type="button" variant="outline" onClick={() => setIsQuizDialogOpen(false)}>
+                                Cancel
+                            </Button>
+                            <Button type="submit" disabled={submitting} className="bg-gradient-to-r from-primary to-primary-glow">
+                                {submitting ? 'Creating...' : 'Create Quiz'}
                             </Button>
                         </DialogFooter>
                     </form>
