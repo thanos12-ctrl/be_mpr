@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import { getProgressOverview, getMyCourses, fetchSubjects, enrollInSubject, ProgressOverview, Enrollment, Subject } from '@/services/api';
+import { getProgressOverview, getMyCourses, fetchSubjects, enrollInSubject, getSubjectsBreakdown, ProgressOverview, Enrollment, Subject, SubjectProgressBreakdown } from '@/services/api';
 import { Card } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
@@ -17,6 +17,7 @@ const StudentProfile = () => {
     const [subjects, setSubjects] = useState<Subject[]>([]);
     const [loading, setLoading] = useState(true);
     const [enrollingSubjectId, setEnrollingSubjectId] = useState<string | null>(null);
+    const [subjectBreakdown, setSubjectBreakdown] = useState<SubjectProgressBreakdown[]>([]);
 
     // Create a map of subject_id to subject for easy lookup
     const subjectMap = subjects.reduce((acc, subject) => {
@@ -30,14 +31,16 @@ const StudentProfile = () => {
 
     const loadData = async () => {
         try {
-            const [progressData, enrollmentsData, subjectsData] = await Promise.all([
+            const [progressData, enrollmentsData, subjectsData, breakdownData] = await Promise.all([
                 getProgressOverview(),
                 getMyCourses(),
                 fetchSubjects(),
+                getSubjectsBreakdown(),
             ]);
             setProgress(progressData);
             setEnrollments(enrollmentsData);
             setSubjects(subjectsData);
+            setSubjectBreakdown(breakdownData);
         } catch (error) {
             console.error('Failed to load profile data:', error);
             toast.error('Failed to load profile data');
@@ -175,6 +178,36 @@ const StudentProfile = () => {
                     </div>
                 </div>
             </Card>
+
+            {/* Subject Breakdown */}
+            {subjectBreakdown.length > 0 && (
+                <div className="space-y-4">
+                    <h2 className="text-2xl font-semibold">Performance by Subject</h2>
+                    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                        {subjectBreakdown.map((breakdown) => (
+                            <Card key={breakdown.subject_id} className="p-6 bg-card border-border hover:shadow-[var(--shadow-elevated)] transition-all">
+                                <div className="space-y-4">
+                                    <div className="flex items-center justify-between">
+                                        <h3 className="font-semibold text-lg truncate" title={breakdown.subject_name}>
+                                            {breakdown.subject_name}
+                                        </h3>
+                                        <Badge variant="outline">
+                                            {breakdown.completed_lessons} / {breakdown.total_lessons}
+                                        </Badge>
+                                    </div>
+                                    <Progress 
+                                        value={breakdown.total_lessons > 0 ? (breakdown.completed_lessons / breakdown.total_lessons) * 100 : 0} 
+                                        className="h-2" 
+                                    />
+                                    <p className="text-xs text-muted-foreground text-right mt-2">
+                                        {breakdown.total_lessons > 0 ? Math.round((breakdown.completed_lessons / breakdown.total_lessons) * 100) : 0}% Complete
+                                    </p>
+                                </div>
+                            </Card>
+                        ))}
+                    </div>
+                </div>
+            )}
 
             {/* Enrolled Courses */}
             <div className="space-y-4">

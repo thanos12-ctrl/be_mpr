@@ -296,6 +296,18 @@ export const getProgressOverview = async (): Promise<ProgressOverview> => {
   return response.data;
 };
 
+export interface SubjectProgressBreakdown {
+  subject_id: string;
+  subject_name: string;
+  completed_lessons: number;
+  total_lessons: number;
+}
+
+export const getSubjectsBreakdown = async (): Promise<SubjectProgressBreakdown[]> => {
+  const response = await api.get('/api/progress/subjects-breakdown');
+  return response.data;
+};
+
 // ==========================================
 // QUIZ SESSIONS (Adaptive Learning)
 // ==========================================

@@ -213,6 +213,12 @@ class ProgressOverview(BaseModel):
     total_time_spent_seconds: int
     current_streak_days: int
 
+class SubjectProgressBreakdown(BaseModel):
+    subject_id: UUID4
+    subject_name: str
+    completed_lessons: int
+    total_lessons: int
+
 
 # ==========================================
 # TEACHER DASHBOARD

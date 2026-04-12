@@ -99,7 +99,7 @@ async def get_progress_overview(current_user: dict = Depends(get_current_student
         SELECT
             COUNT(*) as total_quizzes,
             COUNT(*) FILTER (WHERE is_completed = TRUE) as completed_quizzes,
-            AVG(CASE WHEN questions_answered > 0 THEN correct_answers::float / questions_answered ELSE 0 END) as avg_score
+            AVG(CASE WHEN questions_answered > 0 THEN LEAST(correct_answers::float / questions_answered, 1.0) ELSE 0 END) as avg_score
         FROM quiz_sessions
         WHERE student_id = :student_id
     """
@@ -114,3 +114,25 @@ async def get_progress_overview(current_user: dict = Depends(get_current_student
         total_time_spent_seconds=int(lesson_stats["total_time"] or 0),
         current_streak_days=0  # TODO: Implement streak calculation
     )
+
+@router.get("/subjects-breakdown", response_model=list[m.SubjectProgressBreakdown])
+async def get_subjects_breakdown(current_user: dict = Depends(get_current_student)):
+    """Get completed vs total lessons for each enrolled subject"""
+    
+    query = """
+        SELECT 
+            s.id as subject_id,
+            s.name as subject_name,
+            COUNT(DISTINCT l.id) as total_lessons,
+            COUNT(DISTINCT lp.lesson_id) FILTER (WHERE lp.is_completed = TRUE) as completed_lessons
+        FROM enrollments e
+        JOIN subjects s ON e.subject_id = s.id
+        LEFT JOIN lessons l ON s.id = l.subject_id AND l.is_published = TRUE
+        LEFT JOIN lesson_progress lp ON l.id = lp.lesson_id AND lp.student_id = e.student_id
+        WHERE e.student_id = :student_id AND s.is_published = TRUE
+        GROUP BY s.id, s.name
+        ORDER BY s.name
+    """
+    
+    rows = await database.fetch_all(query=query, values={"student_id": current_user["id"]})
+    return [m.SubjectProgressBreakdown(**dict(row)) for row in rows]

@@ -37,7 +37,7 @@ def get_lstm_prediction(history: List, next_difficulty: float, next_concept: int
 
     next_features = np.array([[0.0, float(next_difficulty), 0.5, 0.1, float(next_concept)]])
     full_seq = np.concatenate([seq, next_features], axis=0)
-    print(history, "seq: ", seq, "next features", next_features)
+    # print(history, "seq: ", seq, "next features", next_features)
     with torch.no_grad():
         input_tensor = torch.FloatTensor(full_seq).unsqueeze(0).to(device)
         prob = lstm_model(input_tensor).item()
@@ -50,15 +50,13 @@ def get_observation(session: Dict) -> np.ndarray:
     history = session['history']
     n_concepts = session['n_concepts']
 
-    if len(history) < 5:
-        obs = np.zeros(6 + n_concepts, dtype=np.float32)
-        obs[:6] = [0.5, 0.5, 0.5, 0, 0, 0]
-        obs[6:] = 0.5
-        return obs
-
-    recent_5 = np.array(history[-5:])
-    recent_acc = np.mean(recent_5[:, 0])
-    avg_diff = np.mean(recent_5[:, 1])
+    if len(history) == 0:
+        recent_acc = 0.5
+        avg_diff = 0.5
+    else:
+        recent_5 = np.array(history[-5:], dtype=np.float32)
+        recent_acc = float(np.mean(recent_5[:, 0]))
+        avg_diff = float(np.mean(recent_5[:, 1]))
 
     lstm_pred = get_lstm_prediction(history, 0.5, 0)
 
@@ -81,6 +79,22 @@ def get_observation(session: Dict) -> np.ndarray:
         ],
         concept_mastery
     ]).astype(np.float32)
+
+    print("\n" + "="*40)
+    print("RL AGENT STATE VECTOR")
+    print("="*40)
+    print(f"LSTM Prob Correct: {lstm_pred:.3f}")
+    print(f"Recent Accuracy:   {recent_acc:.2f}")
+    print(f"Avg Difficulty:    {avg_diff:.2f}")
+    print(f"Consecutive Right: {session['consecutive_correct']}")
+    print(f"Consecutive Wrong: {session['consecutive_wrong']}")
+    print(f"Step Progress:     {obs[5]:.2f}")
+    
+    # Show active concepts
+    active_concepts = [(i, m) for i, m in enumerate(concept_mastery) if session['concept_attempts'][i] > 0]
+    if active_concepts:
+        print(f"Active Concept Masteries: {['C'+str(i)+': '+str(round(m,2)) for i,m in active_concepts]}")
+    print("="*40 + "\n")
 
     return obs
 

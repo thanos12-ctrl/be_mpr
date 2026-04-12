@@ -190,7 +190,7 @@ async def start_lesson_session(
         
         # Format for RL agent
         question_data = {
-            'question_id': q_dict['id'],
+            'question_id': str(q_dict['id']),
             'question_text': q_dict['question_text'],
             'code': q_dict['code_snippet'],
             'options': q_dict['options'],
@@ -375,8 +375,12 @@ async def submit_answer(answer: AnswerSubmit):
             quiz_id = session.get('quiz_id')
             student_id = session.get('student_id')
             
+            # Exclude warmup questions from actual test score
+            warmup_count = session.get('warmup_count', 0)
+            real_history = session['history'][warmup_count:]
+            
             # Count correct answers
-            correct_count = sum(1 for item in session['history'] if item[0] == 1)
+            correct_count = sum(1 for item in real_history if item[0] == 1)
             questions_answered = session['current_step']
             
             if student_id:
