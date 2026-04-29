@@ -414,21 +414,34 @@ async def submit_answer(answer: AnswerSubmit):
                     lesson_id = session['lesson_id']
                     time_spent = int((datetime.now() - session['created_at']).total_seconds())
 
-                    chk = await database.fetch_one(
-                        "SELECT id, is_completed FROM lesson_progress WHERE student_id = :s AND lesson_id = :l",
-                        {"s": student_id, "l": lesson_id}
-                    )
-                    if chk:
-                        # Update: always mark complete; do NOT downgrade if already completed
-                        await database.execute(
-                            "UPDATE lesson_progress SET is_completed = TRUE, completed_at = NOW() WHERE id = :id",
-                            {"id": chk['id']}
+                    # Fetch passing score from quiz record
+                    passing_score = 0.70  # default
+                    try:
+                        quiz_rec = await database.fetch_one(
+                            "SELECT passing_score FROM quizzes WHERE id = :qid",
+                            {"qid": quiz_id}
                         )
-                    else:
-                        await database.execute("""
-                            INSERT INTO lesson_progress (id, student_id, lesson_id, started_at, time_spent_seconds, last_position, is_completed, completed_at)
-                            VALUES (:id, :s, :l, NOW(), :time, 'end', TRUE, NOW())
-                        """, {"id": str(uuid.uuid4()), "s": student_id, "l": lesson_id, "time": time_spent})
+                        if quiz_rec:
+                            passing_score = float(quiz_rec["passing_score"])
+                    except Exception:
+                        pass
+
+                    if score >= passing_score:
+                        chk = await database.fetch_one(
+                            "SELECT id, is_completed FROM lesson_progress WHERE student_id = :s AND lesson_id = :l",
+                            {"s": student_id, "l": lesson_id}
+                        )
+                        if chk:
+                            # Update: always mark complete; do NOT downgrade if already completed
+                            await database.execute(
+                                "UPDATE lesson_progress SET is_completed = TRUE, completed_at = NOW() WHERE id = :id",
+                                {"id": chk['id']}
+                            )
+                        else:
+                            await database.execute("""
+                                INSERT INTO lesson_progress (id, student_id, lesson_id, started_at, time_spent_seconds, last_position, is_completed, completed_at)
+                                VALUES (:id, :s, :l, NOW(), :time, 'end', TRUE, NOW())
+                            """, {"id": str(uuid.uuid4()), "s": student_id, "l": lesson_id, "time": time_spent})
         except Exception as e:
             print(f"Error finalizing DB Session: {e}")
 

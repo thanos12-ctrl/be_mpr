@@ -98,14 +98,19 @@ const Results = () => {
       </Card>
 
       {/* Lesson Completion Notice */}
-      <div className={`p-4 rounded-lg border ${scorePercentage >= 70 ? 'bg-success/10 border-success/20' : 'bg-secondary/10 border-secondary/20'}`}>
-        <p className={`font-medium flex items-center justify-center gap-2 ${scorePercentage >= 70 ? 'text-success' : 'text-secondary'}`}>
-          {scorePercentage >= 70 ? '✅' : '📚'}
-          {scorePercentage >= 70
-            ? 'Lesson marked as completed! You can retake anytime to improve your score.'
-            : 'Lesson marked as completed. Retake the quiz to improve your score!'}
-        </p>
-      </div>
+      {scorePercentage >= 70 ? (
+        <div className="p-4 rounded-lg border bg-success/10 border-success/20">
+          <p className="font-medium flex items-center justify-center gap-2 text-success">
+            ✅ Lesson marked as completed! You can retake anytime to improve your score.
+          </p>
+        </div>
+      ) : (
+        <div className="p-4 rounded-lg border bg-destructive/10 border-destructive/20">
+          <p className="font-medium flex items-center justify-center gap-2 text-destructive">
+            ⚠️ You scored below the passing threshold ({70}%). Revise the material and try again to complete this lesson.
+          </p>
+        </div>
+      )}
 
       {/* Stats Grid */}
       <div className="grid gap-6 md:grid-cols-3">
