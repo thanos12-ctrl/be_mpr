@@ -1,0 +1,1087 @@
+[
+    {
+        "lesson_number": 1,
+        "title": "Introduction to Java, JVM & Basic Syntax",
+        "slug": "lesson-1-intro-jvm-syntax",
+        "difficulty_level": "beginner",
+        "estimated_time_minutes": 45,
+        "introduction": "Welcome to the world of Java programming! Java has remained one of the most popular and powerful programming languages in the world for decades. Its famous \"Write Once, Run Anywhere\" philosophy is powered by the Java Virtual Machine (JVM). When you write Java source code, it is compiled into a universal format called bytecode. The JVM then translates this bytecode into the specific machine language of your computer, whether it's running Windows, macOS, or Linux.\n\nJava's strictness begins with its strong typing system. By forcing developers to declare exactly what type of data each variable will hold, the Java compiler can catch an entire category of errors before the program even runs. While this might feel rigid compared to loosely-typed languages, it is the exact reason why Java is trusted to run enterprise banking systems, Android applications, and large-scale cloud infrastructure.\n\nIn this lesson, you will learn the foundational building blocks of Java. We will explore how to declare variables using primitive data types, how to work with text using the String class, and how to perform basic arithmetic. By the end of this lesson, you will understand the life cycle of a Java program and be able to write, compile, and execute code that outputs results to the console.",
+        "code_example": "public class HelloWorld {\n    public static void main(String[] args) {\n        // 1. Primitive Data Types: Stored directly in memory for efficiency\n        int userAge = 28; // 32-bit integer for whole numbers\n        double accountBalance = 1500.75; // 64-bit floating point for decimals\n        boolean isActive = true; // Represents true or false logic\n        char userInitial = 'J'; // Single 16-bit Unicode character (use single quotes)\n\n        // 2. Reference Data Types: Refer to objects in memory\n        // String is a built-in object class, not a primitive, hence the capital 'S'\n        String greeting = \"Welcome to Java Programming!\";\n\n        // 3. Printing to the Console\n        // System.out.println() prints the content and moves to the next line\n        System.out.println(\"--- System Initialization ---\");\n        System.out.println(greeting);\n        // Output: Welcome to Java Programming!\n\n        System.out.println(\"User Initial: \" + userInitial);\n        // Output: User Initial: J\n\n        // 4. Basic Arithmetic and Variable Reassignment\n        int yearsToAdd = 5;\n        int futureAge = userAge + yearsToAdd;\n        System.out.println(\"Current Age: \" + userAge + \", Age in 5 years: \" + futureAge);\n        // Output: Current Age: 28, Age in 5 years: 33\n\n        // Updating the balance with double arithmetic\n        double deposit = 250.00;\n        accountBalance = accountBalance + deposit;\n        System.out.println(\"Updated Balance: $\" + accountBalance);\n        // Output: Updated Balance: $1750.75\n\n        // 5. Using Boolean logic\n        // Evaluates to true only if both conditions are met\n        boolean isPremiumUser = (accountBalance >= 1000.0) && isActive;\n        System.out.println(\"Premium Status: \" + isPremiumUser);\n        // Output: Premium Status: true\n    }\n}",
+        "key_takeaways": [
+            "Java source code is compiled into bytecode, which is executed by the JVM to ensure cross-platform compatibility.",
+            "Every variable in Java must have a declared type that dictates what kind of data it can hold.",
+            "Primitive types (int, double, boolean, char) hold simple values, while Reference types (like String) refer to complex objects.",
+            "The 'System.out.println()' method is your primary tool for outputting data to the console.",
+            "String concatenation using the '+' operator allows you to seamlessly combine text and variables in your output."
+        ],
+        "topics": [
+            "The Java Virtual Machine (JVM) and Bytecode",
+            "Primitive Data Types (int, double, boolean, char)",
+            "Reference Types and Strings",
+            "Basic Arithmetic Operators",
+            "Console Input/Output basics"
+        ],
+        "quiz_questions": [
+            {
+                "question_number": 1,
+                "question_text": "What does the JVM do in the Java execution process?",
+                "options": [
+                    "It writes the source code for the developer.",
+                    "It translates Java bytecode into machine-specific instructions.",
+                    "It converts HTML into Java objects.",
+                    "It compresses Java files to save hard drive space."
+                ],
+                "correct_answer": 1,
+                "explanation": "The JVM (Java Virtual Machine) is responsible for taking platform-independent bytecode and executing it on a specific operating system, which is what allows Java to be 'Write Once, Run Anywhere'.",
+                "difficulty": "easy"
+            },
+            {
+                "question_number": 2,
+                "question_text": "Which of the following is NOT a primitive data type in Java?",
+                "options": [
+                    "int",
+                    "boolean",
+                    "String",
+                    "double"
+                ],
+                "correct_answer": 2,
+                "explanation": "String is a class (a reference type) in Java, not a primitive data type. This is why it begins with a capital 'S'. int, boolean, and double are all primitives.",
+                "difficulty": "easy"
+            },
+            {
+                "question_number": 3,
+                "question_text": "How do you define a character literal in Java?",
+                "options": [
+                    "With double quotes: \"A\"",
+                    "With single quotes: 'A'",
+                    "Without quotes: A",
+                    "With backticks: `A`"
+                ],
+                "correct_answer": 1,
+                "explanation": "In Java, the `char` primitive type is defined using single quotes (e.g., 'A'). Double quotes are strictly reserved for `String` literals.",
+                "difficulty": "easy"
+            },
+            {
+                "question_number": 4,
+                "question_text": "What is the correct syntax to print a message to the console?",
+                "options": [
+                    "console.log(\"Message\");",
+                    "print(\"Message\");",
+                    "System.out.println(\"Message\");",
+                    "echo(\"Message\");"
+                ],
+                "correct_answer": 2,
+                "explanation": "Java uses `System.out.println()` to print text to the standard output (console) and append a newline character.",
+                "difficulty": "easy"
+            },
+            {
+                "question_number": 5,
+                "question_text": "What is the output of the following code? `System.out.println(10 + 20 + \"Java\");`",
+                "options": [
+                    "1020Java",
+                    "30Java",
+                    "Java30",
+                    "Error"
+                ],
+                "correct_answer": 1,
+                "explanation": "Java evaluates from left to right. It first adds the integers 10 and 20 to get 30, and then concatenates the result with the String \"Java\", resulting in \"30Java\".",
+                "difficulty": "medium"
+            },
+            {
+                "question_number": 6,
+                "question_text": "What file extension does compiled Java bytecode have?",
+                "options": [
+                    ".java",
+                    ".exe",
+                    ".class",
+                    ".jvm"
+                ],
+                "correct_answer": 2,
+                "explanation": "When the Java compiler (javac) compiles a `.java` source code file, it generates a bytecode file with a `.class` extension.",
+                "difficulty": "medium"
+            },
+            {
+                "question_number": 7,
+                "question_text": "What will happen if you try to assign a decimal number to an int variable? (e.g., `int x = 5.5;`)",
+                "options": [
+                    "The compiler will round it up to 6.",
+                    "The compiler will truncate it to 5.",
+                    "The program will throw a runtime error.",
+                    "The compiler will throw a compilation error."
+                ],
+                "correct_answer": 3,
+                "explanation": "Java's strong typing system prevents implicit downcasting that loses precision. Assigning a double (5.5) to an int results in a compile-time error unless you explicitly cast it: `int x = (int) 5.5;`.",
+                "difficulty": "medium"
+            },
+            {
+                "question_number": 8,
+                "question_text": "Which method signature represents the correct standard entry point for a Java application?",
+                "options": [
+                    "public static void Main(String[] args)",
+                    "public void main(String args)",
+                    "public static void main(String[] args)",
+                    "static public main(void String[] args)"
+                ],
+                "correct_answer": 2,
+                "explanation": "The exact, required signature for the Java entry point is `public static void main(String[] args)`. Java is case-sensitive, so 'main' must be lowercase.",
+                "difficulty": "medium"
+            },
+            {
+                "question_number": 9,
+                "question_text": "Consider the variables: `int a = 5; int b = 2; double c = a / b;` What is the value of c?",
+                "options": [
+                    "2.5",
+                    "2.0",
+                    "2",
+                    "Exception is thrown"
+                ],
+                "correct_answer": 1,
+                "explanation": "Because both `a` and `b` are integers, Java performs integer division first (`5 / 2 = 2`). The resulting integer `2` is then promoted to a double `2.0` when assigned to `c`.",
+                "difficulty": "hard"
+            },
+            {
+                "question_number": 10,
+                "question_text": "Which of the following is true regarding Java's boolean data type?",
+                "options": [
+                    "It can hold the numbers 0 and 1 as false and true.",
+                    "It defaults to true if not explicitly initialized as a class field.",
+                    "It occupies exactly 1 byte of memory strictly specified by the JVM specification.",
+                    "Its size is not precisely defined by the Java Virtual Machine Specification."
+                ],
+                "correct_answer": 3,
+                "explanation": "While it represents 1 bit of information (true/false), the JVM specification does not strictly mandate the physical memory size of a boolean; it is typically represented as an int internally, but it depends on the specific JVM implementation.",
+                "difficulty": "hard"
+            }
+        ]
+    },
+    {
+        "lesson_number": 2,
+        "title": "Control Flow (Conditionals & Loops)",
+        "slug": "lesson-2-control-flow",
+        "difficulty_level": "beginner",
+        "estimated_time_minutes": 50,
+        "introduction": "A program that only runs in a straight line from top to bottom is highly limited. Real-world applications need to make decisions, repeat actions, and adapt to varying input data. This is where Control Flow comes into play. Control flow structures form the decision-making brain of your code, allowing your application to execute different blocks of logic based on dynamic conditions.\n\nWhen directing control flow, Java's strictness acts as a powerful safety net. It requires explicit boolean conditions in loops and `if` statements. Unlike loosely-typed languages where strings or numbers might magically evaluate as \"truthy\" or \"falsy,\" Java forces you to be mathematically precise (e.g., `if(count > 0)` rather than just `if(count)`). This prevents accidental logical bugs and makes your code's intent explicitly clear to anyone reading it.\n\nIn this lesson, you will master conditional statements (`if/else`, `switch`) and iterative loops (`for`, `while`, `do-while`). You will also learn how to finely control loop execution using the `break` and `continue` keywords, enabling you to write complex, efficient, and dynamic algorithms.",
+        "code_example": "public class ControlFlowDemo {\n    public static void main(String[] args) {\n        int userScore = 85;\n\n        // 1. if/else Conditional Statement\n        System.out.println(\"--- Grade Evaluation ---\");\n        if (userScore >= 90) {\n            System.out.println(\"Grade: A - Excellent!\");\n        } else if (userScore >= 80) {\n            System.out.println(\"Grade: B - Good job!\"); // This block will execute\n        } else {\n            System.out.println(\"Grade: C - Keep trying.\");\n        }\n\n        // 2. Switch Statement (Traditional style)\n        int dayOfWeek = 3;\n        System.out.println(\"\\n--- Switch Statement ---\");\n        switch (dayOfWeek) {\n            case 1:\n                System.out.println(\"Monday\");\n                break; // Break prevents fall-through to the next case\n            case 2:\n                System.out.println(\"Tuesday\");\n                break;\n            case 3:\n                System.out.println(\"Wednesday\"); // This executes\n                break;\n            default:\n                System.out.println(\"Other day\");\n        }\n\n        // 3. For Loop (Used when iterations are known)\n        System.out.println(\"\\n--- For Loop Iteration ---\");\n        for (int i = 1; i <= 5; i++) {\n            // 4. Using 'continue' to skip an iteration\n            if (i == 3) {\n                System.out.println(\"Skipping number 3\");\n                continue; // Skips the rest of the loop body, moves to i=4\n            }\n            System.out.println(\"Processing item: \" + i);\n            // Output: 1, 2, Skipping number 3, 4, 5\n        }\n\n        // 5. While Loop (Used when iterations are unknown, based on condition)\n        System.out.println(\"\\n--- While Loop Iteration ---\");\n        int powerLevel = 1;\n        while (powerLevel < 100) {\n            powerLevel *= 5;\n            System.out.println(\"Power charging... Level: \" + powerLevel);\n            // 6. Using 'break' to exit early\n            if (powerLevel > 20) {\n                System.out.println(\"Power stabilized. Terminating charge.\");\n                break; // Completely exits the while loop early\n            }\n        }\n    }\n}",
+        "key_takeaways": [
+            "if/else statements allow code to branch dynamically based on explicitly defined boolean conditions.",
+            "The switch statement is an efficient alternative to long if/else chains when evaluating a single variable against fixed values.",
+            "A 'for' loop is ideal when you know exactly how many times you want to iterate through a block of code.",
+            "A 'while' loop is best when iteration needs to continue until a specific condition changes, regardless of the loop count.",
+            "The 'break' keyword escapes a loop entirely, whereas 'continue' skips only the current iteration and proceeds to the next one."
+        ],
+        "topics": [
+            "if / else if / else Statements",
+            "Switch Statements and fall-through behavior",
+            "For Loops and variable scope",
+            "While and Do-While Loops",
+            "The break and continue keywords"
+        ],
+        "quiz_questions": [
+            {
+                "question_number": 1,
+                "question_text": "Which statement best describes a 'while' loop?",
+                "options": [
+                    "It iterates a fixed, predefined number of times.",
+                    "It executes its body as long as its boolean condition evaluates to true.",
+                    "It executes the body at least once, even if the condition is false.",
+                    "It automatically increments an integer variable on every pass."
+                ],
+                "correct_answer": 1,
+                "explanation": "A 'while' loop evaluates its boolean condition before every iteration. It will repeatedly execute its block of code as long as that condition remains true.",
+                "difficulty": "easy"
+            },
+            {
+                "question_number": 2,
+                "question_text": "What happens if you omit the 'break' statement at the end of a 'case' in a traditional switch block?",
+                "options": [
+                    "The code fails to compile.",
+                    "The switch block terminates automatically after the case is executed.",
+                    "Execution falls through to the next case statement, executing its code as well.",
+                    "The program throws a RuntimeException."
+                ],
+                "correct_answer": 2,
+                "explanation": "Without a 'break' statement, a traditional switch block experiences 'fall-through', meaning it will execute the matched case and all subsequent cases until it hits a break or the end of the switch.",
+                "difficulty": "easy"
+            },
+            {
+                "question_number": 3,
+                "question_text": "What is the primary difference between a 'while' loop and a 'do-while' loop?",
+                "options": [
+                    "A while loop cannot use the break keyword.",
+                    "A do-while loop evaluates its condition at the end, ensuring the code block runs at least once.",
+                    "A while loop is exclusively used for reading text files.",
+                    "A do-while loop requires an integer counter."
+                ],
+                "correct_answer": 1,
+                "explanation": "A 'do-while' loop is a post-test loop. It executes the code block first, and then checks the condition, guaranteeing a minimum of one execution.",
+                "difficulty": "easy"
+            },
+            {
+                "question_number": 4,
+                "question_text": "Which keyword is used to skip the remainder of the current loop iteration and immediately start the next one?",
+                "options": [
+                    "break",
+                    "continue",
+                    "skip",
+                    "next"
+                ],
+                "correct_answer": 1,
+                "explanation": "The 'continue' keyword stops the current iteration and sends control flow back to the loop's condition evaluation (or increment step in a for loop).",
+                "difficulty": "easy"
+            },
+            {
+                "question_number": 5,
+                "question_text": "How many times will this loop execute: `for (int i = 0; i < 5; i++) { ... }`",
+                "options": [
+                    "4 times",
+                    "5 times",
+                    "6 times",
+                    "Infinite times"
+                ],
+                "correct_answer": 1,
+                "explanation": "The loop runs for i=0, 1, 2, 3, and 4. When i becomes 5, the condition `i < 5` is false, so it terminates. That is exactly 5 iterations.",
+                "difficulty": "medium"
+            },
+            {
+                "question_number": 6,
+                "question_text": "Is the following code valid in Java? `int x = 5; if(x) { System.out.println(\"Yes\"); }`",
+                "options": [
+                    "Yes, it will print 'Yes'.",
+                    "Yes, but it prints nothing.",
+                    "No, it will cause a compilation error.",
+                    "No, it will cause a runtime error."
+                ],
+                "correct_answer": 2,
+                "explanation": "Java strictly requires a boolean expression inside an 'if' statement. Passing an integer 'x' instead of a condition like 'x > 0' causes a compilation error because Java does not support \"truthy\" numeric values.",
+                "difficulty": "medium"
+            },
+            {
+                "question_number": 7,
+                "question_text": "What does the 'break' statement do when encountered inside a 'for' loop?",
+                "options": [
+                    "It pauses the program until user input.",
+                    "It skips the current iteration and goes to the next.",
+                    "It completely terminates the loop, jumping to the first line of code after the loop block.",
+                    "It restarts the loop from the beginning."
+                ],
+                "correct_answer": 2,
+                "explanation": "The 'break' keyword immediately exits the nearest enclosing loop or switch statement, completely stopping any further iterations.",
+                "difficulty": "medium"
+            },
+            {
+                "question_number": 8,
+                "question_text": "What is the output of the following code snippet? `int x = 10; if (x > 5) System.out.print(\"A\"); else if (x > 8) System.out.print(\"B\");`",
+                "options": [
+                    "A",
+                    "B",
+                    "AB",
+                    "Nothing"
+                ],
+                "correct_answer": 0,
+                "explanation": "The first condition `x > 5` evaluates to true, so \"A\" is printed. Because it is part of an if-else if chain, once the first true condition is met, the rest of the chain is skipped. \"B\" is never evaluated.",
+                "difficulty": "medium"
+            },
+            {
+                "question_number": 9,
+                "question_text": "What happens in a 'for' loop if the update/increment expression is omitted? (e.g., `for(int i=0; i<10; ) { }`)",
+                "options": [
+                    "Compilation error",
+                    "The loop iterates exactly 10 times automatically",
+                    "The loop becomes an infinite loop unless 'i' is updated inside the loop body",
+                    "The loop runs exactly once"
+                ],
+                "correct_answer": 2,
+                "explanation": "The components of a for loop header are optional. If you omit the increment expression, the variable 'i' will never change automatically, resulting in an infinite loop unless manually updated inside the block.",
+                "difficulty": "hard"
+            },
+            {
+                "question_number": 10,
+                "question_text": "Prior to Java 12/14's enhanced switch expressions, which of the following data types was NOT permitted as a switch variable?",
+                "options": [
+                    "int",
+                    "String",
+                    "char",
+                    "long"
+                ],
+                "correct_answer": 3,
+                "explanation": "Traditional Java switch statements accept byte, short, char, int, their wrapper classes, enums, and (since Java 7) Strings. 'long' is explicitly forbidden in traditional switch blocks.",
+                "difficulty": "hard"
+            }
+        ]
+    },
+    {
+        "lesson_number": 3,
+        "title": "Object-Oriented Programming - Classes & Objects",
+        "slug": "lesson-3-oop-classes-objects",
+        "difficulty_level": "intermediate",
+        "estimated_time_minutes": 60,
+        "introduction": "Up until now, we've treated Java somewhat like a scripting language—executing commands top to bottom inside a single main method. However, Java is fundamentally an Object-Oriented Programming (OOP) language. OOP is a paradigm shift. Instead of writing loose variables and functions, you model your code based on real-world entities. You bundle data (state) and the functions that operate on that data (behavior) into single conceptual units called Objects.\n\nJava enforces object-oriented design strictly through its structure. Everything in Java must belong to a Class. A Class acts as a blueprint, and an Object is a concrete manifestation of that blueprint. Through encapsulation, Java strictly enforces boundaries around an object's data. By marking fields as 'private' and requiring methods to access them, Java ensures an object's internal state cannot be accidentally corrupted or bypassed by external code.\n\nIn this lesson, you will learn how to design your own custom Classes. You will implement fields to store state, create constructors to initialize objects, and write methods to define behavior. You will also uncover the power of access modifiers (`public` vs `private`) and the `this` keyword, transitioning your mindset fully into the object-oriented world.",
+        "code_example": "// In a real application, BankAccount and Main would likely be in separate files.\nclass BankAccount {\n    // 1. Fields / Attributes (State)\n    // Marked 'private' for Encapsulation. Only this class can modify them directly.\n    private String accountHolder;\n    private double balance;\n\n    // 2. Constructor\n    // A special method called when a new object is created. Initializes the state.\n    public BankAccount(String accountHolder, double initialBalance) {\n        // 'this' refers to the current object's fields, distinguishing them from parameters\n        this.accountHolder = accountHolder;\n        this.balance = initialBalance;\n    }\n\n    // 3. Methods (Behavior)\n    public void deposit(double amount) {\n        if (amount > 0) {\n            this.balance += amount;\n            System.out.println(amount + \" deposited. New balance: \" + this.balance);\n        }\n    }\n\n    // 4. Getter Method (Allows safe read-only access to private fields)\n    public double getBalance() {\n        return this.balance;\n    }\n    \n    public String getAccountHolder() {\n        return this.accountHolder;\n    }\n}\n\npublic class OOPDemo {\n    public static void main(String[] args) {\n        // 5. Instantiating Objects\n        // Using the 'new' keyword to create concrete objects from the BankAccount blueprint\n        BankAccount myAccount = new BankAccount(\"Alice Smith\", 1000.0);\n        BankAccount partnerAccount = new BankAccount(\"Bob Jones\", 500.0);\n\n        // Accessing behavior through objects\n        System.out.println(\"Account: \" + myAccount.getAccountHolder());\n        // Output: Account: Alice Smith\n        \n        myAccount.deposit(250.0);\n        // Output: 250.0 deposited. New balance: 1250.0\n        \n        System.out.println(\"Bob's Balance: \" + partnerAccount.getBalance());\n        // Output: Bob's Balance: 500.0\n        \n        // myAccount.balance = 50000; // ERROR! Cannot access private field directly.\n    }\n}",
+        "key_takeaways": [
+            "A Class is a blueprint that defines the structure, while an Object is a specific instance created from that blueprint.",
+            "Encapsulation is achieved by making fields 'private' and providing 'public' getter and setter methods.",
+            "Constructors are special methods invoked automatically during object creation (via the 'new' keyword) to initialize state.",
+            "The 'this' keyword provides a way to reference the current instance of the object, resolving naming collisions between fields and parameters.",
+            "Access modifiers (public, private) enforce strict access control, protecting an object's internal state from unintended modification."
+        ],
+        "topics": [
+            "Classes vs. Objects",
+            "Fields (Instance Variables) and Methods",
+            "Constructors and Object Initialization",
+            "Encapsulation and Access Modifiers (public/private)",
+            "The 'this' keyword"
+        ],
+        "quiz_questions": [
+            {
+                "question_number": 1,
+                "question_text": "Which of the following best describes the relationship between a Class and an Object?",
+                "options": [
+                    "A Class is an instance of an Object.",
+                    "They are the exact same thing.",
+                    "A Class is a blueprint, and an Object is a specific instance created from it.",
+                    "A Class holds data, while an Object only holds methods."
+                ],
+                "correct_answer": 2,
+                "explanation": "A Class defines the structure and behaviors (the blueprint). An Object is an actual manifestation of that blueprint created in computer memory.",
+                "difficulty": "easy"
+            },
+            {
+                "question_number": 2,
+                "question_text": "What keyword is used to create a new instance of an object in Java?",
+                "options": [
+                    "create",
+                    "instance",
+                    "new",
+                    "init"
+                ],
+                "correct_answer": 2,
+                "explanation": "The 'new' keyword is required to allocate memory for a new object and invoke its constructor. Example: `new BankAccount()`;",
+                "difficulty": "easy"
+            },
+            {
+                "question_number": 3,
+                "question_text": "What is the primary purpose of a Constructor in a Java class?",
+                "options": [
+                    "To destroy the object when it is no longer needed.",
+                    "To initialize the initial state (fields) of a newly created object.",
+                    "To make methods run faster.",
+                    "To convert the object into a String."
+                ],
+                "correct_answer": 1,
+                "explanation": "Constructors are executed immediately upon object creation to set up necessary starting values for the object's instance variables.",
+                "difficulty": "easy"
+            },
+            {
+                "question_number": 4,
+                "question_text": "Why are instance variables (fields) commonly marked as 'private' in Java?",
+                "options": [
+                    "To save memory.",
+                    "Because the compiler requires it.",
+                    "To practice Encapsulation, protecting the data from unwanted outside interference.",
+                    "To allow other classes to modify them easily."
+                ],
+                "correct_answer": 2,
+                "explanation": "Marking fields private hides the internal implementation details of a class. External code must use public methods (like getters/setters) to interact with the data, ensuring validation rules are followed.",
+                "difficulty": "easy"
+            },
+            {
+                "question_number": 5,
+                "question_text": "What does the 'this' keyword refer to in a Java method?",
+                "options": [
+                    "The parent class.",
+                    "The current instance of the object calling the method.",
+                    "The main method of the program.",
+                    "A static variable."
+                ],
+                "correct_answer": 1,
+                "explanation": "The 'this' keyword acts as a self-reference to the specific object instance that invoked the method or constructor.",
+                "difficulty": "medium"
+            },
+            {
+                "question_number": 6,
+                "question_text": "Which of the following is true about Constructors?",
+                "options": [
+                    "They must have a 'void' return type.",
+                    "They must have the exact same name as the Class.",
+                    "They can return an integer.",
+                    "A class can only have one constructor."
+                ],
+                "correct_answer": 1,
+                "explanation": "Constructors are unique because they share the exact name of the Class and possess no return type whatsoever (not even void). A class can also have multiple overloaded constructors.",
+                "difficulty": "medium"
+            },
+            {
+                "question_number": 7,
+                "question_text": "If you do not explicitly write a constructor for a Java class, what happens?",
+                "options": [
+                    "The code will not compile.",
+                    "A runtime error will occur when creating the object.",
+                    "The Java compiler provides a default, no-argument constructor automatically.",
+                    "The object is created but with no memory allocated."
+                ],
+                "correct_answer": 2,
+                "explanation": "If no constructors are defined, Java automatically generates a default, invisible, no-argument constructor so the object can still be instantiated.",
+                "difficulty": "medium"
+            },
+            {
+                "question_number": 8,
+                "question_text": "What is a 'getter' method?",
+                "options": [
+                    "A private method used to fetch data from a database.",
+                    "A method that initializes the class.",
+                    "A public method designed specifically to return the value of a private field.",
+                    "A method used to assign a new value to a variable."
+                ],
+                "correct_answer": 2,
+                "explanation": "Getters (also known as accessors) are public methods that simply return the current value of a private instance variable, allowing controlled read-only access.",
+                "difficulty": "medium"
+            },
+            {
+                "question_number": 9,
+                "question_text": "If a class contains a local variable in a method with the same name as an instance variable, how do you assign a value to the instance variable?",
+                "options": [
+                    "You cannot; it causes a compilation error.",
+                    "Use the 'super' keyword: super.variableName = value",
+                    "Use the 'this' keyword: this.variableName = value",
+                    "Assign it directly: variableName = value"
+                ],
+                "correct_answer": 2,
+                "explanation": "When a local variable shadows an instance variable, the 'this' keyword disambiguates them. `this.name = name;` assigns the local parameter to the object's instance field.",
+                "difficulty": "hard"
+            },
+            {
+                "question_number": 10,
+                "question_text": "Can an object interact with the private fields of ANOTHER object of the same exact class?",
+                "options": [
+                    "No, private means strict restriction to the 'this' instance only.",
+                    "Yes, access modifiers in Java act at the Class level, not the instance level.",
+                    "Only if the other object is passed into the constructor.",
+                    "Yes, but only if they are declared as static."
+                ],
+                "correct_answer": 1,
+                "explanation": "A fascinating detail of Java: access control is evaluated at the Class level. An instance of BankAccount can directly access the `private` fields of another BankAccount instance passed to it as a parameter.",
+                "difficulty": "hard"
+            }
+        ]
+    },
+    {
+        "lesson_number": 4,
+        "title": "OOP - Inheritance & Polymorphism",
+        "slug": "lesson-4-inheritance-polymorphism",
+        "difficulty_level": "intermediate",
+        "estimated_time_minutes": 60,
+        "introduction": "As applications grow, you will often find yourself defining classes that share a lot of the same characteristics. A 'Dog' and a 'Cat' both have a name and both breathe, but they make different sounds. Instead of duplicating code in every class, Object-Oriented Programming provides Inheritance. Inheritance allows a new class (subclass) to inherit fields and methods from an existing class (superclass), creating an \"Is-a\" relationship.\n\nJava's strict inheritance model mandates single-class inheritance. This means a class can only directly extend one parent class. This strictness is intentional: it completely eliminates the \"Diamond Problem\" of ambiguity that plagues languages allowing multiple inheritance, ensuring a clean, predictable, and maintainable class hierarchy. However, this structure still allows for incredible flexibility through Polymorphism—the ability of a single object reference to take on many forms.\n\nIn this lesson, you will utilize the `extends` keyword to create hierarchical relationships. You will learn how to customize inherited behavior using method overriding (and the `@Override` annotation), invoke parent constructors using the `super` keyword, and witness the magic of dynamic method dispatch where Java automatically resolves which overridden method to call at runtime.",
+        "code_example": "// 1. Parent Class (Superclass)\nclass Vehicle {\n    protected String brand;\n\n    public Vehicle(String brand) {\n        this.brand = brand;\n    }\n\n    public void startEngine() {\n        System.out.println(\"The vehicle's generic engine starts.\");\n    }\n    \n    public void honk() {\n        System.out.println(\"Beep beep!\");\n    }\n}\n\n// 2. Child Class (Subclass) using 'extends'\n// A Car \"is-a\" Vehicle\nclass Car extends Vehicle {\n    private int doors;\n\n    public Car(String brand, int doors) {\n        // 3. Using 'super' to call the parent class constructor\n        // This must be the very first line in the child constructor\n        super(brand);\n        this.doors = doors;\n    }\n\n    // 4. Method Overriding\n    // Replacing the parent's generic behavior with specific behavior\n    @Override\n    public void startEngine() {\n        System.out.println(\"The \" + brand + \" car engine roars to life! Vroom!\");\n    }\n    \n    public void openDoors() {\n        System.out.println(\"Opening \" + doors + \" doors.\");\n    }\n}\n\npublic class InheritanceDemo {\n    public static void main(String[] args) {\n        // Creating a specific Car object\n        Car myMustang = new Car(\"Ford\", 2);\n        myMustang.startEngine(); // Output: The Ford car engine roars to life! Vroom!\n        myMustang.honk(); // Output: Beep beep! (Inherited from Vehicle)\n\n        // 5. Polymorphism\n        // A parent reference variable can hold a child object\n        Vehicle polyVehicle = new Car(\"Toyota\", 4);\n        \n        // Dynamic Method Dispatch:\n        // Even though the reference is 'Vehicle', Java knows the actual object is a 'Car'\n        // It calls the overridden method in Car at runtime.\n        polyVehicle.startEngine(); \n        // Output: The Toyota car engine roars to life! Vroom!\n        \n        // polyVehicle.openDoors(); \n        // ERROR! The compiler only knows about methods defined in the Vehicle reference type.\n    }\n}",
+        "key_takeaways": [
+            "The 'extends' keyword is used to derive a new Subclass from an existing Superclass, inheriting its public and protected members.",
+            "The 'super' keyword is used to access parent class methods and must be used to invoke the parent constructor if one is required.",
+            "Method Overriding allows a subclass to provide a specific implementation of a method that is already provided by its parent class.",
+            "The @Override annotation is a best practice that instructs the compiler to verify you are actually overriding a parent method correctly.",
+            "Polymorphism allows a parent-type reference variable to hold a child-type object, automatically invoking the child's overridden methods at runtime."
+        ],
+        "topics": [
+            "The extends Keyword and Subclasses",
+            "Method Overriding and @Override",
+            "The super Keyword",
+            "The protected Access Modifier",
+            "Polymorphism and Dynamic Method Dispatch"
+        ],
+        "quiz_questions": [
+            {
+                "question_number": 1,
+                "question_text": "Which keyword is used in Java to inherit a class?",
+                "options": [
+                    "inherits",
+                    "implements",
+                    "extends",
+                    "super"
+                ],
+                "correct_answer": 2,
+                "explanation": "The 'extends' keyword establishes an inheritance relationship between a subclass and a superclass.",
+                "difficulty": "easy"
+            },
+            {
+                "question_number": 2,
+                "question_text": "What type of relationship does Inheritance represent in Object-Oriented design?",
+                "options": [
+                    "Has-a relationship",
+                    "Is-a relationship",
+                    "Uses-a relationship",
+                    "Creates-a relationship"
+                ],
+                "correct_answer": 1,
+                "explanation": "Inheritance models an 'Is-a' relationship. For example, a Car 'is a' Vehicle, or a Dog 'is an' Animal.",
+                "difficulty": "easy"
+            },
+            {
+                "question_number": 3,
+                "question_text": "What is the primary purpose of Method Overriding?",
+                "options": [
+                    "To allow a class to have multiple methods with the same name but different parameters.",
+                    "To provide a new, specific implementation in a subclass for a method inherited from a parent class.",
+                    "To prevent a method from being executed.",
+                    "To rename a method inherited from a parent."
+                ],
+                "correct_answer": 1,
+                "explanation": "Overriding allows a child class to replace the generic behavior inherited from a parent class with its own specific behavior.",
+                "difficulty": "easy"
+            },
+            {
+                "question_number": 4,
+                "question_text": "What does the @Override annotation do?",
+                "options": [
+                    "It forces the program to run faster.",
+                    "It automatically writes the method body for you.",
+                    "It asks the compiler to verify that the method signature exactly matches a method in the parent class.",
+                    "It makes the method accessible from anywhere."
+                ],
+                "correct_answer": 2,
+                "explanation": "The `@Override` annotation is a compile-time check. If you misspell the method name or use the wrong parameters, the compiler will throw an error instead of accidentally creating a brand new method.",
+                "difficulty": "easy"
+            },
+            {
+                "question_number": 5,
+                "question_text": "When using `super()` to call a parent's constructor, where must it be placed within the child's constructor?",
+                "options": [
+                    "Anywhere, as long as it's inside the constructor.",
+                    "As the very last line of the constructor.",
+                    "As the very first line of the constructor.",
+                    "Outside of the constructor."
+                ],
+                "correct_answer": 2,
+                "explanation": "Java strictly requires that the parent object is constructed before the child object. Therefore, `super()` must be the very first statement inside a subclass constructor.",
+                "difficulty": "medium"
+            },
+            {
+                "question_number": 6,
+                "question_text": "Consider: `Vehicle myCar = new Car();`. Why can't you call `myCar.openDoors()` if `openDoors` is only defined in the Car class?",
+                "options": [
+                    "Because the object is a Vehicle, not a Car.",
+                    "Because the compiler only checks the Reference Type (Vehicle) to see what methods are available.",
+                    "Because `openDoors` must be private.",
+                    "Because polymorphism disables child-specific methods."
+                ],
+                "correct_answer": 1,
+                "explanation": "During compilation, Java only looks at the type of the reference variable (`Vehicle`). Since `Vehicle` doesn't know about `openDoors`, the compiler rejects it, even though the actual object in memory is a `Car`.",
+                "difficulty": "medium"
+            },
+            {
+                "question_number": 7,
+                "question_text": "How many classes can a single Java class directly extend?",
+                "options": [
+                    "Zero",
+                    "Exactly one",
+                    "Up to two",
+                    "Unlimited"
+                ],
+                "correct_answer": 1,
+                "explanation": "Java strictly enforces single-class inheritance to prevent ambiguity (the Diamond Problem). A class can only have one direct superclass.",
+                "difficulty": "medium"
+            },
+            {
+                "question_number": 8,
+                "question_text": "What does the 'protected' access modifier do?",
+                "options": [
+                    "It acts exactly like 'private'.",
+                    "It allows access to classes in the same package AND subclasses in different packages.",
+                    "It makes the variable completely immutable.",
+                    "It restricts access to only the parent class."
+                ],
+                "correct_answer": 1,
+                "explanation": "The `protected` modifier is designed for inheritance. It makes a member visible to child classes (even if they reside in a different package) and any class in the same package.",
+                "difficulty": "medium"
+            },
+            {
+                "question_number": 9,
+                "question_text": "Which method signature represents a valid OVERLOAD (not an override) of `public void printName(String name)`?",
+                "options": [
+                    "protected void printName(String name)",
+                    "public String printName(String name)",
+                    "public void printName()",
+                    "@Override public void printName(String name)"
+                ],
+                "correct_answer": 2,
+                "explanation": "Method Overloading involves keeping the same method name but changing the parameter list (changing the signature). `public void printName()` has no parameters, so it is a valid overload.",
+                "difficulty": "hard"
+            },
+            {
+                "question_number": 10,
+                "question_text": "What happens at runtime during Dynamic Method Dispatch when `parentRef.overriddenMethod()` is called?",
+                "options": [
+                    "The JVM executes the method defined in the Parent class.",
+                    "The JVM inspects the actual Object type in memory and calls the Child class's overridden version.",
+                    "The program throws a RuntimeException.",
+                    "The JVM calls both the Parent and Child methods simultaneously."
+                ],
+                "correct_answer": 1,
+                "explanation": "This is the essence of Polymorphism. The JVM waits until runtime, looks at the actual concrete object that the variable points to (e.g., the `Car`), and dynamically dispatches the call to the most specific overridden method.",
+                "difficulty": "hard"
+            }
+        ]
+    },
+    {
+        "lesson_number": 5,
+        "title": "OOP - Abstraction & Interfaces",
+        "slug": "lesson-5-abstraction-interfaces",
+        "difficulty_level": "intermediate",
+        "estimated_time_minutes": 65,
+        "introduction": "While inheritance handles the 'Is-a' relationship, large systems often require a different approach: defining 'What' an object can do, rather than 'How' it does it. This is known as Abstraction. Abstraction hides the complex implementation details and exposes only the essential features of an object. In Java, this is achieved through Abstract Classes and Interfaces.\n\nJava treats Interfaces as strict contracts. If a class claims to implement an interface, the Java compiler rigorously verifies that all promised behaviors (methods) are provided by that class. Failure to fulfill the contract results in a compilation error. This strictness guarantees interoperability. For instance, if twenty different classes implement a `Connectable` interface, another system can confidently loop through them and call `.connect()` on every single one, knowing perfectly well the method exists.\n\nIn this lesson, you will explore how to enforce architectural rules using `abstract` classes and methods. You will learn to define Interfaces—pure contracts of behavior—and use the `implements` keyword. Crucially, while a class can only `extend` one parent class, you will discover that a Java class can `implement` multiple interfaces, granting immense flexibility to your designs.",
+        "code_example": "// 1. Interface: A pure contract of behavior\n// All methods inside are implicitly 'public' and 'abstract'\ninterface Playable {\n    void play();\n    void pause();\n}\n\ninterface Downloadable {\n    void download(String location);\n}\n\n// 2. Abstract Class: A partial blueprint.\n// Cannot be directly instantiated. Can contain both concrete and abstract methods.\nabstract class Media {\n    protected String title;\n\n    public Media(String title) {\n        this.title = title;\n    }\n\n    // Concrete method (shared behavior)\n    public void displayInfo() {\n        System.out.println(\"Media Title: \" + title);\n    }\n\n    // Abstract method: Forces subclasses to provide their own implementation\n    public abstract String getMediaType();\n}\n\n// 3. Concrete Class implementing an Abstract Class AND Interfaces\n// It 'extends' one abstract class, but 'implements' multiple interfaces\nclass Podcast extends Media implements Playable, Downloadable {\n    \n    public Podcast(String title) {\n        super(title);\n    }\n\n    // Fulfilling the Abstract Class contract\n    @Override\n    public String getMediaType() {\n        return \"Audio Podcast\";\n    }\n\n    // Fulfilling the Playable Interface contract\n    @Override\n    public void play() {\n        System.out.println(\"Playing podcast audio: \" + title);\n    }\n\n    @Override\n    public void pause() {\n        System.out.println(\"Podcast paused.\");\n    }\n\n    // Fulfilling the Downloadable Interface contract\n    @Override\n    public void download(String location) {\n        System.out.println(\"Saving '\" + title + \"' to \" + location);\n    }\n}\n\npublic class AbstractionDemo {\n    public static void main(String[] args) {\n        // Media m = new Media(\"Test\"); // ERROR! Cannot instantiate an abstract class.\n\n        Podcast javaPod = new Podcast(\"Java Deep Dive\");\n        \n        javaPod.displayInfo(); // Inherited concrete method\n        // Output: Media Title: Java Deep Dive\n        \n        System.out.println(\"Type: \" + javaPod.getMediaType());\n        // Output: Type: Audio Podcast\n\n        // 4. Polymorphism with Interfaces\n        Playable player = javaPod; \n        player.play(); // Output: Playing podcast audio: Java Deep Dive\n        // player.download(\"C:/\"); // ERROR! 'player' reference only knows about Playable methods.\n    }\n}",
+        "key_takeaways": [
+            "Abstract classes serve as partial blueprints; they can contain logic but cannot be directly instantiated.",
+            "Abstract methods lack a body and force all child classes to provide their own specific implementation.",
+            "An Interface defines a strict behavioral contract without dictating how the behavior is implemented.",
+            "While a class can only extend ONE superclass, it can implement MULTIPLE interfaces simultaneously.",
+            "Polymorphism applies to interfaces too: an Interface reference variable can hold any object that implements that interface."
+        ],
+        "topics": [
+            "Abstract Classes vs Concrete Classes",
+            "Abstract Methods",
+            "Defining and Implementing Interfaces",
+            "Multiple Inheritance of Type (Interfaces)",
+            "Interface Polymorphism"
+        ],
+        "quiz_questions": [
+            {
+                "question_number": 1,
+                "question_text": "Can you instantiate (create a `new` object of) an Abstract Class directly?",
+                "options": [
+                    "Yes, just like any normal class.",
+                    "Yes, but only inside a static method.",
+                    "No, abstract classes are incomplete blueprints and cannot be instantiated.",
+                    "No, unless you cast it to an Object."
+                ],
+                "correct_answer": 2,
+                "explanation": "Abstract classes represent general concepts that are incomplete by design. You must subclass them and instantiate the concrete child class.",
+                "difficulty": "easy"
+            },
+            {
+                "question_number": 2,
+                "question_text": "Which keyword is used by a class to sign a contract with an Interface?",
+                "options": [
+                    "extends",
+                    "inherits",
+                    "implements",
+                    "contracts"
+                ],
+                "correct_answer": 2,
+                "explanation": "The 'implements' keyword is used to indicate that a class is committing to provide the behavior defined by an interface.",
+                "difficulty": "easy"
+            },
+            {
+                "question_number": 3,
+                "question_text": "What characterizes an 'abstract method'?",
+                "options": [
+                    "It has a body but returns no value.",
+                    "It belongs to an Interface but cannot be implemented.",
+                    "It has a signature but no method body (no curly braces), ending with a semicolon.",
+                    "It is automatically written by the compiler."
+                ],
+                "correct_answer": 2,
+                "explanation": "Abstract methods define 'what' must be done, without dictating 'how'. They lack a body (e.g., `abstract void play();`).",
+                "difficulty": "easy"
+            },
+            {
+                "question_number": 4,
+                "question_text": "How many interfaces can a single Java class implement?",
+                "options": [
+                    "Only one.",
+                    "Two.",
+                    "Multiple (unlimited).",
+                    "None."
+                ],
+                "correct_answer": 2,
+                "explanation": "Unlike class inheritance (`extends`), a class can implement multiple interfaces, separating them with commas (e.g., `implements Playable, Downloadable`).",
+                "difficulty": "easy"
+            },
+            {
+                "question_number": 5,
+                "question_text": "What happens if a concrete class implements an interface but forgets to provide logic for one of its methods?",
+                "options": [
+                    "The program will crash at runtime.",
+                    "The Java compiler provides a default empty method.",
+                    "The code will fail to compile.",
+                    "The interface automatically completes the method."
+                ],
+                "correct_answer": 2,
+                "explanation": "Interfaces are strict contracts. The compiler will refuse to build the program until the concrete class provides implementations for every single method defined in the interface.",
+                "difficulty": "medium"
+            },
+            {
+                "question_number": 6,
+                "question_text": "Prior to Java 8, what modifiers were implicitly applied to all methods inside an Interface?",
+                "options": [
+                    "private and abstract",
+                    "public and abstract",
+                    "protected and static",
+                    "public and final"
+                ],
+                "correct_answer": 1,
+                "explanation": "By default, any method declared in an interface was automatically assumed to be `public` and `abstract`. (Note: Java 8+ introduced default and static methods with bodies).",
+                "difficulty": "medium"
+            },
+            {
+                "question_number": 7,
+                "question_text": "Which of the following is a key difference between an Abstract Class and an Interface?",
+                "options": [
+                    "An interface can hold state (instance variables), while an abstract class cannot.",
+                    "An abstract class can have constructors and hold state, while traditional interfaces cannot hold instance variables.",
+                    "You can instantiate an interface but not an abstract class.",
+                    "Interfaces use the 'extends' keyword, while abstract classes use 'implements'."
+                ],
+                "correct_answer": 1,
+                "explanation": "Abstract classes are still classes: they can have fields, constructors, and normal methods. Interfaces (traditionally) only define behavior and constants.",
+                "difficulty": "medium"
+            },
+            {
+                "question_number": 8,
+                "question_text": "If `Playable p = new Podcast();` is executed, which methods can you call on `p`?",
+                "options": [
+                    "All methods defined in the Podcast class.",
+                    "All methods defined in the Media abstract class.",
+                    "Only the methods defined in the Playable interface.",
+                    "None, this syntax is invalid."
+                ],
+                "correct_answer": 2,
+                "explanation": "Because the reference variable `p` is of type `Playable`, the compiler restricts your access ONLY to the methods promised by the `Playable` interface, even though the underlying object has more methods.",
+                "difficulty": "medium"
+            },
+            {
+                "question_number": 9,
+                "question_text": "Can an Interface extend another Interface?",
+                "options": [
+                    "No, interfaces cannot inherit.",
+                    "Yes, using the 'implements' keyword.",
+                    "Yes, using the 'extends' keyword.",
+                    "Only if the interface has default methods."
+                ],
+                "correct_answer": 2,
+                "explanation": "Interfaces can inherit from other interfaces. Crucially, they use the `extends` keyword to do this (e.g., `interface AdvancedPlayable extends Playable`), not `implements`.",
+                "difficulty": "hard"
+            },
+            {
+                "question_number": 10,
+                "question_text": "If a class extends an Abstract Class but only implements half of its abstract methods, what must be true about the child class?",
+                "options": [
+                    "It will cause a compilation error.",
+                    "The child class must also be declared as `abstract`.",
+                    "The unimplemented methods become empty concrete methods.",
+                    "It must implement a \"filler\" interface."
+                ],
+                "correct_answer": 1,
+                "explanation": "If a child class does not fulfill all abstract method contracts of its parent, it too remains an incomplete blueprint. Therefore, the child class itself must explicitly be declared as `abstract`.",
+                "difficulty": "hard"
+            }
+        ]
+    },
+    {
+        "lesson_number": 6,
+        "title": "Exception Handling",
+        "slug": "lesson-6-exception-handling",
+        "difficulty_level": "intermediate",
+        "estimated_time_minutes": 55,
+        "introduction": "No matter how perfectly you write your code, things will go wrong in the real world. A network connection drops, a user inputs text instead of a number, or a required file is missing. When these anomalies occur, Java throws an Exception. If an exception is not caught, it propagates up the call stack, ultimately crashing your application and providing an ugly stack trace to the user.\n\nJava features a controversial but incredibly powerful strictness mechanism called \"Checked Exceptions.\" For operations that are highly likely to fail due to external factors (like reading a file), the Java compiler strictly forces developers to either surround the code in a protective `try-catch` block, or explicitly declare that the method `throws` the exception. It refuses to compile otherwise. This forces you to confront potential failures head-on, resulting in highly robust, enterprise-grade software that degrades gracefully rather than crashing unexpectedly.\n\nIn this lesson, you will learn how to build resilient applications using `try`, `catch`, and `finally` blocks. You will distinguish between Checked Exceptions (which the compiler forces you to handle) and Unchecked Exceptions (like mathematical errors or null pointers). Finally, you will learn how to throw your own custom exceptions to enforce logic rules.",
+        "code_example": "import java.util.Scanner;\n\npublic class ExceptionDemo {\n    public static void main(String[] args) {\n        // 1. Handling Unchecked Exceptions (RuntimeExceptions)\n        System.out.println(\"--- Division Operation ---\");\n        try {\n            // The code in the try block is \"protected\"\n            int result = divide(10, 0);\n            System.out.println(\"Result: \" + result);\n        } catch (ArithmeticException e) {\n            // The catch block executes ONLY if the specific exception is thrown\n            System.out.println(\"Error caught: Cannot divide by zero!\");\n            // Output: Error caught: Cannot divide by zero!\n        } catch (Exception e) {\n            // This acts as a fallback for any other unexpected exception\n            System.out.println(\"An unexpected error occurred.\");\n        } finally {\n            // 2. The finally block ALWAYS executes, regardless of success or failure\n            // Highly useful for closing open resources (like files or database connections)\n            System.out.println(\"Finally block executing: Cleaning up resources.\");\n            // Output: Finally block executing: Cleaning up resources.\n        }\n\n        System.out.println(\"\\n--- Age Validation ---\");\n        try {\n            validateAge(15);\n        } catch (IllegalArgumentException e) {\n            // 3. Catching a custom thrown exception\n            System.out.println(\"Validation Failed: \" + e.getMessage());\n            // Output: Validation Failed: Age must be 18 or older.\n        }\n        \n        System.out.println(\"Program finished successfully without crashing.\");\n    }\n\n    // 4. Using the 'throws' keyword\n    // 'throws' warns callers that this method is dangerous and might fail\n    public static int divide(int a, int b) throws ArithmeticException {\n        return a / b; // Will throw ArithmeticException internally if b == 0\n    }\n\n    // 5. Using the 'throw' keyword\n    // 'throw' is used to manually generate and trigger a new Exception object\n    public static void validateAge(int age) {\n        if (age < 18) {\n            throw new IllegalArgumentException(\"Age must be 18 or older.\");\n        }\n        System.out.println(\"Age verified.\");\n    }\n}",
+        "key_takeaways": [
+            "Exceptions represent abnormal events that disrupt the normal flow of a program. Unhandled, they cause the program to crash.",
+            "The 'try' block contains risky code, and the 'catch' block contains the recovery logic if an exception occurs.",
+            "The 'finally' block is guaranteed to execute whether an exception was thrown or not, making it ideal for cleanup tasks.",
+            "Checked exceptions are enforced by the compiler. Unchecked exceptions (RuntimeExceptions) represent programming errors (like dividing by zero).",
+            "'throw' physically generates an exception, while 'throws' is placed in a method signature to warn callers that an exception might occur."
+        ],
+        "topics": [
+            "The Exception Hierarchy and Throwable",
+            "Checked vs Unchecked Exceptions",
+            "try-catch-finally Blocks",
+            "Manually triggering errors with 'throw'",
+            "Declaring danger with 'throws'"
+        ],
+        "quiz_questions": [
+            {
+                "question_number": 1,
+                "question_text": "What happens if an Exception is thrown but never caught by a catch block?",
+                "options": [
+                    "The Java compiler ignores it.",
+                    "The program safely shuts down without showing errors.",
+                    "The program crashes and prints a stack trace to the console.",
+                    "The JVM automatically fixes the error."
+                ],
+                "correct_answer": 2,
+                "explanation": "Uncaught exceptions bubble up to the main method and cause the JVM to terminate the program abruptly, dumping an error trace.",
+                "difficulty": "easy"
+            },
+            {
+                "question_number": 2,
+                "question_text": "Which block of code is designed to hold the logic that responds to an error?",
+                "options": [
+                    "try",
+                    "catch",
+                    "finally",
+                    "throw"
+                ],
+                "correct_answer": 1,
+                "explanation": "The `catch` block is specifically designed to catch the exception object thrown from the `try` block and execute recovery/error handling logic.",
+                "difficulty": "easy"
+            },
+            {
+                "question_number": 3,
+                "question_text": "What is the defining characteristic of a 'finally' block?",
+                "options": [
+                    "It only executes if the try block is successful.",
+                    "It only executes if an exception is caught.",
+                    "It is guaranteed to execute, regardless of whether an exception occurs or not.",
+                    "It is used to retry the try block."
+                ],
+                "correct_answer": 2,
+                "explanation": "The `finally` block provides a cast-iron guarantee of execution. It is the perfect place to close files or network connections, ensuring cleanup happens in both success and failure scenarios.",
+                "difficulty": "easy"
+            },
+            {
+                "question_number": 4,
+                "question_text": "What is the difference between a Checked and Unchecked Exception in Java?",
+                "options": [
+                    "Checked exceptions are faster than Unchecked exceptions.",
+                    "The compiler strictly forces you to handle Checked exceptions, but ignores Unchecked exceptions.",
+                    "Checked exceptions cannot be caught in a try-catch block.",
+                    "Unchecked exceptions only happen during compilation."
+                ],
+                "correct_answer": 1,
+                "explanation": "Checked exceptions (like IOException) must be explicitly caught or declared via 'throws' for the code to compile. Unchecked exceptions (RuntimeExceptions like NullPointerException) do not have this strict compile-time requirement.",
+                "difficulty": "easy"
+            },
+            {
+                "question_number": 5,
+                "question_text": "Which keyword is used inside a method's body to actively generate and trigger an exception?",
+                "options": [
+                    "throws",
+                    "throw",
+                    "catch",
+                    "trigger"
+                ],
+                "correct_answer": 1,
+                "explanation": "The `throw` keyword is used to actually instantiate and throw the exception object (e.g., `throw new Exception();`).",
+                "difficulty": "medium"
+            },
+            {
+                "question_number": 6,
+                "question_text": "Where is the 'throws' keyword used?",
+                "options": [
+                    "Inside the try block.",
+                    "Immediately before a catch block.",
+                    "In the method signature, after the parameters.",
+                    "Inside the finally block."
+                ],
+                "correct_answer": 2,
+                "explanation": "The `throws` keyword is part of the method signature (e.g., `public void readFile() throws IOException`). It warns callers that calling this method is risky.",
+                "difficulty": "medium"
+            },
+            {
+                "question_number": 7,
+                "question_text": "Can you have multiple catch blocks for a single try block?",
+                "options": [
+                    "No, a try block can only have one catch block.",
+                    "Yes, allowing you to handle different types of exceptions in different ways.",
+                    "Yes, but they must all catch the exact same Exception type.",
+                    "No, unless you also have multiple finally blocks."
+                ],
+                "correct_answer": 1,
+                "explanation": "A single try block can be followed by multiple catch blocks, allowing you to gracefully handle an ArithmeticException differently than an IOException.",
+                "difficulty": "medium"
+            },
+            {
+                "question_number": 8,
+                "question_text": "When chaining multiple catch blocks, in what order should they be structured?",
+                "options": [
+                    "From the most general Exception class to the most specific.",
+                    "Alphabetical order.",
+                    "From the most specific Exception class down to the most general.",
+                    "The order does not matter."
+                ],
+                "correct_answer": 2,
+                "explanation": "You must order catch blocks from most specific child exception to most general parent exception. If you catch `Exception` (the parent) first, it intercepts everything, and the specific blocks below it become unreachable code.",
+                "difficulty": "medium"
+            },
+            {
+                "question_number": 9,
+                "question_text": "If a try block executes a `return` statement, will the `finally` block still execute?",
+                "options": [
+                    "No, the return statement exits the method immediately.",
+                    "Yes, the finally block will intercept the return, execute its code, and then the method returns.",
+                    "It will cause a compilation error.",
+                    "Only if an exception is thrown before the return."
+                ],
+                "correct_answer": 1,
+                "explanation": "The `finally` block is incredibly resilient. Even if the try block hits a `return` statement, Java pauses the return, jumps to the `finally` block to execute it, and only then actually returns from the method.",
+                "difficulty": "hard"
+            },
+            {
+                "question_number": 10,
+                "question_text": "Which of the following is the root superclass of all errors and exceptions in Java?",
+                "options": [
+                    "Exception",
+                    "RuntimeException",
+                    "Error",
+                    "Throwable"
+                ],
+                "correct_answer": 3,
+                "explanation": "The `Throwable` class is the absolute root of the hierarchy. It splits into two main branches: `Error` (serious JVM issues like OutOfMemory) and `Exception` (issues programs should try to catch and recover from).",
+                "difficulty": "hard"
+            }
+        ]
+    },
+    {
+        "lesson_number": 7,
+        "title": "The Java Collections Framework & Generics",
+        "slug": "lesson-7-collections-generics",
+        "difficulty_level": "advanced",
+        "estimated_time_minutes": 70,
+        "introduction": "Arrays in Java are fast and efficient, but they have a fatal flaw: their size is fixed upon creation. If you need to store an unknown or varying number of users, products, or scores, arrays become incredibly cumbersome to manage. Enter the Java Collections Framework (JCF)—a sophisticated architecture of interfaces and classes designed to store, retrieve, manipulate, and communicate aggregated data dynamically.\n\nHistorically, Collections could hold any type of object, which often led to runtime crashes if a developer accidentally retrieved a `Dog` from a list of `Cat`s. To solve this, Java introduced Generics (indicated by angle brackets like `<String>`). Generics enforce strict compile-time type checking for collections. This means the compiler mathematically guarantees that your List only contains Strings, eliminating the dreaded `ClassCastException` and making your data structures inherently type-safe.\n\nIn this advanced lesson, you will master the three most critical collection types: `List` (ordered, allows duplicates), `Set` (unordered, unique items only), and `Map` (key-value pairs). You will learn how to initialize these using generic types and how to iterate over them cleanly using the enhanced for-loop syntax.",
+        "code_example": "import java.util.ArrayList;\nimport java.util.List;\nimport java.util.HashMap;\nimport java.util.Map;\n\npublic class CollectionsDemo {\n    public static void main(String[] args) {\n        \n        // 1. Lists & Generics\n        // An ArrayList resizes dynamically. \n        // <String> is a Generic, ensuring ONLY Strings can enter this list.\n        List<String> userRoster = new ArrayList<>();\n        \n        // Adding elements\n        userRoster.add(\"Alice\");\n        userRoster.add(\"Bob\");\n        userRoster.add(\"Charlie\");\n        userRoster.add(\"Alice\"); // Lists allow duplicate values\n\n        // userRoster.add(100); // ERROR! Generics protect the list from integers.\n\n        System.out.println(\"--- User Roster (List) ---\");\n        // 2. Enhanced For-Loop (For-each)\n        // Clean, readable syntax for iterating over collections\n        for (String user : userRoster) {\n            System.out.println(\"- \" + user);\n        }\n        // Output prints Alice, Bob, Charlie, Alice sequentially.\n\n        System.out.println(\"\\n--- User Ages (Map) ---\");\n        // 3. Maps & Generics\n        // Maps store Key-Value pairs. <String, Integer> means Keys are Strings, Values are Integers.\n        Map<String, Integer> userAges = new HashMap<>();\n        \n        // Putting data into the Map\n        userAges.put(\"Alice\", 28);\n        userAges.put(\"Bob\", 34);\n        userAges.put(\"Charlie\", 22);\n        \n        // Updating a value (Keys must be unique, so putting an existing key overwrites the value)\n        userAges.put(\"Alice\", 29); \n\n        // Retrieving a single value by Key\n        System.out.println(\"Bob's Age: \" + userAges.get(\"Bob\"));\n        // Output: Bob's Age: 34\n\n        // 4. Iterating over a Map\n        System.out.println(\"Full Age Database:\");\n        for (Map.Entry<String, Integer> entry : userAges.entrySet()) {\n            System.out.println(entry.getKey() + \" is \" + entry.getValue() + \" years old.\");\n        }\n        // Output prints Alice is 29, Bob is 34, Charlie is 22 (order not guaranteed in HashMap)\n    }\n}",
+        "key_takeaways": [
+            "The Java Collections Framework provides dynamic data structures that automatically resize as you add or remove elements.",
+            "Generics (<T>) enforce strict type safety at compile time, preventing runtime casting errors.",
+            "A List (like ArrayList) is an ordered collection that maintains insertion order and permits duplicate elements.",
+            "A Set (like HashSet) is an unordered collection that strictly prohibits duplicate elements.",
+            "A Map (like HashMap) stores data in Key-Value pairs, allowing fast retrieval of a value if you know its unique key."
+        ],
+        "topics": [
+            "The limitations of fixed-size Arrays",
+            "Type Safety and Generics (<T>)",
+            "The List Interface and ArrayList",
+            "The Map Interface and HashMap",
+            "The Enhanced For-Loop (For-each)"
+        ],
+        "quiz_questions": [
+            {
+                "question_number": 1,
+                "question_text": "What is the primary advantage of an ArrayList over a standard Java array?",
+                "options": [
+                    "ArrayLists only store numbers.",
+                    "ArrayLists can dynamically resize themselves, while standard arrays have a fixed size.",
+                    "ArrayLists are faster than arrays.",
+                    "ArrayLists do not require import statements."
+                ],
+                "correct_answer": 1,
+                "explanation": "Standard arrays (e.g., `int[] arr = new int[5];`) cannot grow or shrink. ArrayLists handle dynamic resizing automatically behind the scenes as you add or remove items.",
+                "difficulty": "easy"
+            },
+            {
+                "question_number": 2,
+                "question_text": "What is the purpose of the `<String>` syntax in `ArrayList<String>`?",
+                "options": [
+                    "It is a Generic type parameter that ensures only String objects can be added to the list.",
+                    "It imports the String library.",
+                    "It limits the list to a size defined by a string.",
+                    "It formats the output of the list."
+                ],
+                "correct_answer": 0,
+                "explanation": "Generics provide compile-time type safety. `<String>` strictly enforces that the compiler will reject any attempt to add an Integer, Boolean, or Object to that specific list.",
+                "difficulty": "easy"
+            },
+            {
+                "question_number": 3,
+                "question_text": "Which collection type is best suited for storing key-value pairs (like a dictionary)?",
+                "options": [
+                    "ArrayList",
+                    "HashSet",
+                    "Map",
+                    "Vector"
+                ],
+                "correct_answer": 2,
+                "explanation": "The `Map` interface (implemented by classes like `HashMap`) is specifically designed to store data in associations, linking a unique Key to a specific Value.",
+                "difficulty": "easy"
+            },
+            {
+                "question_number": 4,
+                "question_text": "If you want a collection that guarantees uniqueness (absolutely no duplicate items), which interface should you use?",
+                "options": [
+                    "List",
+                    "Map",
+                    "Set",
+                    "Queue"
+                ],
+                "correct_answer": 2,
+                "explanation": "The `Set` interface models the mathematical set abstraction. It does not allow duplicate elements. If you try to add a duplicate, the Set ignores it.",
+                "difficulty": "easy"
+            },
+            {
+                "question_number": 5,
+                "question_text": "How do you correctly read the enhanced for-loop syntax: `for(String name : roster)`?",
+                "options": [
+                    "For string name equals roster.",
+                    "For each String 'name' in the collection 'roster'.",
+                    "Loop string name until roster is zero.",
+                    "Copy roster into string name."
+                ],
+                "correct_answer": 1,
+                "explanation": "The colon `:` is read as \"in\". The loop cleanly iterates through every item in the `roster` collection, assigning the current item to the variable `name` for that iteration.",
+                "difficulty": "medium"
+            },
+            {
+                "question_number": 6,
+                "question_text": "What happens if you use `put()` to add a Key to a HashMap, but that Key already exists in the map?",
+                "options": [
+                    "The program throws an Exception.",
+                    "The new key-value pair is ignored.",
+                    "The new value completely overwrites the existing value for that key.",
+                    "The map creates two identical keys."
+                ],
+                "correct_answer": 2,
+                "explanation": "Keys in a Map must be absolutely unique. If you `put` a value using a key that already exists, the Map updates the entry, overwriting the old value with the new one.",
+                "difficulty": "medium"
+            },
+            {
+                "question_number": 7,
+                "question_text": "Why can't you write `List<int> numbers = new ArrayList<>();`?",
+                "options": [
+                    "Because ArrayLists do not support numbers.",
+                    "Because Generics only work with Reference types (Objects), not primitive types like 'int'.",
+                    "Because 'numbers' is a reserved keyword.",
+                    "Because the syntax requires `<int, int>`."
+                ],
+                "correct_answer": 1,
+                "explanation": "Generics in Java require objects. To store primitives in a generic collection, you must use their object wrapper classes (e.g., `Integer` instead of `int`, `Double` instead of `double`).",
+                "difficulty": "medium"
+            },
+            {
+                "question_number": 8,
+                "question_text": "Is `Map` technically a subclass of the `Collection` interface?",
+                "options": [
+                    "Yes, it extends Collection directly.",
+                    "Yes, it extends List which extends Collection.",
+                    "No, Map is part of the Collections Framework but has its own separate hierarchy.",
+                    "No, Map is not part of the Collections Framework at all."
+                ],
+                "correct_answer": 2,
+                "explanation": "While it is a core part of the Java Collections Framework, the `Map` interface does not actually extend the `java.util.Collection` interface, because Maps operate on Key-Value pairs, while Collections operate on single elements.",
+                "difficulty": "medium"
+            },
+            {
+                "question_number": 9,
+                "question_text": "What is 'Type Erasure' in the context of Java Generics?",
+                "options": [
+                    "A garbage collection process that deletes empty lists.",
+                    "The process where the compiler completely removes generic type information after checking it, turning it into raw types in the bytecode.",
+                    "A security feature that hides passwords in strings.",
+                    "A bug in older versions of Java."
+                ],
+                "correct_answer": 1,
+                "explanation": "To maintain backward compatibility with older versions of Java, the compiler uses Type Erasure. It checks generic types for safety at compile-time, but then literally erases the `<String>` brackets from the final bytecode, replacing them with generic `Object` types and invisible casts.",
+                "difficulty": "hard"
+            },
+            {
+                "question_number": 10,
+                "question_text": "In a standard `HashMap`, what guarantees the order in which items will be retrieved during iteration?",
+                "options": [
+                    "The order they were inserted.",
+                    "Alphabetical order of the keys.",
+                    "Numerical order of the values.",
+                    "There is no guarantee. The order is unpredictable."
+                ],
+                "correct_answer": 3,
+                "explanation": "A standard `HashMap` places items into memory buckets based on a mathematical hash of the key. It makes absolutely no guarantees about the iteration order. (If you need insertion order, you would use a `LinkedHashMap`).",
+                "difficulty": "hard"
+            }
+        ]
+    }
+]

@@ -1,6 +1,6 @@
 """
-Adaptive Learning Router
-Handles adaptive learning sessions with RL/LSTM integration
+Adaptive Learning Router (Domain-Agnostic Edition)
+Handles adaptive learning sessions loading memory state from PostgreSQL Agent Memory Table
 """
 
 from fastapi import APIRouter, HTTPException, Depends
@@ -42,7 +42,7 @@ async def root():
     
     return {
         "status": "running",
-        "version": "2.0.0",
+        "version": "2.1.0-Agnostic",
         "models_loaded": {
             "lstm": lstm_model is not None,
             "rl_agent": rl_agent is not None,
@@ -59,13 +59,7 @@ async def list_subjects():
 
     for subject_id, config in SUBJECT_CONFIGS.items():
         content_lib = CONTENT_LIBRARIES.get(subject_id, {})
-
-        # Count unique concepts
-        if content_lib:
-            concepts = set(q.get('concept', 'Unknown') for q in content_lib.values())
-            num_concepts = len(concepts)
-        else:
-            num_concepts = 0
+        num_concepts = len(set(q.get('concept', 'Unknown') for q in content_lib.values())) if content_lib else 0
 
         subjects.append(SubjectInfo(
             subject_id=subject_id,
@@ -80,64 +74,83 @@ async def list_subjects():
     return subjects
 
 
+async def get_subject_uuid(subject_string: str):
+    """Utility to map literal subject string to the UUID in DB"""
+    query = "SELECT id FROM subjects WHERE subject_id = :sid"
+    result = await database.fetch_one(query, {"sid": subject_string})
+    if result:
+        return result['id']
+    return None
+
+async def load_agent_memory(student_id: uuid.UUID, subject_uuid: uuid.UUID):
+    query = "SELECT * FROM agent_memory WHERE student_id = :st_id AND subject_id = :su_id"
+    mem = await database.fetch_one(query, {"st_id": student_id, "su_id": subject_uuid})
+    
+    if mem:
+        return {
+            'history': json.loads(mem['interaction_queue']) if mem['interaction_queue'] else [],
+            'consecutive_correct': mem['consecutive_correct'],
+            'consecutive_wrong': mem['consecutive_wrong'],
+            'concept_attempts': mem['concept_attempts'],
+            'concept_correct': mem['concept_correct']
+        }
+    return {
+        'history': [],
+        'consecutive_correct': 0,
+        'consecutive_wrong': 0,
+        'concept_attempts': 0,
+        'concept_correct': 0
+    }
+
 @router.post("/api/session/start", response_model=SessionResponse)
 async def start_session(request: SessionCreate):
     """Start a new learning session"""
-
-    # Validate subject
-    if request.subject not in CONTENT_LIBRARIES:
+    
+    if request.subject not in CONTENT_LIBRARIES or not CONTENT_LIBRARIES[request.subject]:
         raise HTTPException(404, f"Subject '{request.subject}' not found or no content available")
 
-    if not CONTENT_LIBRARIES[request.subject]:
-        raise HTTPException(400, f"No questions available for {request.subject}")
-
     session_id = str(uuid.uuid4())
-    student_id = request.student_id or f"student_{uuid.uuid4().hex[:8]}"
+    student_id_str = request.student_id or f"{uuid.uuid4()}"
+    student_uuid = uuid.UUID(student_id_str)
+    
+    subject_uuid = await get_subject_uuid(request.subject)
 
-    n_concepts = SUBJECT_CONFIGS[request.subject]['num_concepts']
+    # 1. LOAD State from `agent_memory`
+    if subject_uuid:
+        memory = await load_agent_memory(student_uuid, subject_uuid)
+    else:
+        memory = {'history': [], 'consecutive_correct': 0, 'consecutive_wrong': 0, 'concept_attempts': 0, 'concept_correct': 0}
 
     # Initialize session
     sessions[session_id] = {
         'session_id': session_id,
         'subject': request.subject,
-        'student_id': student_id,
+        'subject_uuid': str(subject_uuid) if subject_uuid else None,
+        'student_id': student_id_str,
         'created_at': datetime.now(),
         'current_step': 0,
         'max_steps': request.max_questions,
-        'history': [],
-        'concept_attempts': np.zeros(n_concepts),
-        'concept_correct': np.zeros(n_concepts),
-        'consecutive_correct': 0,
-        'consecutive_wrong': 0,
+        'history': memory['history'],
+        
+        # Domain Agnostic Module Tracking
+        'concept_attempts': memory['concept_attempts'],
+        'concept_correct': memory['concept_correct'],
+        
+        'consecutive_correct': memory['consecutive_correct'],
+        'consecutive_wrong': memory['consecutive_wrong'],
         'used_questions': set(),
         'total_reward': 0.0,
         'trajectory': [],
-        'n_concepts': n_concepts,
         'warmup_count': 0
     }
-
-    # Warm-up history (used to seed LSTM, not counted in quiz metrics)
-    content_lib = CONTENT_LIBRARIES[request.subject]
-    sample_questions = list(content_lib.values())[:5]
-    sessions[session_id]['warmup_count'] = len(sample_questions)
-
-    for q in sample_questions:
-        concept_id = q.get('part', 1) - 1
-        diff = q['difficulty']
-        is_correct = 1 if np.random.random() < 0.6 else 0
-
-        sessions[session_id]['history'].append([is_correct, diff, 0.5, 0.0, concept_id])
-        sessions[session_id]['concept_attempts'][concept_id] += 1
-        if is_correct:
-            sessions[session_id]['concept_correct'][concept_id] += 1
 
     return SessionResponse(
         session_id=session_id,
         subject=request.subject,
-        student_id=student_id,
+        student_id=student_id_str,
         current_step=0,
         max_steps=request.max_questions,
-        message="Session started successfully"
+        message="Session started successfully. Memory loaded."
     )
 
 
@@ -147,49 +160,36 @@ async def start_lesson_session(
     max_questions: int = 10,
     current_user: dict = Depends(get_current_user)
 ):
-    """
-    Start an adaptive quiz session for a specific lesson.
-    Fetches questions from the database and uses RL agent for selection.
-    """
+    """Start an adaptive quiz session for a lesson."""
     
-    # Get the quiz for this lesson (including its configured question count)
     quiz_query = "SELECT id, default_num_questions FROM quizzes WHERE lesson_id = :lesson_id LIMIT 1"
     quiz = await database.fetch_one(query=quiz_query, values={"lesson_id": lesson_id})
-    
     if not quiz:
         raise HTTPException(status_code=404, detail="No quiz found for this lesson")
+        
+    lesson_query = "SELECT subject_id FROM lessons WHERE id = :lesson_id"
+    lesson = await database.fetch_one(lesson_query, {"lesson_id": lesson_id})
+    subject_uuid = lesson['subject_id'] if lesson else None
     
-    # Quiz length set by teacher (how many questions the student sees)
     quiz_num_questions = quiz["default_num_questions"] or max_questions
     
-    # Fetch all questions for this quiz
     questions_query = """
         SELECT id, question_text, code_snippet, options, correct_answer, 
                explanation, difficulty, concept, part
         FROM questions
         WHERE quiz_id = :quiz_id
     """
-    questions_rows = await database.fetch_all(
-        query=questions_query,
-        values={"quiz_id": quiz["id"]}
-    )
-    
+    questions_rows = await database.fetch_all(query=questions_query, values={"quiz_id": quiz["id"]})
     if not questions_rows:
         raise HTTPException(status_code=404, detail="No questions found for this lesson")
     
-    # Convert to dictionary format similar to CONTENT_LIBRARIES
     lesson_questions = {}
-    concepts = set()
-    
     for q in questions_rows:
         q_dict = dict(q)
-        
-        # Parse options if stored as JSON string
         if isinstance(q_dict["options"], str):
             q_dict["options"] = json.loads(q_dict["options"])
-        
-        # Format for RL agent
-        question_data = {
+            
+        lesson_questions[q_dict['id']] = {
             'question_id': str(q_dict['id']),
             'question_text': q_dict['question_text'],
             'code': q_dict['code_snippet'],
@@ -200,79 +200,59 @@ async def start_lesson_session(
             'concept': q_dict['concept'] or "General",
             'part': q_dict['part'] or 1
         }
-        
-        lesson_questions[q_dict['id']] = question_data
-        concepts.add(q_dict['concept'] or "General")
     
-    # Create session
     session_id = str(uuid.uuid4())
-    student_id = current_user["id"]
-    n_concepts = len(concepts)
+    student_uuid = current_user["id"]
     
-    # Initialize session (similar to regular session but with lesson-specific questions)
+    # 1. LOAD State from `agent_memory`
+    memory = await load_agent_memory(student_uuid, subject_uuid) if subject_uuid else \
+             {'history': [], 'consecutive_correct': 0, 'consecutive_wrong': 0, 'concept_attempts': 0, 'concept_correct': 0}
+             
     sessions[session_id] = {
         'session_id': session_id,
-        'subject': f'lesson_{lesson_id}',  # Mark as lesson-specific
+        'subject': f'lesson_{lesson_id}',
+        'subject_uuid': str(subject_uuid) if subject_uuid else None,
         'lesson_id': lesson_id,
         'quiz_id': quiz["id"],
-        'student_id': student_id,
+        'student_id': str(student_uuid),
         'created_at': datetime.now(),
         'current_step': 0,
-        'max_steps': min(quiz_num_questions, len(lesson_questions)),  # Quiz length (capped to pool size)
-        'history': [],
-        'concept_attempts': np.zeros(141),
-        'concept_correct': np.zeros(141),
-        'consecutive_correct': 0,
-        'consecutive_wrong': 0,
+        'max_steps': min(quiz_num_questions, len(lesson_questions)),
+        
+        # Restored tracking capability
+        'history': memory['history'],
+        'concept_attempts': memory['concept_attempts'],
+        'concept_correct': memory['concept_correct'],
+        'consecutive_correct': memory['consecutive_correct'],
+        'consecutive_wrong': memory['consecutive_wrong'],
+        
         'used_questions': set(),
         'total_reward': 0.0,
         'trajectory': [],
-        'n_concepts': 141,
-        'lesson_questions': lesson_questions,  # Store lesson-specific questions
-        'is_lesson_quiz': True,  # Flag to indicate this is a lesson quiz
+        'lesson_questions': lesson_questions,
+        'is_lesson_quiz': True,
         'warmup_count': 0
     }
-    
-    # Warm-up history with sample questions (used to seed LSTM, not counted in quiz metrics)
-    sample_questions = list(lesson_questions.values())[:min(3, len(lesson_questions))]
-    sessions[session_id]['warmup_count'] = len(sample_questions)
-    
-    for q in sample_questions:
-        concept_id = min(q.get('part', 1) - 1, n_concepts - 1) if n_concepts > 0 else 0
-        diff = q['difficulty']
-        is_correct = 1 if np.random.random() < 0.6 else 0
-        
-        sessions[session_id]['history'].append([is_correct, diff, 0.5, 0.0, concept_id])
-        sessions[session_id]['concept_attempts'][concept_id] += 1
-        if is_correct:
-            sessions[session_id]['concept_correct'][concept_id] += 1
     
     return SessionResponse(
         session_id=session_id,
         subject=f'lesson_{lesson_id}',
-        student_id=str(student_id),
+        student_id=str(student_uuid),
         current_step=0,
         max_steps=sessions[session_id]['max_steps'],
-        message=f"Quiz: {sessions[session_id]['max_steps']} questions selected from pool of {len(lesson_questions)}"
+        message=f"Quiz: Memory restored. {sessions[session_id]['max_steps']} questions selected."
     )
 
 
 @router.get("/api/session/{session_id}/next-question", response_model=QuestionResponse)
 async def get_next_question(session_id: str):
-    """Get next question from RL agent"""
-
     if session_id not in sessions:
         raise HTTPException(404, "Session not found")
-
     session = sessions[session_id]
-
     if session['current_step'] >= session['max_steps']:
         raise HTTPException(400, "Session completed")
 
-    # Select question
     question = select_next_question(session)
-
-    # Store for answer validation
     session['current_question'] = question
 
     return QuestionResponse(
@@ -291,8 +271,6 @@ async def get_next_question(session_id: str):
 
 @router.post("/api/session/submit-answer", response_model=FeedbackResponse)
 async def submit_answer(answer: AnswerSubmit):
-    """Submit answer and get feedback"""
-
     if answer.session_id not in sessions:
         raise HTTPException(404, "Session not found")
 
@@ -302,26 +280,24 @@ async def submit_answer(answer: AnswerSubmit):
     if not current_q or str(current_q['question_id']) != answer.question_id:
         raise HTTPException(400, "Question mismatch")
 
-    # Check correctness
     is_correct = answer.user_answer.lower() == current_q['correct_answer'].lower()
-
-    # Update history
     time_normalized = min(answer.time_elapsed_ms / 300000.0, 1.0)
-    concept_id = current_q['part'] - 1
     difficulty = float(current_q['difficulty'])
+    moved_module = 1 if session.get('agent_moved_concept') else 0
 
+    # 1. Update Domain-Agnostic History
     session['history'].append([
         int(is_correct),
         difficulty,
         time_normalized,
-        0.1,
-        concept_id
+        0.1,  # lag_time_norm
+        moved_module
     ])
 
-    # Update tracking
-    session['concept_attempts'][concept_id] += 1
+    # 2. Update tracking
+    session['concept_attempts'] += 1
     if is_correct:
-        session['concept_correct'][concept_id] += 1
+        session['concept_correct'] += 1
         session['consecutive_correct'] += 1
         session['consecutive_wrong'] = 0
     else:
@@ -331,14 +307,10 @@ async def submit_answer(answer: AnswerSubmit):
     session['current_step'] += 1
     session['used_questions'].add(answer.question_id)
 
-    # Calculate reward
-    reward_breakdown = calculate_reward(
-        session, is_correct, difficulty, current_q['lstm_confidence']
-    )
+    reward_breakdown = calculate_reward(session, is_correct, difficulty, current_q['lstm_confidence'])
     total_reward = reward_breakdown['total']
     session['total_reward'] += total_reward
 
-    # Store trajectory
     session['trajectory'].append({
         'step': session['current_step'],
         'question_id': answer.question_id,
@@ -348,11 +320,48 @@ async def submit_answer(answer: AnswerSubmit):
         'reward': total_reward
     })
 
-    # Check if continuing
-    should_continue = session['current_step'] < session['max_steps']
+    # ========================================================
+    # DB SYNC: Dump memory state back to Agent Memory Table
+    # ========================================================
+    student_id = session.get('student_id')
+    subject_uuid = session.get('subject_uuid')
+    
+    if student_id and subject_uuid:
+        # Save last 20 history
+        trimmed_history = session['history'][-20:]
+        
+        query = """
+            INSERT INTO agent_memory (
+                student_id, subject_id, interaction_queue, consecutive_correct, 
+                consecutive_wrong, concept_attempts, concept_correct, last_updated
+            )
+            VALUES (
+                :st_id, :su_id, :queue, :cc, :cw, :ca, :cco, NOW()
+            )
+            ON CONFLICT (student_id, subject_id) DO UPDATE SET
+                interaction_queue = EXCLUDED.interaction_queue,
+                consecutive_correct = EXCLUDED.consecutive_correct,
+                consecutive_wrong = EXCLUDED.consecutive_wrong,
+                concept_attempts = EXCLUDED.concept_attempts,
+                concept_correct = EXCLUDED.concept_correct,
+                last_updated = NOW()
+        """
+        try:
+            await database.execute(query, values={
+                "st_id": student_id,
+                "su_id": subject_uuid,
+                "queue": json.dumps(trimmed_history),
+                "cc": session['consecutive_correct'],
+                "cw": session['consecutive_wrong'],
+                "ca": session['concept_attempts'],
+                "cco": session['concept_correct']
+            })
+        except Exception as e:
+            print(f"Failed to save agent_memory: {e}")
 
-    # Get next question if continuing
+    should_continue = session['current_step'] < session['max_steps']
     next_q = None
+    
     if should_continue:
         next_question = select_next_question(session)
         session['current_question'] = next_question
@@ -370,94 +379,58 @@ async def submit_answer(answer: AnswerSubmit):
             total_steps=session['max_steps']
         )
     else:
-        # Session Completed - Save to Database
+        # Wrap up Quiz & update Lesson Progress
         try:
             quiz_id = session.get('quiz_id')
             student_id = session.get('student_id')
-            
-            # Exclude warmup questions from actual test score
             warmup_count = session.get('warmup_count', 0)
             real_history = session['history'][warmup_count:]
-            
-            # Count correct answers
             correct_count = sum(1 for item in real_history if item[0] == 1)
             questions_answered = session['current_step']
             
             if student_id:
-                # 1. Insert into quiz_sessions
-                # Schema allows: id, student_id, quiz_id, started_at, completed_at, rl_enabled, max_questions, 
-                # questions_answered, correct_answers, total_reward, session_state, is_completed
-                insert_query = """
+                await database.execute("""
                     INSERT INTO quiz_sessions (
                         id, student_id, quiz_id, started_at, completed_at, 
                         is_completed, questions_answered, correct_answers, total_reward
                     )
-                    VALUES (
-                        :id, :student_id, :quiz_id, :started_at, :completed_at,
-                        :is_completed, :questions_answered, :correct_answers, :total_reward
-                    )
+                    VALUES (:id, :student_id, :quiz_id, :started_at, :completed_at, :is_completed, :qa, :ca, :tr)
                     ON CONFLICT (id) DO NOTHING
-                """
-                
-                await database.execute(insert_query, values={
+                """, values={
                     "id": session['session_id'],
                     "student_id": student_id,
                     "quiz_id": quiz_id,
                     "started_at": session['created_at'],
                     "completed_at": datetime.now(),
                     "is_completed": True,
-                    "questions_answered": questions_answered,
-                    "correct_answers": correct_count,
-                    "total_reward": session.get('total_reward', 0.0)
+                    "qa": questions_answered,
+                    "ca": correct_count,
+                    "tr": session.get('total_reward', 0.0)
                 })
                 
-                # 2. Update Lesson Progress if applicable (Lesson Quiz)
+                # Always mark lesson as complete; keep best score across retakes
                 if session.get('is_lesson_quiz') and session.get('lesson_id'):
                     score = correct_count / questions_answered if questions_answered > 0 else 0.0
-                    passing_score = 0.7 # Default passing score
-                    
-                    if score >= passing_score:
-                        lesson_id = session['lesson_id']
-                        
-                        # Check existing progress
-                        check_query = "SELECT id FROM lesson_progress WHERE student_id = :student_id AND lesson_id = :lesson_id"
-                        existing_progress = await database.fetch_one(
-                            query=check_query,
-                            values={"student_id": student_id, "lesson_id": lesson_id}
+                    lesson_id = session['lesson_id']
+                    time_spent = int((datetime.now() - session['created_at']).total_seconds())
+
+                    chk = await database.fetch_one(
+                        "SELECT id, is_completed FROM lesson_progress WHERE student_id = :s AND lesson_id = :l",
+                        {"s": student_id, "l": lesson_id}
+                    )
+                    if chk:
+                        # Update: always mark complete; do NOT downgrade if already completed
+                        await database.execute(
+                            "UPDATE lesson_progress SET is_completed = TRUE, completed_at = NOW() WHERE id = :id",
+                            {"id": chk['id']}
                         )
-                        
-                        if existing_progress:
-                            # Update existing
-                            update_query = """
-                                UPDATE lesson_progress
-                                SET is_completed = TRUE,
-                                    completed_at = CASE WHEN completed_at IS NULL THEN :now ELSE completed_at END
-                                WHERE id = :id
-                            """
-                            await database.execute(update_query, values={
-                                "id": existing_progress['id'],
-                                "now": datetime.utcnow()
-                            })
-                        else:
-                            # Insert new progress
-                            new_lp_id = str(uuid.uuid4())
-                            insert_lp_query = """
-                                INSERT INTO lesson_progress (
-                                    id, student_id, lesson_id, started_at, time_spent_seconds,
-                                    last_position, is_completed, completed_at
-                                )
-                                VALUES (:id, :student_id, :lesson_id, :now, :time, 'end', TRUE, :now)
-                            """
-                            await database.execute(insert_lp_query, values={
-                                "id": new_lp_id,
-                                "student_id": student_id,
-                                "lesson_id": lesson_id,
-                                "now": datetime.utcnow(),
-                                "time": int((datetime.now() - session['created_at']).total_seconds())
-                            })
-                            
+                    else:
+                        await database.execute("""
+                            INSERT INTO lesson_progress (id, student_id, lesson_id, started_at, time_spent_seconds, last_position, is_completed, completed_at)
+                            VALUES (:id, :s, :l, NOW(), :time, 'end', TRUE, NOW())
+                        """, {"id": str(uuid.uuid4()), "s": student_id, "l": lesson_id, "time": time_spent})
         except Exception as e:
-            print(f"Error saving session to DB: {e}")
+            print(f"Error finalizing DB Session: {e}")
 
     return FeedbackResponse(
         is_correct=is_correct,
@@ -474,68 +447,41 @@ async def submit_answer(answer: AnswerSubmit):
 
 @router.get("/api/session/{session_id}/progress", response_model=ProgressResponse)
 async def get_progress(session_id: str):
-    """Get session progress and analytics"""
-
     if session_id not in sessions:
         raise HTTPException(404, "Session not found")
 
     session = sessions[session_id]
     history = np.array(session['history'])
-    warmup_count = session.get('warmup_count', 0)
-
-    if len(history) <= warmup_count:
+    
+    if len(history) == 0:
         raise HTTPException(400, "No questions answered yet")
 
-    # Exclude warm-up entries from metrics
-    real_history = history[warmup_count:]
+    overall_accuracy = float(np.mean(history[:, 0]))
 
-    # Overall accuracy (real answers only)
-    overall_accuracy = float(np.mean(real_history[:, 0]))
+    # Use trajectory for difficulty progression — only current session questions
+    trajectory = session.get('trajectory', [])
+    difficulty_progression = [t['difficulty'] for t in trajectory]
 
-    # Difficulty progression (real answers only)
-    difficulty_progression = [float(x) for x in real_history[:, 1]]
-
-    # Concept mastery
-    concept_mastery_dict = {}
-    
-    # Get content library - check if this is a lesson-specific quiz
-    if session.get('is_lesson_quiz') and 'lesson_questions' in session:
-        # Use lesson-specific questions
-        content_lib = session['lesson_questions']
-    else:
-        # Use subject-wide content library
-        content_lib = CONTENT_LIBRARIES.get(session['subject'], {})
-    
-    if content_lib:
-        # Get unique concepts from questions
-        all_concepts = set(q.get('concept', 'Unknown') for q in content_lib.values())
-
-        for concept in all_concepts:
-            # Find concept index
-            for i in range(session['n_concepts']):
-                if session['concept_attempts'][i] > 0:
-                    mastery = session['concept_correct'][i] / session['concept_attempts'][i]
-                    concept_mastery_dict[f"{concept}"] = float(mastery)
-
-    # Time spent
-    time_spent = int((datetime.now() - session['created_at']).total_seconds())
+    # Natively show Current Module Mastery!
+    topic_attempts = session.get('concept_attempts', 0)
+    topic_correct = session.get('concept_correct', 0)
+    mastery_ratio = (topic_correct / topic_attempts) if topic_attempts > 0 else 0.0
 
     return ProgressResponse(
         session_id=session_id,
         subject=session['subject'],
         total_questions_answered=session['current_step'],
         overall_accuracy=overall_accuracy,
-        concept_mastery=concept_mastery_dict,
+        concept_mastery={"Current Lesson Module": float(mastery_ratio)},
         difficulty_progression=difficulty_progression,
         learning_trajectory=session['trajectory'],
         total_reward=session['total_reward'],
-        time_spent_seconds=time_spent
+        time_spent_seconds=int((datetime.now() - session['created_at']).total_seconds())
     )
 
 
 @router.delete("/api/session/{session_id}")
 async def end_session(session_id: str):
-    """End and clean up session"""
     if session_id in sessions:
         del sessions[session_id]
         return {"message": "Session ended successfully"}

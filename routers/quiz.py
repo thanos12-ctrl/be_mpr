@@ -24,12 +24,20 @@ async def create_quiz(
 ):
     """Create a new quiz for a lesson"""
     
-    # Verify lesson exists
-    lesson_query = "SELECT id FROM lessons WHERE id = :lesson_id"
+    # Verify lesson exists and ownership
+    lesson_query = """
+        SELECT l.id, s.created_by 
+        FROM lessons l
+        JOIN subjects s ON l.subject_id = s.id
+        WHERE l.id = :lesson_id
+    """
     lesson = await database.fetch_one(query=lesson_query, values={"lesson_id": str(quiz_data.lesson_id)})
     
     if not lesson:
         raise HTTPException(status_code=404, detail="Lesson not found")
+        
+    if current_user["role"] != "admin" and lesson["created_by"] != current_user["id"]:
+        raise HTTPException(status_code=403, detail="Not authorized to add quizzes to this lesson")
     
     # Create quiz
     quiz_id = uuid.uuid4()
@@ -67,14 +75,21 @@ async def generate_quizzes_for_lessons(
     """Generate quizzes for all lessons that don't have one"""
     
     # Find lessons without quizzes
-    query = """
+    query_conditions = "q.id IS NULL"
+    values = {}
+    if current_user["role"] != "admin":
+        query_conditions += " AND s.created_by = :teacher_id"
+        values["teacher_id"] = current_user["id"]
+        
+    query = f"""
         SELECT l.id, l.title
         FROM lessons l
+        JOIN subjects s ON l.subject_id = s.id
         LEFT JOIN quizzes q ON l.id = q.lesson_id
-        WHERE q.id IS NULL
+        WHERE {query_conditions}
     """
     
-    lessons_without_quizzes = await database.fetch_all(query=query)
+    lessons_without_quizzes = await database.fetch_all(query=query, values=values)
     
     created_count = 0
     for lesson in lessons_without_quizzes:
@@ -128,6 +143,44 @@ async def list_quizzes(
     return [m.QuizResponse(**dict(quiz)) for quiz in quizzes]
 
 
+@router.put("/quizzes/{quiz_id}", response_model=m.QuizResponse)
+async def update_quiz(
+    quiz_id: str,
+    quiz_data: m.QuizUpdate,
+    current_user: dict = Depends(require_role(["teacher", "admin"]))
+):
+    """Update a quiz's settings (title, description, num questions, passing score)"""
+
+    # Verify quiz exists and ownership
+    ownership_query = """
+        SELECT q.id, s.created_by
+        FROM quizzes q
+        JOIN lessons l ON q.lesson_id = l.id
+        JOIN subjects s ON l.subject_id = s.id
+        WHERE q.id = :quiz_id
+    """
+    quiz = await database.fetch_one(query=ownership_query, values={"quiz_id": quiz_id})
+
+    if not quiz:
+        raise HTTPException(status_code=404, detail="Quiz not found")
+
+    if current_user["role"] != "admin" and quiz["created_by"] != current_user["id"]:
+        raise HTTPException(status_code=403, detail="Not authorized to edit this quiz")
+
+    # Build dynamic SET clause for only provided fields
+    updates = {k: v for k, v in quiz_data.dict().items() if v is not None}
+    if not updates:
+        raise HTTPException(status_code=400, detail="No fields to update")
+
+    set_clause = ", ".join(f"{k} = :{k}" for k in updates)
+    updates["quiz_id"] = quiz_id
+
+    query = f"UPDATE quizzes SET {set_clause} WHERE id = :quiz_id RETURNING *"
+    updated = await database.fetch_one(query=query, values=updates)
+
+    return m.QuizResponse(**dict(updated))
+
+
 @router.post("/questions", response_model=m.QuestionResponse)
 async def create_question(
     question_data: m.QuestionCreate,
@@ -135,12 +188,21 @@ async def create_question(
 ):
     """Create a new quiz question"""
     
-    # Verify quiz exists
-    quiz_query = "SELECT id FROM quizzes WHERE id = :quiz_id"
+    # Verify quiz exists and user has permission
+    quiz_query = """
+        SELECT q.id, s.created_by
+        FROM quizzes q
+        JOIN lessons l ON q.lesson_id = l.id
+        JOIN subjects s ON l.subject_id = s.id
+        WHERE q.id = :quiz_id
+    """
     quiz = await database.fetch_one(query=quiz_query, values={"quiz_id": str(question_data.quiz_id)})
     
     if not quiz:
         raise HTTPException(status_code=404, detail="Quiz not found")
+        
+    if current_user["role"] != "admin" and quiz["created_by"] != current_user["id"]:
+        raise HTTPException(status_code=403, detail="Not authorized to add questions to this quiz")
     
     # Validate correct_answer is in options
     if question_data.correct_answer not in question_data.options:
@@ -248,12 +310,22 @@ async def update_question(
 ):
     """Update an existing question"""
     
-    # Check if question exists
-    check_query = "SELECT id FROM questions WHERE id = :question_id"
+    # Check if question exists and check permission
+    check_query = """
+        SELECT q_table.id, s.created_by
+        FROM questions q_table
+        JOIN quizzes q ON q_table.quiz_id = q.id
+        JOIN lessons l ON q.lesson_id = l.id
+        JOIN subjects s ON l.subject_id = s.id
+        WHERE q_table.id = :question_id
+    """
     existing = await database.fetch_one(query=check_query, values={"question_id": question_id})
     
     if not existing:
         raise HTTPException(status_code=404, detail="Question not found")
+        
+    if current_user["role"] != "admin" and existing["created_by"] != current_user["id"]:
+        raise HTTPException(status_code=403, detail="Not authorized to modify questions in this subject")
     
     # Build update query dynamically
     update_fields = []
@@ -299,7 +371,17 @@ async def update_question(
     
     question = await database.fetch_one(query=query, values=values)
     
-    return m.QuestionResponse(**dict(question))
+    if not question:
+        raise HTTPException(status_code=404, detail="Failed to update question")
+        
+    question_dict = dict(question)
+    if isinstance(question_dict.get("options"), str):
+        try:
+            question_dict["options"] = json.loads(question_dict["options"])
+        except json.JSONDecodeError:
+            question_dict["options"] = {}
+            
+    return m.QuestionResponse(**question_dict)
 
 
 @router.delete("/questions/{question_id}")
@@ -309,12 +391,22 @@ async def delete_question(
 ):
     """Delete a question"""
     
-    # Check if question exists
-    check_query = "SELECT id FROM questions WHERE id = :question_id"
+    # Check if question exists and check permission
+    check_query = """
+        SELECT q_table.id, s.created_by
+        FROM questions q_table
+        JOIN quizzes q ON q_table.quiz_id = q.id
+        JOIN lessons l ON q.lesson_id = l.id
+        JOIN subjects s ON l.subject_id = s.id
+        WHERE q_table.id = :question_id
+    """
     existing = await database.fetch_one(query=check_query, values={"question_id": question_id})
     
     if not existing:
         raise HTTPException(status_code=404, detail="Question not found")
+        
+    if current_user["role"] != "admin" and existing["created_by"] != current_user["id"]:
+        raise HTTPException(status_code=403, detail="Not authorized to delete questions in this subject")
     
     # Delete question
     query = "DELETE FROM questions WHERE id = :question_id"

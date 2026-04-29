@@ -22,7 +22,7 @@ const Login = () => {
         try {
             await login(email, password);
             toast.success('Login successful!');
-            navigate('/subjects');
+            navigate('/browse-subjects');
         } catch (error: any) {
             toast.error(error.response?.data?.detail || 'Login failed. Please check your credentials.');
         } finally {

@@ -79,18 +79,18 @@ async def startup_event():
     try:
         lstm_model = StudentSimulator(input_dim=5, hidden_dim=128, num_layers=2)
         lstm_model.load_state_dict(
-            torch.load("student_simulator.pth", map_location=device, weights_only=True)
+            torch.load("general_agent/general_student_simulator.pth", map_location=device, weights_only=True)
         )
         lstm_model.eval()
-        print("✅ LSTM Student Simulator loaded")
+        print("[SUCCESS] LSTM Student Simulator loaded")
     except Exception as e:
         print(f"⚠️  LSTM not loaded: {e}")
         lstm_model = None
 
     # 2. Load RL Agent
     try:
-        rl_agent = PPO.load("ppo_ednet_teacher", device=device)
-        print("✅ RL Teaching Agent loaded")
+        rl_agent = PPO.load("general_agent/ppo_general_teacher", device=device)
+        print("[SUCCESS] RL Teaching Agent loaded")
     except Exception as e:
         print(f"⚠️  RL Agent not loaded: {e}")
         rl_agent = None
@@ -117,7 +117,7 @@ async def startup_event():
                 # Count concepts
                 concepts = set(q.get('concept', 'Unknown') for q in questions)
 
-                print(f"✅ Loaded {len(questions)} questions for {subject_id} ({len(concepts)} concepts)")
+                print(f"[SUCCESS] Loaded {len(questions)} questions for {subject_id} ({len(concepts)} concepts)")
 
             except Exception as e:
                 print(f"⚠️  Error loading {subject_id}: {e}")
@@ -156,7 +156,7 @@ async def startup_event():
     rl_helpers.set_globals(lstm_model, rl_agent, device, CONTENT_LIBRARIES)
     adaptive.set_globals(sessions, CONTENT_LIBRARIES, SUBJECT_CONFIGS)
 
-    print(f"\n✅ API Ready - {len(CONTENT_LIBRARIES)} subjects available")
+    print(f"\n[SUCCESS] API Ready - {len(CONTENT_LIBRARIES)} subjects available")
     print("=" * 60 + "\n")
 
 
@@ -190,8 +190,8 @@ if __name__ == "__main__":
     print("  Starting Adaptive Learning API")
     print("=" * 60)
     print("\n  Prerequisites:")
-    print("  1. LSTM model: student_simulator.pth")
-    print("  2. RL model: ppo_ednet_teacher.zip")
+    print("  1. LSTM model: general_agent/general_student_simulator.pth")
+    print("  2. RL model: general_agent/ppo_general_teacher.zip")
     print("  3. Question content JSON files")
     print("  4. PostgreSQL database running")
     print("  5. .env file with DATABASE_URL")

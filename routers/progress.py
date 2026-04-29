@@ -136,3 +136,15 @@ async def get_subjects_breakdown(current_user: dict = Depends(get_current_studen
     
     rows = await database.fetch_all(query=query, values={"student_id": current_user["id"]})
     return [m.SubjectProgressBreakdown(**dict(row)) for row in rows]
+
+
+@router.get("/lessons", response_model=list[m.LessonProgressSummary])
+async def get_lesson_progress(current_user: dict = Depends(get_current_student)):
+    """Get per-lesson completion status for the current student"""
+    query = """
+        SELECT lesson_id, is_completed, completed_at
+        FROM lesson_progress
+        WHERE student_id = :student_id
+    """
+    rows = await database.fetch_all(query=query, values={"student_id": current_user["id"]})
+    return [m.LessonProgressSummary(**dict(row)) for row in rows]

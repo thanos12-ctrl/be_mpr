@@ -1,0 +1,1087 @@
+[
+  {
+    "lesson_number": 1,
+    "title": "Big O Notation & Complexity Analysis",
+    "slug": "big-o-notation-complexity",
+    "difficulty_level": "beginner",
+    "estimated_time_minutes": 45,
+    "introduction": "Welcome to Data Structures and Algorithms (DSA)! Before we write complex data structures, we need a way to measure how 'good' our code is. In software engineering, code that simply 'works' isn't always enough; it needs to be efficient. This is where Big O Notation comes in. Big O is a mathematical framework used to describe the performance or complexity of an algorithm, specifically focusing on how the runtime or space requirements grow as the input size grows.\n\nIn this lesson, we will explore Time Complexity (how long an algorithm takes) and Space Complexity (how much memory it uses). We will learn to identify common Big O classifications: O(1) Constant Time, O(n) Linear Time, and O(n^2) Quadratic Time. Understanding these concepts allows you to predict whether your code will run in a fraction of a second or take millions of years when dealing with massive datasets.\n\nIn the real world, tech giants like Google, Amazon, and Meta test heavily on Big O during interviews. Why? Because an O(n^2) algorithm might work fine for 100 users, but it will completely crash servers when scaled to 100 million users. Let's learn how to evaluate and optimize our code mathematically!",
+    "code_example": "# === Big O Notation & Complexity Analysis ===\n\n# 1. O(1) - Constant Time\n# The execution time is the same regardless of the input size (n).\ndef get_first_element(my_list):\n    \"\"\"Always takes 1 step, whether the list has 10 or 10,000 items.\"\"\"\n    if not my_list:\n        return None\n    return my_list[0]\n\n# 2. O(n) - Linear Time\n# Execution time grows proportionally with the input size.\ndef linear_search(my_list, target):\n    \"\"\"If the list has 100 items, the loop could run up to 100 times.\"\"\"\n    for item in my_list:\n        if item == target:\n            return True\n    return False\n\n# 3. O(n^2) - Quadratic Time\n# Execution time grows exponentially. Common with nested loops.\ndef print_all_pairs(my_list):\n    \"\"\"If n=10, loop runs 10*10=100 times. If n=1000, runs 1,000,000 times!\"\"\"\n    pairs = []\n    for i in my_list:          # Outer loop runs n times\n        for j in my_list:      # Inner loop runs n times\n            pairs.append((i, j))\n    return len(pairs)\n\n# 4. Dropping Constants\n# Big O cares about the general trend, not exact operations.\ndef print_twice(my_list):\n    \"\"\"This is O(2n), but we drop the constant 2, so it's just O(n).\"\"\"\n    for item in my_list:\n        print(item)\n    for item in my_list:\n        print(item)\n\n# Let's test them\ntest_data = [1, 2, 3, 4, 5]\nprint(f\"O(1) output: {get_first_element(test_data)}\")\nprint(f\"O(n) output: {linear_search(test_data, 3)}\")\nprint(f\"O(n^2) output: {print_all_pairs(test_data)} pairs generated\")",
+    "key_takeaways": [
+      "Big O Notation describes the worst-case scenario of an algorithm's performance as the input size approaches infinity.",
+      "O(1) Constant Time is the most efficient, meaning runtime never changes regardless of input size.",
+      "O(n^2) Quadratic Time usually indicates a nested loop. It should be avoided for large datasets as it scales very poorly.",
+      "When calculating Big O, we always drop constants (e.g., O(2n) simplifies to O(n)) because we only care about the growth trend.",
+      "Space complexity is just as important as time complexity; it measures how much extra RAM your algorithm requires."
+    ],
+    "topics": [
+      "Time Complexity",
+      "Space Complexity",
+      "O(1) Constant Time",
+      "O(n) Linear Time",
+      "O(n^2) Quadratic Time"
+    ],
+    "quiz_questions": [
+      {
+        "question_number": 1,
+        "question_text": "What does Big O notation primarily measure in Computer Science?",
+        "options": [
+          "The exact time in seconds an algorithm takes to run.",
+          "How an algorithm's performance scales as the input size grows.",
+          "The number of lines of code in a function.",
+          "The amount of battery power consumed by the CPU."
+        ],
+        "correct_answer": 1,
+        "explanation": "Big O measures the growth rate (scalability) of an algorithm based on input size, not actual physical seconds, since hardware speeds vary.",
+        "difficulty": "easy"
+      },
+      {
+        "question_number": 2,
+        "question_text": "Which of the following time complexities represents the fastest algorithm?",
+        "options": [
+          "O(n)",
+          "O(n^2)",
+          "O(1)",
+          "O(log n)"
+        ],
+        "correct_answer": 2,
+        "explanation": "O(1), or Constant Time, is the fastest because the execution time remains exactly the same no matter how massive the input data gets.",
+        "difficulty": "easy"
+      },
+      {
+        "question_number": 3,
+        "question_text": "What is the time complexity of accessing a specific index in an array, like `my_array[5]`?",
+        "options": [
+          "O(1)",
+          "O(n)",
+          "O(n^2)",
+          "O(log n)"
+        ],
+        "correct_answer": 0,
+        "explanation": "Arrays provide direct memory access to elements using their index, which takes constant time, O(1), regardless of array size.",
+        "difficulty": "easy"
+      },
+      {
+        "question_number": 4,
+        "question_text": "If an algorithm requires O(n) space complexity, what does that mean?",
+        "options": [
+          "It takes n seconds to run.",
+          "It creates extra variables or data structures proportional to the input size.",
+          "It uses no extra memory at all.",
+          "It iterates through the input data twice."
+        ],
+        "correct_answer": 1,
+        "explanation": "Space complexity refers to memory (RAM). O(n) space means if you input an array of 100 items, the algorithm creates another data structure storing roughly 100 items.",
+        "difficulty": "easy"
+      },
+      {
+        "question_number": 5,
+        "question_text": "What is the Big O time complexity of a standard `for` loop iterating through a list of size `n`?",
+        "options": [
+          "O(1)",
+          "O(n)",
+          "O(n^2)",
+          "O(n log n)"
+        ],
+        "correct_answer": 1,
+        "explanation": "A single loop that touches every element in a sequence of size 'n' takes O(n) Linear Time.",
+        "difficulty": "medium"
+      },
+      {
+        "question_number": 6,
+        "question_text": "How do we simplify the time complexity O(3n + 5)?",
+        "options": [
+          "O(n)",
+          "O(3n)",
+          "O(5n)",
+          "O(n^2)"
+        ],
+        "correct_answer": 0,
+        "explanation": "In Big O notation, we drop constants (like 3) and non-dominant terms (like 5) because as 'n' gets infinitely large, they become statistically insignificant. It simplifies to O(n).",
+        "difficulty": "medium"
+      },
+      {
+        "question_number": 7,
+        "question_text": "An algorithm has an outer loop that runs 'n' times and an inner loop that runs 'n' times. What is its time complexity?",
+        "options": [
+          "O(n)",
+          "O(2n)",
+          "O(n^2)",
+          "O(1)"
+        ],
+        "correct_answer": 2,
+        "explanation": "Nested loops multiply their complexities. n iterations * n iterations results in n squared, or O(n^2) Quadratic Time.",
+        "difficulty": "medium"
+      },
+      {
+        "question_number": 8,
+        "question_text": "What is the time complexity of the following code?\nfor i in range(n):\n    print(i)\nfor j in range(n):\n    print(j)",
+        "options": [
+          "O(1)",
+          "O(n)",
+          "O(n^2)",
+          "O(2n)"
+        ],
+        "correct_answer": 1,
+        "explanation": "These loops are sequential (one after the other), not nested. The complexity is O(n) + O(n) = O(2n), which simplifies to O(n) after dropping the constant.",
+        "difficulty": "medium"
+      },
+      {
+        "question_number": 9,
+        "question_text": "Consider an algorithm that checks if two arrays, A and B, share a common element using nested loops. Array A has size 'n' and Array B has size 'm'. What is the time complexity?",
+        "options": [
+          "O(n^2)",
+          "O(n * m)",
+          "O(n + m)",
+          "O(m^2)"
+        ],
+        "correct_answer": 1,
+        "explanation": "Since the arrays are of different sizes (n and m), you cannot assume it is O(n^2). The inner loop runs 'm' times for every 'n' iterations of the outer loop, resulting in O(n * m).",
+        "difficulty": "hard"
+      },
+      {
+        "question_number": 10,
+        "question_text": "Which scenario best describes the 'Worst-Case' Time Complexity of a Linear Search algorithm looking for a target in an array of size n?",
+        "options": [
+          "Finding the target at the first index, taking O(1) time.",
+          "The target is not in the array at all, forcing the algorithm to check all 'n' elements.",
+          "Finding the target exactly in the middle of the array.",
+          "The array is already sorted before searching."
+        ],
+        "correct_answer": 1,
+        "explanation": "Big O typically evaluates the worst-case scenario. In a linear search, the worst case is when the item doesn't exist (or is at the very end), forcing the loop to run a full 'n' times.",
+        "difficulty": "hard"
+      }
+    ]
+  },
+  {
+    "lesson_number": 2,
+    "title": "Arrays & Strings",
+    "slug": "arrays-and-strings",
+    "difficulty_level": "beginner",
+    "estimated_time_minutes": 50,
+    "introduction": "Arrays (commonly implemented as Lists in Python) and Strings are the most fundamental data structures in programming. Under the hood, an array is a contiguous block of memory. This means items sit right next to each other in the computer's RAM. Because of this layout, arrays excel at fast lookups—if you know the index, you can jump to that memory location instantly in O(1) time.\n\nHowever, arrays have weaknesses. Inserting an item at the beginning of an array takes O(n) time, because every single subsequent element must be shifted one space to the right in memory to make room. Strings behave very similarly to arrays of characters, with the added caveat that strings in Python are immutable (they cannot be changed once created).\n\nIn this lesson, we will explore common array algorithms. We'll specifically focus on the 'Two-Pointer Technique', an incredibly powerful pattern used to solve many array and string problems, such as reversing a sequence in-place or checking for palindromes, with optimal time and space complexity.",
+    "code_example": "# === Arrays & Strings ===\n\n# 1. Array Insertion Complexity\n# Python lists are dynamic arrays.\nmy_array = [10, 20, 30, 40]\n\n# Appending is O(1) time - it just goes at the end.\nmy_array.append(50)\n\n# Inserting at index 0 is O(n) time - 10, 20, 30, 40, 50 all shift right!\nmy_array.insert(0, 5) \n\n# 2. String Immutability\nmy_string = \"hello\"\n# my_string[0] = \"H\" # This would throw a TypeError! Strings are immutable.\n# To \"change\" a string, we create a new one:\nnew_string = \"H\" + my_string[1:]\nprint(f\"New String: {new_string}\") # Output: Hello\n\n# 3. The Two-Pointer Technique (Reversing an array in-place)\n# In-place means we use O(1) space, avoiding creating a second array.\ndef reverse_array(arr):\n    left = 0\n    right = len(arr) - 1\n    \n    while left < right:\n        # Swap the elements at the left and right pointers\n        temp = arr[left]\n        arr[left] = arr[right]\n        arr[right] = temp\n        # Python shortcut: arr[left], arr[right] = arr[right], arr[left]\n        \n        # Move pointers towards the middle\n        left += 1\n        right -= 1\n    return arr\n\ntest_arr = [1, 2, 3, 4, 5]\nprint(f\"Reversed Array: {reverse_array(test_arr)}\") # Output: [5, 4, 3, 2, 1]\n\n# 4. Two-Pointer for Palindromes\ndef is_palindrome(s):\n    left, right = 0, len(s) - 1\n    while left < right:\n        if s[left] != s[right]:\n            return False\n        left += 1\n        right -= 1\n    return True\n\nprint(f\"Is 'racecar' a palindrome? {is_palindrome('racecar')}\") # Output: True",
+    "key_takeaways": [
+      "Arrays store data in contiguous memory blocks, allowing for blazing fast O(1) index lookups.",
+      "Inserting or deleting elements at the beginning of an array is slow O(n) because all other elements must shift memory slots.",
+      "In Python, Lists act as dynamic arrays, resizing themselves automatically as you append data.",
+      "Strings are immutable; any operation that modifies a string actually creates an entirely new string in memory.",
+      "The Two-Pointer technique involves using two indices (usually starting at opposite ends) to process arrays with optimal O(n) time and O(1) space."
+    ],
+    "topics": [
+      "Contiguous Memory",
+      "Dynamic Arrays",
+      "String Immutability",
+      "In-place Operations",
+      "Two-Pointer Technique"
+    ],
+    "quiz_questions": [
+      {
+        "question_number": 1,
+        "question_text": "Why is accessing an array element by its index (e.g., `arr[4]`) an O(1) operation?",
+        "options": [
+          "Because the array is sorted.",
+          "Because Python caches previous lookups.",
+          "Because memory is contiguous, and the exact memory address can be calculated mathematically instantly.",
+          "Because arrays are limited to small data types."
+        ],
+        "correct_answer": 2,
+        "explanation": "Because elements are stored sequentially in memory, the computer calculates the exact memory location using a simple formula: Base Address + (Index * Data Size).",
+        "difficulty": "easy"
+      },
+      {
+        "question_number": 2,
+        "question_text": "What does it mean when we say a String is 'immutable'?",
+        "options": [
+          "It cannot contain numbers.",
+          "It cannot be printed to the console.",
+          "Its contents cannot be changed after it is created in memory.",
+          "It has a maximum length of 255 characters."
+        ],
+        "correct_answer": 2,
+        "explanation": "Immutability means read-only. Any operation that appears to modify a string (like `.replace()`) is actually generating a brand new string.",
+        "difficulty": "easy"
+      },
+      {
+        "question_number": 3,
+        "question_text": "What is the time complexity of appending an element to the END of a dynamic array (Python List)?",
+        "options": [
+          "O(1) on average",
+          "O(n)",
+          "O(n^2)",
+          "O(log n)"
+        ],
+        "correct_answer": 0,
+        "explanation": "Appending simply places the element in the next available memory slot at the end, which takes O(1) constant time on average.",
+        "difficulty": "easy"
+      },
+      {
+        "question_number": 4,
+        "question_text": "What is the time complexity of inserting an element at the BEGINNING (index 0) of an array?",
+        "options": [
+          "O(1)",
+          "O(n)",
+          "O(n^2)",
+          "O(log n)"
+        ],
+        "correct_answer": 1,
+        "explanation": "To make room at index 0, every other element in the array must be shifted one position to the right, which requires O(n) operations.",
+        "difficulty": "easy"
+      },
+      {
+        "question_number": 5,
+        "question_text": "What does performing an algorithm 'in-place' mean?",
+        "options": [
+          "It runs on the same CPU core.",
+          "It modifies the original data structure directly, using O(1) auxiliary space.",
+          "It runs without making any network requests.",
+          "It sorts the array in alphabetical order."
+        ],
+        "correct_answer": 1,
+        "explanation": "In-place algorithms manipulate the original input (like swapping elements) instead of creating a brand new array, resulting in highly efficient O(1) space complexity.",
+        "difficulty": "medium"
+      },
+      {
+        "question_number": 6,
+        "question_text": "When using the Two-Pointer technique to reverse an array, when does the loop terminate?",
+        "options": [
+          "When the left pointer reaches the end of the array.",
+          "When the right pointer reaches 0.",
+          "When the left pointer becomes greater than or equal to the right pointer.",
+          "When a negative number is encountered."
+        ],
+        "correct_answer": 2,
+        "explanation": "The pointers start at opposite ends and move toward the center. Once they meet or cross (left >= right), the entire array has been processed and reversed.",
+        "difficulty": "medium"
+      },
+      {
+        "question_number": 7,
+        "question_text": "If a Python list runs out of allocated memory, what does it dynamically do?",
+        "options": [
+          "Throws a MemoryError.",
+          "Deletes the oldest element to make room.",
+          "Allocates a new, larger block of memory (usually double the size) and copies old elements over.",
+          "Compresses the data using ZIP."
+        ],
+        "correct_answer": 2,
+        "explanation": "Dynamic arrays automatically resize. They find a new, larger contiguous block of memory, copy the old data over, and then append the new item.",
+        "difficulty": "medium"
+      },
+      {
+        "question_number": 8,
+        "question_text": "Why is `new_str = \"\" ; for char in array_of_chars: new_str += char` considered poor practice in Python?",
+        "options": [
+          "It causes a syntax error.",
+          "Because strings are immutable, it creates a new string copy in memory on every single loop iteration, leading to O(n^2) time complexity.",
+          "It doesn't support unicode characters.",
+          "Arrays cannot contain characters."
+        ],
+        "correct_answer": 1,
+        "explanation": "String concatenation in a loop is highly inefficient due to immutability. Every += forces Python to allocate a new string and copy data. `\"\".join(array_of_chars)` is the O(n) preferred method.",
+        "difficulty": "medium"
+      },
+      {
+        "question_number": 9,
+        "question_text": "Consider an algorithm that finds pairs of numbers in a SORTED array that add up to a target sum. How can the Two-Pointer technique solve this optimally?",
+        "options": [
+          "Place both pointers at index 0 and move right.",
+          "Place pointer A at start, pointer B at end. If sum > target, decrement B. If sum < target, increment A.",
+          "Use a nested loop for the pointers.",
+          "Two pointers cannot solve this; a hash map is strictly required."
+        ],
+        "correct_answer": 1,
+        "explanation": "Because the array is sorted, we can shrink our search window intelligently. If the sum is too large, moving the right pointer left decreases the sum. This achieves O(n) time.",
+        "difficulty": "hard"
+      },
+      {
+        "question_number": 10,
+        "question_text": "What is the time and space complexity of the Two-Pointer array reversal algorithm provided in the lesson?",
+        "options": [
+          "Time: O(n^2), Space: O(n)",
+          "Time: O(n), Space: O(n)",
+          "Time: O(n), Space: O(1)",
+          "Time: O(log n), Space: O(1)"
+        ],
+        "correct_answer": 2,
+        "explanation": "Time is O(n) because we touch each element exactly once (swapping halves). Space is O(1) because we swap in-place and only use two integer variables (left/right pointers) regardless of array size.",
+        "difficulty": "hard"
+      }
+    ]
+  },
+  {
+    "lesson_number": 3,
+    "title": "Linked Lists",
+    "slug": "linked-lists",
+    "difficulty_level": "intermediate",
+    "estimated_time_minutes": 60,
+    "introduction": "In the previous lesson, we saw that Arrays require contiguous memory. If you want to insert a value at the beginning of an array, you must shift everything else. Linked Lists solve this exact problem. A Linked List is a data structure where elements (called 'Nodes') are NOT stored consecutively in memory.\n\nInstead, every Node contains two things: its data, and a 'pointer' (or reference) that holds the memory address of the next Node in the sequence. Because they are linked together via pointers, you can insert a new Node anywhere in O(1) time simply by updating a couple of pointer references—no shifting required! The tradeoff? Fast lookups are gone. To find the 5th element, you must start at the head and traverse the pointers one by one, resulting in O(n) lookup time.\n\nIn this lesson, we will build a Singly Linked List from scratch using Python classes. Understanding how objects reference other objects in memory is a massive milestone for any programmer, laying the groundwork for Trees and Graphs.",
+    "code_example": "# === Linked Lists ===\n\n# 1. Defining the Node\nclass Node:\n    def __init__(self, data):\n        self.data = data\n        self.next = None  # Pointer to the next Node (starts as None)\n\n# 2. Defining the Linked List structure\nclass LinkedList:\n    def __init__(self):\n        self.head = None  # The first node in the list\n\n    # 3. Appending a node to the END - O(n) because we must traverse\n    def append(self, data):\n        new_node = Node(data)\n        if self.head is None:     # If list is empty\n            self.head = new_node\n            return\n            \n        # Traverse to the last node\n        current = self.head\n        while current.next is not None:\n            current = current.next\n            \n        # Link the last node to our new node\n        current.next = new_node\n\n    # 4. Prepending a node to the START - O(1) Instant!\n    def prepend(self, data):\n        new_node = Node(data)\n        new_node.next = self.head  # Point new node to old head\n        self.head = new_node       # Update head pointer\n\n    # 5. Traversing and displaying the list - O(n)\n    def display(self):\n        elements = []\n        current = self.head\n        while current is not None:\n            elements.append(str(current.data))\n            current = current.next\n        print(\" -> \".join(elements) + \" -> None\")\n\n# Let's test it out\nmy_list = LinkedList()\nmy_list.append(10)\nmy_list.append(20)\nmy_list.prepend(5)  # Instantly added to the front!\n\nmy_list.display() # Output: 5 -> 10 -> 20 -> None",
+    "key_takeaways": [
+      "Linked Lists are composed of Nodes scattered across memory, connected by pointers.",
+      "A Node in a Singly Linked list contains its actual data and a pointer to the 'next' Node.",
+      "The 'head' is the entry point of a Linked List. If you lose the reference to the head, the entire list is lost to garbage collection.",
+      "Inserting or deleting elements at the beginning of a Linked List is a lightning-fast O(1) operation.",
+      "Unlike arrays, you cannot use index lookups like list[3]. You must traverse the pointers from the head, resulting in O(n) lookup time."
+    ],
+    "topics": [
+      "Nodes and Pointers",
+      "Singly Linked Lists",
+      "Head Reference",
+      "Traversal",
+      "Prepend vs Append"
+    ],
+    "quiz_questions": [
+      {
+        "question_number": 1,
+        "question_text": "What two components make up a standard Node in a Singly Linked List?",
+        "options": [
+          "Key and Value",
+          "Data and an Index",
+          "Data and a Pointer to the next node",
+          "Left child and Right child"
+        ],
+        "correct_answer": 2,
+        "explanation": "A node holds the actual payload (data) and the memory reference (pointer) pointing to the subsequent node in the chain.",
+        "difficulty": "easy"
+      },
+      {
+        "question_number": 2,
+        "question_text": "What is the very first node in a Linked List called?",
+        "options": [
+          "Root",
+          "Head",
+          "Alpha",
+          "Base"
+        ],
+        "correct_answer": 1,
+        "explanation": "The starting point of a Linked List is universally referred to as the 'head'.",
+        "difficulty": "easy"
+      },
+      {
+        "question_number": 3,
+        "question_text": "What does the 'next' pointer of the very last node in a Linked List point to?",
+        "options": [
+          "The head node",
+          "Null / None",
+          "A random memory address",
+          "Itself"
+        ],
+        "correct_answer": 1,
+        "explanation": "The final node points to Null (or None in Python), which serves as the signal that the end of the list has been reached.",
+        "difficulty": "easy"
+      },
+      {
+        "question_number": 4,
+        "question_text": "Why is inserting a Node at the beginning (prepend) of a Linked List faster than doing so in an Array?",
+        "options": [
+          "Linked lists use faster RAM.",
+          "You only need to update the new node's pointer and the head pointer; no existing data needs to be shifted.",
+          "Arrays require compilation, linked lists do not.",
+          "Arrays sort data automatically upon insertion."
+        ],
+        "correct_answer": 1,
+        "explanation": "Because nodes are not in contiguous memory, you don't need to slide elements over. You just wire the new node's pointer to the old head. It's O(1).",
+        "difficulty": "easy"
+      },
+      {
+        "question_number": 5,
+        "question_text": "What is the time complexity of finding a specific value in a Linked List?",
+        "options": [
+          "O(1)",
+          "O(n)",
+          "O(n^2)",
+          "O(log n)"
+        ],
+        "correct_answer": 1,
+        "explanation": "To find a value, you must start at the head and follow the pointers one by one until you find it (or reach the end). This takes O(n) Linear Time.",
+        "difficulty": "medium"
+      },
+      {
+        "question_number": 6,
+        "question_text": "In the provided code, why does the `append()` method have an O(n) time complexity?",
+        "options": [
+          "Because creating the Node object takes O(n) time.",
+          "Because it must traverse from the head all the way to the end to find the last node.",
+          "Because it has to shift all previous nodes.",
+          "Because printing to the console takes O(n) time."
+        ],
+        "correct_answer": 1,
+        "explanation": "Our basic LinkedList only keeps a reference to the `head`. To add to the end, it must walk through `current = current.next` until it finds the node pointing to None.",
+        "difficulty": "medium"
+      },
+      {
+        "question_number": 7,
+        "question_text": "How could you modify a LinkedList class to make `append()` run in O(1) constant time?",
+        "options": [
+          "Use a for-loop instead of a while-loop.",
+          "Maintain a second reference called `tail` that always points to the last node.",
+          "Convert the Linked List into an Array first.",
+          "Store the nodes in alphabetical order."
+        ],
+        "correct_answer": 1,
+        "explanation": "By maintaining both a `self.head` and `self.tail` pointer, you can immediately access the end of the list and attach a new node in O(1) time.",
+        "difficulty": "medium"
+      },
+      {
+        "question_number": 8,
+        "question_text": "What is the main difference between a Singly Linked List and a Doubly Linked List?",
+        "options": [
+          "Doubly Linked Lists can hold twice as much data.",
+          "Doubly Linked Lists have two heads.",
+          "In a Doubly Linked List, each node has a pointer to the 'next' node AND a pointer to the 'previous' node.",
+          "Doubly Linked Lists use arrays under the hood."
+        ],
+        "correct_answer": 2,
+        "explanation": "A Doubly Linked list node has three parts: data, next pointer, and previous pointer. This allows traversal in both directions.",
+        "difficulty": "medium"
+      },
+      {
+        "question_number": 9,
+        "question_text": "What happens if you accidentally write `self.head = new_node` BEFORE `new_node.next = self.head` when prepending?",
+        "options": [
+          "The code works perfectly fine.",
+          "The program crashes with a SyntaxError.",
+          "You overwrite the reference to the old head, severing the link to the rest of the list and creating a memory leak.",
+          "The list becomes a Doubly Linked List."
+        ],
+        "correct_answer": 2,
+        "explanation": "Order of operations is crucial. If you reassign the head pointer before securely attaching the rest of the list to the new node, you lose the reference to the entire existing list.",
+        "difficulty": "hard"
+      },
+      {
+        "question_number": 10,
+        "question_text": "Which scenario is a Linked List demonstrably BETTER suited for than a dynamic array?",
+        "options": [
+          "Frequent binary searching.",
+          "Frequent access to random elements by index.",
+          "A queue implementation requiring frequent insertions and deletions at the front of the collection.",
+          "Storing 3D graphical coordinate matrices."
+        ],
+        "correct_answer": 2,
+        "explanation": "Arrays are terrible for front-insertions/deletions due to O(n) shifting. Linked Lists excel here, performing front-insertions/deletions in O(1) time.",
+        "difficulty": "hard"
+      }
+    ]
+  },
+  {
+    "lesson_number": 4,
+    "title": "Stacks & Queues",
+    "slug": "stacks-and-queues",
+    "difficulty_level": "intermediate",
+    "estimated_time_minutes": 55,
+    "introduction": "Stacks and Queues are abstract data structures. Unlike Arrays or Linked Lists (which dictate exactly how data is stored in memory), Stacks and Queues dictate how data is accessed and removed. They apply strict rules to inserting and deleting data.\n\nA Stack operates on the LIFO principle: Last In, First Out. Think of a stack of plates in a cafeteria; you add plates to the top, and you remove plates from the top. The 'undo' feature in your text editor is a perfect example of a Stack.\n\nA Queue operates on the FIFO principle: First In, First Out. This is exactly like a line at a grocery store. The first person to get in line is the first person to be served. Operating systems use queues constantly to manage tasks, like processing network requests or documents sent to a printer.\n\nIn Python, we can easily implement these structures using tools we already know, like Lists, or utilizing optimized libraries like `collections.deque`.",
+    "code_example": "# === Stacks & Queues ===\n\n# 1. Stacks (LIFO - Last In, First Out)\n# Python lists are perfect for Stacks because append() and pop() are O(1).\nmy_stack = []\n\n# Push onto the stack (add to top/end)\nmy_stack.append(\"A\")\nmy_stack.append(\"B\")\nmy_stack.append(\"C\")\nprint(f\"Stack state: {my_stack}\") # ['A', 'B', 'C']\n\n# Pop from the stack (remove from top/end)\ntop_item = my_stack.pop()\nprint(f\"Popped: {top_item}\")      # Outputs: C\nprint(f\"Stack after pop: {my_stack}\") # ['A', 'B']\n\n\n# 2. Real-World Stack Use: Valid Parentheses Checker\ndef is_valid_parentheses(s):\n    stack = []\n    for char in s:\n        if char == '(':\n            stack.append(char)    # Push opening bracket\n        elif char == ')':\n            if not stack:         # Found closing but stack is empty!\n                return False\n            stack.pop()           # Match found, pop the opening bracket\n    return len(stack) == 0        # True if stack is empty (all matched)\n\nprint(f\"Is '(())' valid? {is_valid_parentheses('(())')}\") # True\nprint(f\"Is '(()' valid? {is_valid_parentheses('(()')}\")   # False\n\n\n# 3. Queues (FIFO - First In, First Out)\n# Using lists for queues is BAD (pop(0) is O(n)). \n# We use collections.deque (Double-Ended Queue) for O(1) operations.\nfrom collections import deque\n\nmy_queue = deque()\n\n# Enqueue (add to back)\nmy_queue.append(\"Alice\")\nmy_queue.append(\"Bob\")\nmy_queue.append(\"Charlie\")\nprint(f\"\\nQueue state: {list(my_queue)}\") # ['Alice', 'Bob', 'Charlie']\n\n# Dequeue (remove from front - O(1) time!)\nserved = my_queue.popleft()\nprint(f\"Served: {served}\")                # Outputs: Alice\nprint(f\"Queue after pop: {list(my_queue)}\") # ['Bob', 'Charlie']",
+    "key_takeaways": [
+      "Stacks operate on LIFO (Last In, First Out). The newest element added is the first one to be removed.",
+      "Queues operate on FIFO (First In, First Out). The oldest element added is the first one to be removed.",
+      "In Python, standard Lists are highly efficient for implementing Stacks using `.append()` and `.pop()`.",
+      "Standard Lists should NEVER be used for Queues in production, because `.pop(0)` takes O(n) time as it shifts all other elements.",
+      "To implement an efficient Queue in Python, use `collections.deque` which allows O(1) `.append()` and `.popleft()`."
+    ],
+    "topics": [
+      "LIFO Principle",
+      "FIFO Principle",
+      "Stack Implementation",
+      "Queue Implementation",
+      "collections.deque"
+    ],
+    "quiz_questions": [
+      {
+        "question_number": 1,
+        "question_text": "Which principle does a Stack follow?",
+        "options": [
+          "FIFO (First In, First Out)",
+          "LIFO (Last In, First Out)",
+          "LILO (Last In, Last Out)",
+          "Random Access"
+        ],
+        "correct_answer": 1,
+        "explanation": "A Stack is Last In, First Out. The most recently added item is the very first one you remove.",
+        "difficulty": "easy"
+      },
+      {
+        "question_number": 2,
+        "question_text": "Which principle does a Queue follow?",
+        "options": [
+          "FIFO (First In, First Out)",
+          "LIFO (Last In, First Out)",
+          "FILO (First In, Last Out)",
+          "Binary Search"
+        ],
+        "correct_answer": 0,
+        "explanation": "A Queue is First In, First Out, exactly like a line of people waiting. The first person to arrive is served first.",
+        "difficulty": "easy"
+      },
+      {
+        "question_number": 3,
+        "question_text": "What are the two primary operations of a Stack usually called?",
+        "options": [
+          "Enqueue and Dequeue",
+          "Insert and Delete",
+          "Push and Pop",
+          "Shift and Unshift"
+        ],
+        "correct_answer": 2,
+        "explanation": "Adding to a stack is called a 'Push', and removing from the top is called a 'Pop'.",
+        "difficulty": "easy"
+      },
+      {
+        "question_number": 4,
+        "question_text": "Which real-world software feature is commonly implemented using a Stack?",
+        "options": [
+          "A printer queue.",
+          "The 'Undo' feature in a text editor.",
+          "Streaming video packets.",
+          "Managing a customer service phone line."
+        ],
+        "correct_answer": 1,
+        "explanation": "The 'Undo' feature removes the most recent action taken (Last In, First Out), perfectly mirroring a Stack.",
+        "difficulty": "easy"
+      },
+      {
+        "question_number": 5,
+        "question_text": "Why is using a standard Python list via `my_list.pop(0)` bad practice for implementing a Queue?",
+        "options": [
+          "It crashes if the list is empty.",
+          "It removes the wrong element.",
+          "It forces all remaining elements to shift left in memory, making it a slow O(n) operation.",
+          "It consumes too much memory."
+        ],
+        "correct_answer": 2,
+        "explanation": "Removing from index 0 in a contiguous array forces O(n) shifting. A proper queue needs O(1) removal from the front.",
+        "difficulty": "medium"
+      },
+      {
+        "question_number": 6,
+        "question_text": "Which built-in Python module provides a highly optimized, double-ended queue object?",
+        "options": [
+          "queue.Queue",
+          "sys.array",
+          "collections.deque",
+          "math.deque"
+        ],
+        "correct_answer": 2,
+        "explanation": "`collections.deque` (Double-Ended Queue) is implemented as a doubly linked list under the hood, allowing O(1) insertions and deletions at both ends.",
+        "difficulty": "medium"
+      },
+      {
+        "question_number": 7,
+        "question_text": "If you push the numbers 1, 2, and 3 onto a Stack in that order, and then Pop twice, what number is returned by the second Pop?",
+        "options": [
+          "1",
+          "2",
+          "3",
+          "None"
+        ],
+        "correct_answer": 1,
+        "explanation": "Stack state after pushing: [1, 2, 3]. First pop removes 3. Second pop removes 2.",
+        "difficulty": "medium"
+      },
+      {
+        "question_number": 8,
+        "question_text": "If you enqueue the strings 'A', 'B', and 'C' into a Queue in that order, and then Dequeue once, what string is returned?",
+        "options": [
+          "A",
+          "B",
+          "C",
+          "None"
+        ],
+        "correct_answer": 0,
+        "explanation": "Queues are FIFO. 'A' was the First In, so it is the First Out.",
+        "difficulty": "medium"
+      },
+      {
+        "question_number": 9,
+        "question_text": "In the valid parentheses checker code example, what does it mean if the loop finishes but `len(stack) != 0`?",
+        "options": [
+          "There was a syntax error in the code.",
+          "The string had valid parentheses.",
+          "There were unclosed opening brackets left in the string.",
+          "There were extra closing brackets in the string."
+        ],
+        "correct_answer": 2,
+        "explanation": "Every time an opening bracket is seen, it is pushed. A matching closing bracket pops it. If the loop ends and the stack isn't empty, it means there are opening brackets that never found a match.",
+        "difficulty": "hard"
+      },
+      {
+        "question_number": 10,
+        "question_text": "How can you implement a Queue using only Stacks?",
+        "options": [
+          "It is impossible.",
+          "By pushing to Stack A, and when dequeuing, popping all elements from Stack A to Stack B, then popping the top of Stack B.",
+          "By using recursive push operations.",
+          "By limiting the Stack size to 1."
+        ],
+        "correct_answer": 1,
+        "explanation": "This is a classic interview question. You push to Stack A. To dequeue, you dump A into B (reversing the LIFO order to FIFO), pop the top of B, and that's your front element.",
+        "difficulty": "hard"
+      }
+    ]
+  },
+  {
+    "lesson_number": 5,
+    "title": "Trees & Graphs",
+    "slug": "trees-and-graphs",
+    "difficulty_level": "advanced",
+    "estimated_time_minutes": 70,
+    "introduction": "Up until now, every data structure we've looked at (Arrays, Linked Lists, Stacks, Queues) has been 'linear'—data is arranged in a single, straight sequence. Trees and Graphs break this mold. They are non-linear data structures used to represent hierarchical relationships or complex networks.\n\nA Tree consists of a 'root' node at the top, branching down to 'child' nodes, ending in 'leaf' nodes. Think of an organizational chart, a family tree, or the file directory system on your computer. A specialized version, the Binary Search Tree (BST), keeps data sorted hierarchically, allowing us to find, insert, or delete data in O(log n) time—significantly faster than an array's O(n) search time!\n\nGraphs are even more generalized. A graph is just a collection of nodes (vertices) connected by lines (edges). Social networks (who follows whom) and GPS mapping apps (finding the shortest path between cities) are built entirely on Graph theory. In this lesson, we will focus primarily on building and traversing Binary Trees.",
+    "code_example": "# === Trees and Binary Search Trees ===\n\n# 1. Defining a Binary Tree Node\nclass TreeNode:\n    def __init__(self, value):\n        self.val = value\n        self.left = None  # Pointer to left child\n        self.right = None # Pointer to right child\n\n# 2. Binary Search Tree (BST) Insertion\n# Rule: Left child < Parent, Right child > Parent\ndef insert_bst(root, value):\n    if root is None:\n        return TreeNode(value)\n        \n    if value < root.val:\n        # Go left recursively\n        root.left = insert_bst(root.left, value)\n    else:\n        # Go right recursively\n        root.right = insert_bst(root.right, value)\n        \n    return root\n\n# 3. Tree Traversal: In-Order\n# Visits Left -> Root -> Right (Produces sorted output for a BST!)\ndef inorder_traversal(root, result=None):\n    if result is None:\n        result = []\n        \n    if root:\n        inorder_traversal(root.left, result)  # Visit left subtree\n        result.append(root.val)               # Visit current node\n        inorder_traversal(root.right, result) # Visit right subtree\n        \n    return result\n\n# Let's build a BST\n#       10\n#      /  \\\n#     5    15\n#    / \\     \\\n#   2   7     20\n\nbst_root = None\nvalues_to_add = [10, 5, 15, 2, 7, 20]\n\nfor val in values_to_add:\n    bst_root = insert_bst(bst_root, val)\n\n# Let's traverse it!\nprint(f\"In-Order Traversal: {inorder_traversal(bst_root)}\")\n# Output: In-Order Traversal: [2, 5, 7, 10, 15, 20]\n# Notice how it magically sorted the numbers!",
+    "key_takeaways": [
+      "Trees are non-linear data structures consisting of nodes connected by edges in a hierarchical parent-child relationship.",
+      "The top node is the 'Root'. Nodes with no children are called 'Leaves'.",
+      "In a Binary Tree, each node can have a maximum of two children (left and right).",
+      "A Binary Search Tree (BST) enforces a strict rule: all values in the left subtree must be smaller than the root, and all values in the right subtree must be larger.",
+      "Performing an 'In-Order Traversal' (Left, Root, Right) on a valid BST will always visit the nodes in ascending sorted order."
+    ],
+    "topics": [
+      "Hierarchical Data Structures",
+      "Root and Leaf Nodes",
+      "Binary Trees",
+      "Binary Search Tree (BST) properties",
+      "In-Order Traversal"
+    ],
+    "quiz_questions": [
+      {
+        "question_number": 1,
+        "question_text": "What is the primary difference between a Tree and a Linked List?",
+        "options": [
+          "Trees use more memory.",
+          "Trees are hierarchical/non-linear, while Linked Lists are sequential/linear.",
+          "Trees can only store numbers.",
+          "Linked Lists have a root, Trees do not."
+        ],
+        "correct_answer": 1,
+        "explanation": "Linked lists are a straight line of nodes. Trees branch out hierarchically, allowing a single node to point to multiple child nodes.",
+        "difficulty": "easy"
+      },
+      {
+        "question_number": 2,
+        "question_text": "What is a node with no children called in a Tree?",
+        "options": [
+          "Root",
+          "Branch",
+          "Leaf",
+          "Stem"
+        ],
+        "correct_answer": 2,
+        "explanation": "Just like a real tree, the structures that sit at the very end of the branches with nothing growing from them are called Leaves.",
+        "difficulty": "easy"
+      },
+      {
+        "question_number": 3,
+        "question_text": "What defines a BINARY tree?",
+        "options": [
+          "It can only store binary data (0s and 1s).",
+          "It has exactly two roots.",
+          "Each node can have a maximum of two children.",
+          "It must have an even number of nodes."
+        ],
+        "correct_answer": 2,
+        "explanation": "The word 'binary' refers to two. In a binary tree, any given node can have 0, 1, or at most 2 child nodes.",
+        "difficulty": "easy"
+      },
+      {
+        "question_number": 4,
+        "question_text": "What is the core rule of a Binary Search Tree (BST)?",
+        "options": [
+          "All nodes must have exactly two children.",
+          "The tree must be perfectly balanced.",
+          "Left child values are less than the parent, Right child values are greater.",
+          "Values are inserted in chronological order."
+        ],
+        "correct_answer": 2,
+        "explanation": "This property ensures that data is stored in a predictable, sorted manner, allowing for extremely fast search operations.",
+        "difficulty": "easy"
+      },
+      {
+        "question_number": 5,
+        "question_text": "If you are searching for a value in a balanced BST, what happens to the search space after checking the root?",
+        "options": [
+          "It shrinks by one element.",
+          "It is cut in half.",
+          "It remains the same size.",
+          "It doubles in size."
+        ],
+        "correct_answer": 1,
+        "explanation": "Because of the BST rule, if the target is less than the root, you completely ignore the entire right half of the tree. The search space halves at each step.",
+        "difficulty": "medium"
+      },
+      {
+        "question_number": 6,
+        "question_text": "What is the average time complexity for searching a balanced Binary Search Tree?",
+        "options": [
+          "O(1)",
+          "O(n)",
+          "O(log n)",
+          "O(n^2)"
+        ],
+        "correct_answer": 2,
+        "explanation": "Because the search space is halved at each step, the complexity is logarithmic, O(log n), making it exponentially faster than searching an array O(n).",
+        "difficulty": "medium"
+      },
+      {
+        "question_number": 7,
+        "question_text": "Which tree traversal method visits the Left child, then the Root node, then the Right child?",
+        "options": [
+          "Pre-Order",
+          "In-Order",
+          "Post-Order",
+          "Level-Order"
+        ],
+        "correct_answer": 1,
+        "explanation": "In-Order traversal processes nodes 'in order' from left (smallest) to right (largest).",
+        "difficulty": "medium"
+      },
+      {
+        "question_number": 8,
+        "question_text": "What is a Graph data structure fundamentally composed of?",
+        "options": [
+          "Roots and Leaves",
+          "Rows and Columns",
+          "Vertices (Nodes) and Edges",
+          "Keys and Values"
+        ],
+        "correct_answer": 2,
+        "explanation": "A Graph consists of Vertices (the data points, like cities) and Edges (the connections between them, like roads).",
+        "difficulty": "medium"
+      },
+      {
+        "question_number": 9,
+        "question_text": "What is the WORST-CASE time complexity for searching a poorly constructed Binary Search Tree (e.g., inserting 1, 2, 3, 4, 5 in that exact order)?",
+        "options": [
+          "O(1)",
+          "O(log n)",
+          "O(n)",
+          "O(n log n)"
+        ],
+        "correct_answer": 2,
+        "explanation": "If you insert sorted data into a standard BST, it becomes heavily unbalanced—essentially forming a Linked List pointing strictly right. Searching it degenerates to O(n) linear time.",
+        "difficulty": "hard"
+      },
+      {
+        "question_number": 10,
+        "question_text": "In the `insert_bst` recursive function, why do we write `root.left = insert_bst(...)` instead of just `insert_bst(...)`?",
+        "options": [
+          "To satisfy Python syntax rules.",
+          "To properly wire the newly created child node back to the parent's pointer.",
+          "To make the function run iteratively instead of recursively.",
+          "It is a typo; `insert_bst` alone works perfectly."
+        ],
+        "correct_answer": 1,
+        "explanation": "When the recursion hits a None base case, it creates a `TreeNode` and returns it. The parent node MUST catch that returned node and assign it to its `left` or `right` pointer to actually attach it to the tree.",
+        "difficulty": "hard"
+      }
+    ]
+  },
+  {
+    "lesson_number": 6,
+    "title": "Hashing & Hash Tables",
+    "slug": "hashing-and-hash-tables",
+    "difficulty_level": "advanced",
+    "estimated_time_minutes": 65,
+    "introduction": "Imagine an array with 1 million user profiles. If you need to find a user by their username, you have to scan through the array one by one—an O(n) operation that takes significant time. What if we could instantly calculate the exact index where that user is stored, dropping the search time to O(1)? Welcome to Hash Tables.\n\nA Hash Table (which implements Python's native `dict` and `set`) uses a 'Hash Function'. You feed the username (the key) into the hash function, and it mathematically scrambles that string into a fixed integer. We then use that integer as the array index. It is essentially a magic formula that translates data into memory locations!\n\nHowever, the math isn't perfect. Sometimes, two different keys will produce the exact same integer index. This is called a 'Collision'. In this lesson, we will explore how hashing works behind the scenes, why it makes Python Dictionaries insanely fast, and how we leverage this speed to solve complex algorithms, like the famous 'Two Sum' problem.",
+    "code_example": "# === Hashing & Hash Tables ===\n\n# 1. The concept of Hashing\n# Python has a built-in hash() function\nstring_a = \"Apple\"\nstring_b = \"Banana\"\n\n# Notice how it generates large, somewhat random-looking integers\nprint(f\"Hash of 'Apple': {hash(string_a)}\")\nprint(f\"Hash of 'Banana': {hash(string_b)}\")\n\n# 2. Hash Tables in Practice (Python Dictionaries)\n# Dictionaries use hash tables under the hood for O(1) lookups.\nemployee_db = {\n    \"john_doe\": \"Engineering\",\n    \"alice_99\": \"Marketing\"\n}\n# To find 'alice_99', Python hashes the string, gets an index, \n# and jumps straight to it. No looping required!\nprint(f\"Alice's Dept: {employee_db['alice_99']}\")\n\n# 3. Solving Algorithms with Hash Maps: The 'Two Sum' Problem\n# Goal: Find two numbers in the array that add up to the target.\n\n# Bad Approach: Nested Loops O(n^2)\ndef two_sum_slow(arr, target):\n    for i in range(len(arr)):\n        for j in range(i + 1, len(arr)):\n            if arr[i] + arr[j] == target:\n                return [i, j]\n    return None\n\n# Optimal Approach: Hash Map O(n)\ndef two_sum_fast(arr, target):\n    # Dictionary to store {number_value: its_index}\n    seen_numbers = {}\n    \n    for current_index, num in enumerate(arr):\n        # What number do we need to reach the target?\n        complement = target - num\n        \n        # O(1) instant lookup to see if we've encountered it before!\n        if complement in seen_numbers:\n            # Return the index of the complement, and the current index\n            return [seen_numbers[complement], current_index]\n            \n        # Add the current number to our dictionary for future checks\n        seen_numbers[num] = current_index\n        \n    return None\n\nnums = [2, 7, 11, 15]\ntarget_val = 9\nprint(f\"\\nTwo Sum Fast Result: {two_sum_fast(nums, target_val)}\") \n# Output: [0, 1] (Because 2 + 7 = 9)",
+    "key_takeaways": [
+      "A Hash Function converts data (like a string key) into an integer, which is used as an index to store that data in memory.",
+      "Hash Tables (Python Dictionaries and Sets) provide near-instant O(1) average time complexity for lookups, insertions, and deletions.",
+      "A 'Collision' occurs when a hash function generates the exact same integer index for two entirely different keys.",
+      "Hash Tables handle collisions using techniques like 'Chaining' (putting a linked list at the collision index) or 'Open Addressing'.",
+      "Whenever you are writing an algorithm that involves searching an array multiple times, ask yourself: 'Can I use a Dictionary to store values and reduce search time to O(1)?'"
+    ],
+    "topics": [
+      "Hash Functions",
+      "O(1) Constant Lookups",
+      "Hash Collisions",
+      "Python Dictionaries under the hood",
+      "Trading Space for Time"
+    ],
+    "quiz_questions": [
+      {
+        "question_number": 1,
+        "question_text": "What is the primary purpose of a Hash Function?",
+        "options": [
+          "To encrypt passwords securely.",
+          "To convert a piece of data (like a string) into an integer to be used as an array index.",
+          "To sort arrays automatically.",
+          "To compress large files into smaller sizes."
+        ],
+        "correct_answer": 1,
+        "explanation": "While cryptographic hashing exists, in data structures, a hash function translates keys into memory indices for fast storage and retrieval.",
+        "difficulty": "easy"
+      },
+      {
+        "question_number": 2,
+        "question_text": "What native Python data structure is built using a Hash Table under the hood?",
+        "options": [
+          "List",
+          "Tuple",
+          "Dictionary (dict)",
+          "String"
+        ],
+        "correct_answer": 2,
+        "explanation": "Python Dictionaries (and Sets) are implemented as highly optimized hash tables, which gives them their speed.",
+        "difficulty": "easy"
+      },
+      {
+        "question_number": 3,
+        "question_text": "What is the AVERAGE time complexity to find a value in a Hash Table by its key?",
+        "options": [
+          "O(1)",
+          "O(log n)",
+          "O(n)",
+          "O(n^2)"
+        ],
+        "correct_answer": 0,
+        "explanation": "Because the hash function instantly calculates the memory address, lookups average O(1) Constant Time.",
+        "difficulty": "easy"
+      },
+      {
+        "question_number": 4,
+        "question_text": "What is a 'Collision' in a Hash Table?",
+        "options": [
+          "When the hash table runs out of memory.",
+          "When two different keys produce the exact same hash value/index.",
+          "When you try to delete a key that doesn't exist.",
+          "When two threads try to access the table at the exact same time."
+        ],
+        "correct_answer": 1,
+        "explanation": "Because memory is finite and inputs are infinite, eventually the hash function will map two different keys to the same bucket. This is a collision.",
+        "difficulty": "easy"
+      },
+      {
+        "question_number": 5,
+        "question_text": "How does 'Chaining' resolve hash collisions?",
+        "options": [
+          "It crashes the program and asks the user to pick a new key.",
+          "It stores a Linked List at that specific index, chaining the collided items together.",
+          "It searches the array sequentially for the next empty slot.",
+          "It hashes the hash again."
+        ],
+        "correct_answer": 1,
+        "explanation": "In Separate Chaining, the array index holds a pointer to a Linked List. If multiple keys hash to index 5, they are all appended to the linked list at index 5.",
+        "difficulty": "medium"
+      },
+      {
+        "question_number": 6,
+        "question_text": "In the `two_sum_fast` function, what is the core reason it is O(n) instead of O(n^2)?",
+        "options": [
+          "It uses a single loop instead of nested loops.",
+          "It relies on the O(1) lookup speed of the dictionary to check if the complement exists, entirely eliminating the need for a second inner loop.",
+          "Dictionaries process mathematical subtraction faster.",
+          "It sorts the array first."
+        ],
+        "correct_answer": 1,
+        "explanation": "The inner loop's entire job in the slow version is to 'search' for a number. The dictionary does that search instantly in O(1) time, reducing the algorithm to a single O(n) loop.",
+        "difficulty": "medium"
+      },
+      {
+        "question_number": 7,
+        "question_text": "What is the typical trade-off when using a Hash Table to speed up an algorithm (like in Two Sum)?",
+        "options": [
+          "Trading Time for Space (using more memory to gain speed).",
+          "Trading Space for Time (using less memory but running slower).",
+          "Trading Accuracy for Speed.",
+          "Trading Compilation time for Runtime."
+        ],
+        "correct_answer": 0,
+        "explanation": "By creating the `seen_numbers` dictionary, we are allocating extra O(n) RAM space to drastically reduce the time complexity from O(n^2) to O(n).",
+        "difficulty": "medium"
+      },
+      {
+        "question_number": 8,
+        "question_text": "Why can't you use a Python List `[1, 2, 3]` as a key in a Dictionary?",
+        "options": [
+          "Lists are too large.",
+          "Lists contain numbers.",
+          "Lists are mutable. Keys must be immutable so their hash value never changes.",
+          "You can use lists as keys."
+        ],
+        "correct_answer": 2,
+        "explanation": "If you use a mutable object as a key, and then change that object, its hash value changes. The dictionary would never be able to find the data again. Keys must be hashable (immutable).",
+        "difficulty": "medium"
+      },
+      {
+        "question_number": 9,
+        "question_text": "What is the WORST-case time complexity of searching a Hash Table, and what causes it?",
+        "options": [
+          "O(n^2), caused by dynamic resizing.",
+          "O(n), caused by a catastrophic amount of collisions where every key hashes to the exact same index.",
+          "O(log n), caused by sorting.",
+          "O(1), it never gets worse."
+        ],
+        "correct_answer": 1,
+        "explanation": "If every single key hashes to index 0, they all form a massive Linked List at index 0. Searching it degrades to an O(n) Linked List traversal.",
+        "difficulty": "hard"
+      },
+      {
+        "question_number": 10,
+        "question_text": "Which characteristic is essential for a 'Good' Hash Function?",
+        "options": [
+          "It should execute very slowly to prevent hacking.",
+          "It should generate predictable, sequential numbers.",
+          "It should distribute hash values uniformly across the array to minimize collisions.",
+          "It should return a string."
+        ],
+        "correct_answer": 2,
+        "explanation": "A good hash function avoids 'clustering'. By uniformly scattering the results across the available memory buckets, it keeps collisions to a minimum, preserving O(1) performance.",
+        "difficulty": "hard"
+      }
+    ]
+  },
+  {
+    "lesson_number": 7,
+    "title": "Sorting & Searching Algorithms",
+    "slug": "sorting-and-searching-algorithms",
+    "difficulty_level": "advanced",
+    "estimated_time_minutes": 75,
+    "introduction": "We interact with sorting and searching algorithms daily. Searching Google, looking for a contact in your phone, or viewing products ordered by 'Lowest Price' all rely on optimized algorithms.\n\nSearching algorithms help us find data. A 'Linear Search' checks every item one by one (O(n)). But if the data is already sorted, we can use a dramatically faster method: 'Binary Search'. Binary Search checks the middle element, determines if the target is higher or lower, and instantly discards half the dataset, achieving O(log n) time.\n\nSorting algorithms put data in order. Simple sorts like 'Bubble Sort' or 'Selection Sort' compare items iteratively. They are easy to write but terribly slow (O(n^2)). To handle massive data, we use advanced 'Divide and Conquer' algorithms like 'Merge Sort' or 'Quick Sort'. These algorithms recursively split the data into tiny chunks, sort them, and merge them back together, achieving the holy grail of sorting efficiency: O(n log n) time.",
+    "code_example": "# === Sorting & Searching ===\n\n# 1. Binary Search - O(log n)\n# **CRITICAL: The array MUST be sorted for this to work!**\ndef binary_search(arr, target):\n    left = 0\n    right = len(arr) - 1\n    \n    while left <= right:\n        mid = (left + right) // 2  # Find middle index\n        \n        if arr[mid] == target:\n            return mid             # Target found! Return index.\n        elif arr[mid] < target:\n            left = mid + 1         # Target is greater, discard left half\n        else:\n            right = mid - 1        # Target is smaller, discard right half\n            \n    return -1 # Target not found\n\n# 2. Merge Sort - O(n log n)\n# A divide and conquer algorithm\ndef merge_sort(arr):\n    if len(arr) <= 1:\n        return arr # Base case: arrays of 1 are already sorted\n        \n    # Divide the array in half\n    mid = len(arr) // 2\n    left_half = arr[:mid]\n    right_half = arr[mid:]\n    \n    # Recursively sort both halves\n    left_sorted = merge_sort(left_half)\n    right_sorted = merge_sort(right_half)\n    \n    # Merge the sorted halves\n    return merge(left_sorted, right_sorted)\n\ndef merge(left, right):\n    sorted_arr = []\n    i = j = 0\n    \n    # Compare elements from left and right, add smallest to sorted_arr\n    while i < len(left) and j < len(right):\n        if left[i] <= right[j]:\n            sorted_arr.append(left[i])\n            i += 1\n        else:\n            sorted_arr.append(right[j])\n            j += 1\n            \n    # If one list ran out, append the remaining elements of the other\n    sorted_arr.extend(left[i:])\n    sorted_arr.extend(right[j:])\n    \n    return sorted_arr\n\n# --- Testing ---\nnums = [10, 2, 8, 4, 1, 9, 3, 7]\nprint(f\"Original: {nums}\")\n\nsorted_nums = merge_sort(nums)\nprint(f\"Sorted (Merge Sort): {sorted_nums}\")\n\ntarget_index = binary_search(sorted_nums, 8)\nprint(f\"Index of 8 (Binary Search): {target_index}\")",
+    "key_takeaways": [
+      "Binary Search is exceptionally fast O(log n), but it has a strict prerequisite: the array must be completely sorted beforehand.",
+      "Binary Search works by repeatedly halving the search space, checking the middle element each time.",
+      "Bubble Sort and Selection Sort have an O(n^2) time complexity, making them useless for large datasets in the real world.",
+      "Merge Sort uses a 'Divide and Conquer' strategy, splitting arrays recursively until they are size 1, then merging them in sorted order.",
+      "The best possible time complexity for general-purpose comparative sorting algorithms (like Merge Sort and Quick Sort) is O(n log n)."
+    ],
+    "topics": [
+      "Linear vs Binary Search",
+      "Divide and Conquer Strategy",
+      "Merge Sort Algorithm",
+      "Logarithmic Time O(log n)",
+      "O(n log n) Sorting Bound"
+    ],
+    "quiz_questions": [
+      {
+        "question_number": 1,
+        "question_text": "What is the absolute requirement for an array before you can perform a Binary Search on it?",
+        "options": [
+          "It must contain no negative numbers.",
+          "It must have an even number of elements.",
+          "It must be sorted.",
+          "It must contain only integers."
+        ],
+        "correct_answer": 2,
+        "explanation": "Binary search relies on evaluating whether to search the left or right half based on value. If the array isn't sorted, this logic entirely falls apart.",
+        "difficulty": "easy"
+      },
+      {
+        "question_number": 2,
+        "question_text": "What is the time complexity of a standard Linear Search (checking elements one by one)?",
+        "options": [
+          "O(1)",
+          "O(n)",
+          "O(log n)",
+          "O(n^2)"
+        ],
+        "correct_answer": 1,
+        "explanation": "In a linear search, the worst-case scenario forces you to check every single element in an array of size 'n', taking O(n) time.",
+        "difficulty": "easy"
+      },
+      {
+        "question_number": 3,
+        "question_text": "What is the time complexity of Binary Search?",
+        "options": [
+          "O(1)",
+          "O(n)",
+          "O(log n)",
+          "O(n^2)"
+        ],
+        "correct_answer": 2,
+        "explanation": "Because Binary Search discards half of the remaining dataset at every single step, its execution time grows logarithmically, O(log n).",
+        "difficulty": "easy"
+      },
+      {
+        "question_number": 4,
+        "question_text": "Which algorithm class does Merge Sort belong to?",
+        "options": [
+          "Greedy algorithms",
+          "Divide and Conquer",
+          "Dynamic Programming",
+          "Backtracking"
+        ],
+        "correct_answer": 1,
+        "explanation": "Merge sort divides the problem into smaller identical problems (sub-arrays), solves them recursively, and merges the results. This is Divide and Conquer.",
+        "difficulty": "easy"
+      },
+      {
+        "question_number": 5,
+        "question_text": "Why are algorithms like Bubble Sort and Selection Sort generally not used in production software?",
+        "options": [
+          "They cannot sort strings.",
+          "They require too much RAM.",
+          "Their O(n^2) time complexity makes them impractically slow for large datasets.",
+          "They only work on even numbers."
+        ],
+        "correct_answer": 2,
+        "explanation": "Nested loops cause quadratic time. Sorting 100,000 items with Bubble Sort takes 10,000,000,000 operations, which is completely unacceptable.",
+        "difficulty": "medium"
+      },
+      {
+        "question_number": 6,
+        "question_text": "What is the 'Base Case' (the condition that stops the recursion) in the Merge Sort algorithm provided?",
+        "options": [
+          "When the array is fully sorted.",
+          "When the left pointer crosses the right pointer.",
+          "When the length of the array is less than or equal to 1.",
+          "When the target is found."
+        ],
+        "correct_answer": 2,
+        "explanation": "Recursion stops when an array is split down to size 1 (or 0). An array of 1 element is inherently already sorted, so it can be returned and merged.",
+        "difficulty": "medium"
+      },
+      {
+        "question_number": 7,
+        "question_text": "What is the overall time complexity of Merge Sort?",
+        "options": [
+          "O(n)",
+          "O(n^2)",
+          "O(log n)",
+          "O(n log n)"
+        ],
+        "correct_answer": 3,
+        "explanation": "Dividing the array takes O(log n) steps. Merging them back together takes O(n) steps per level. Multiplying them gives O(n log n), the optimal sorting speed.",
+        "difficulty": "medium"
+      },
+      {
+        "question_number": 8,
+        "question_text": "In the `binary_search` function, what happens if `arr[mid] < target`?",
+        "options": [
+          "We return False.",
+          "We set right = mid - 1 to search the left half.",
+          "We set left = mid + 1 to search the right half.",
+          "We divide the target by 2."
+        ],
+        "correct_answer": 2,
+        "explanation": "If the middle element is smaller than our target, then our target MUST exist to the right of the middle (since it's sorted). We move the left boundary up past the middle.",
+        "difficulty": "medium"
+      },
+      {
+        "question_number": 9,
+        "question_text": "While Merge Sort has an excellent time complexity of O(n log n), what is its primary disadvantage compared to an in-place sort like Quick Sort?",
+        "options": [
+          "It cannot handle negative numbers.",
+          "It has a worse space complexity of O(n) because it requires creating new sub-arrays during the merge phase.",
+          "It is mathematically more difficult to implement.",
+          "It degrades to O(n^2) if the array is already sorted."
+        ],
+        "correct_answer": 1,
+        "explanation": "Merge sort is not 'in-place'. It requires creating new arrays (`sorted_arr`) to hold the merged data, taking up O(n) extra auxiliary memory.",
+        "difficulty": "hard"
+      },
+      {
+        "question_number": 10,
+        "question_text": "If you have an UN-SORTED array of size 'n', and you need to search for an item EXACTLY ONCE, which approach is mathematically faster?",
+        "options": [
+          "Linear Search the unsorted array.",
+          "Sort it with Merge Sort, then use Binary Search.",
+          "They take the exact same amount of time.",
+          "It depends on the size of the array."
+        ],
+        "correct_answer": 0,
+        "explanation": "Linear Search takes O(n). Sorting it first takes O(n log n) just to sort, which is already slower than O(n). You only sort first if you plan to perform MULTIPLE searches later.",
+        "difficulty": "hard"
+      }
+    ]
+  }
+]

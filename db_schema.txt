@@ -177,26 +177,7 @@ CREATE TABLE quiz_sessions (
 CREATE INDEX idx_quiz_sessions_student ON quiz_sessions(student_id);
 
 
-CREATE TABLE question_attempts (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    session_id UUID REFERENCES quiz_sessions(id) ON DELETE CASCADE,
-    question_id UUID REFERENCES questions(id),
-    
-    -- Attempt details
-    attempt_number INTEGER DEFAULT 1,
-    user_answer VARCHAR(1) NOT NULL,
-    is_correct BOOLEAN NOT NULL,
-    time_elapsed_ms INTEGER NOT NULL,
-    
-    -- AI metrics
-    lstm_confidence DECIMAL(3,2),  -- Predicted P(correct)
-    difficulty_presented DECIMAL(3,2),
-    reward DECIMAL(10,2),
-    
-    attempted_at TIMESTAMP DEFAULT NOW()
-);
 
-CREATE INDEX idx_question_attempts_session ON question_attempts(session_id);
 
 
 -- ==========================================
@@ -236,58 +217,25 @@ CREATE TABLE group_members (
 -- ANALYTICS & AGGREGATES
 -- ==========================================
 
-CREATE TABLE daily_student_stats (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    student_id UUID REFERENCES users(id) ON DELETE CASCADE,
-    subject_id UUID REFERENCES subjects(id) ON DELETE CASCADE,
-    date DATE NOT NULL,
-    
-    -- Activity
-    lessons_completed INTEGER DEFAULT 0,
-    quizzes_completed INTEGER DEFAULT 0,
-    questions_answered INTEGER DEFAULT 0,
-    correct_answers INTEGER DEFAULT 0,
-    
-    -- Time
-    total_time_seconds INTEGER DEFAULT 0,
-    
-    -- Performance
-    average_difficulty DECIMAL(3,2),
-    total_reward DECIMAL(10,2) DEFAULT 0,
-    
-    UNIQUE(student_id, subject_id, date)
-);
-
-CREATE INDEX idx_daily_stats_date ON daily_student_stats(date);
-
-CREATE TABLE student_knowledge_state (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+CREATE TABLE agent_memory (
     student_id UUID REFERENCES users(id) ON DELETE CASCADE,
     subject_id UUID REFERENCES subjects(id) ON DELETE CASCADE,
     
-    -- LSTM/RL state
-    knowledge_vector JSONB,  -- Stores learned embeddings
-    estimated_mastery DECIMAL(3,2) DEFAULT 0.50,
-    learning_velocity DECIMAL(3,2),  -- How fast they're improving
+    -- Structured Memory
+    interaction_queue JSONB DEFAULT '[]'::jsonb, 
     
-    -- Metadata
+    -- Tracked Agent Variables
+    consecutive_correct INTEGER DEFAULT 0,
+    consecutive_wrong INTEGER DEFAULT 0,
+    concept_attempts INTEGER DEFAULT 0,
+    concept_correct INTEGER DEFAULT 0,
+    
     last_updated TIMESTAMP DEFAULT NOW(),
-    total_interactions INTEGER DEFAULT 0,
     
-    UNIQUE(student_id, subject_id)
+    PRIMARY KEY (student_id, subject_id)
 );
 
-CREATE TABLE rl_interventions (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    session_id UUID REFERENCES quiz_sessions(id) ON DELETE CASCADE,
-    
-    intervention_type VARCHAR(50) NOT NULL,  -- 'difficulty_adjust', 'hint_provided', 'skip_question'
-    context JSONB,  -- What triggered it
-    student_state_before JSONB,
-    action_taken JSONB,
-    
-    created_at TIMESTAMP DEFAULT NOW()
-);
+
 
 ALTER TABLE lessons ADD COLUMN content_version INTEGER DEFAULT 1;
 ALTER TABLE lessons ADD COLUMN parent_version_id UUID REFERENCES lessons(id);

@@ -1,0 +1,1087 @@
+[
+  {
+    "lesson_number": 1,
+    "title": "Introduction to Deep Learning & Tensors",
+    "slug": "intro-deep-learning-tensors",
+    "difficulty_level": "beginner",
+    "estimated_time_minutes": 45,
+    "introduction": "Welcome to the exciting world of Deep Learning! In this introductory lesson, we will lay the foundational building blocks required to understand and build neural networks. Deep learning has revolutionized fields ranging from computer vision to natural language processing, and understanding its core mechanics is your first step toward mastering artificial intelligence.\n\nAt the heart of modern deep learning frameworks, such as PyTorch, lies the 'Tensor'. If you are familiar with Python's NumPy library, you can think of a tensor as a multi-dimensional array or matrix. However, tensors possess a crucial superpower: they are optimized for hardware acceleration and can keep track of computational graphs. This makes them specifically designed for the heavy mathematical lifting required to train deep neural networks.\n\nThroughout this lesson, you will learn how to create tensors, manipulate their shapes, and perform basic mathematical operations. Crucially, we will also explore how to move these data structures to a Graphics Processing Unit (GPU) using CUDA, enabling the massive parallel processing that makes modern deep learning computationally feasible. Let's dive in and start writing some PyTorch code!",
+    "code_example": "import torch\n\n# 1. Creating basic tensors from data\nprint(\"--- 1. Tensor Creation ---\")\nx = torch.tensor([[1.0, 2.0], [3.0, 4.0]])\ny = torch.ones(2, 2) # 2x2 matrix of ones\nprint(f\"Tensor x:\\n{x}\")\nprint(f\"Tensor y:\\n{y}\")\n\n# 2. Tensor Operations and Math\n# Deep learning requires massive amounts of matrix operations\nprint(\"\\n--- 2. Tensor Math ---\")\nz = x + y  # Element-wise addition\nmatrix_mult = torch.matmul(x, y) # Matrix multiplication\nprint(f\"Element-wise addition:\\n{z}\")\nprint(f\"Matrix multiplication:\\n{matrix_mult}\")\n\n# 3. Reshaping Tensors (view)\n# Often necessary to ensure data dimensions match network layers\nprint(\"\\n--- 3. Reshaping ---\")\nflat_x = x.view(-1) # The -1 tells PyTorch to infer the required dimension size (flatten to 1D)\nprint(f\"Original shape: {x.shape}\")\nprint(f\"Flattened shape: {flat_x.shape}\")\nprint(f\"Flattened tensor:\\n{flat_x}\")\n\n# 4. GPU Acceleration (CUDA)\n# Moving tensors to a GPU drastically speeds up matrix calculations\nprint(\"\\n--- 4. GPU Support ---\")\n# Check if CUDA (NVIDIA GPU) is available, otherwise fallback to CPU\ndevice = \"cuda\" if torch.cuda.is_available() else \"cpu\"\nprint(f\"Using device: {device}\")\n\ntry:\n    # Move the tensor to the designated device\n    x_gpu = x.to(device)\n    print(f\"Tensor is now on: {x_gpu.device}\")\nexcept AssertionError as e:\n    print(f\"Error moving to GPU: {e}\")",
+    "key_takeaways": [
+      "Deep Learning relies heavily on multidimensional arrays called tensors to process and store data.",
+      "PyTorch tensors are similar to NumPy arrays but support GPU acceleration and automatic differentiation.",
+      "Tensor reshaping using .view() is a common operation necessary for matching data shapes to neural network layer inputs.",
+      "Matrix multiplication (matmul) is the fundamental mathematical operation powering the forward pass of deep neural networks.",
+      "Moving data to a GPU via CUDA drastically reduces the time required for training complex models by enabling parallel processing."
+    ],
+    "topics": [
+      "What is Deep Learning",
+      "Tensors vs NumPy arrays",
+      "Tensor operations",
+      "GPU acceleration (CUDA)",
+      "Computational graphs"
+    ],
+    "quiz_questions": [
+      {
+        "question_number": 1,
+        "question_text": "What is the primary data structure used in PyTorch for deep learning?",
+        "options": [
+          "DataFrames",
+          "Tensors",
+          "Linked Lists",
+          "Hash Maps"
+        ],
+        "correct_answer": 1,
+        "explanation": "Tensors are the fundamental data structure in PyTorch. They are multidimensional arrays optimized for numerical computation and hardware acceleration.",
+        "difficulty": "easy"
+      },
+      {
+        "question_number": 2,
+        "question_text": "Which PyTorch function is used to change the shape of a tensor without changing its underlying data?",
+        "options": [
+          ".reshape() or .view()",
+          ".transform()",
+          ".modify()",
+          ".shape_shift()"
+        ],
+        "correct_answer": 0,
+        "explanation": "The .view() and .reshape() methods return a new tensor with the same data but a different shape, which is crucial for preparing data for specific neural network layers.",
+        "difficulty": "easy"
+      },
+      {
+        "question_number": 3,
+        "question_text": "What does CUDA stand for in the context of PyTorch and deep learning?",
+        "options": [
+          "Computer Unified Data Architecture",
+          "Compute Unified Device Architecture",
+          "Calculated Unit Default Array",
+          "Core Utility Data API"
+        ],
+        "correct_answer": 1,
+        "explanation": "CUDA stands for Compute Unified Device Architecture. It is a parallel computing platform created by NVIDIA that allows PyTorch to utilize GPU hardware.",
+        "difficulty": "easy"
+      },
+      {
+        "question_number": 4,
+        "question_text": "Which of the following is a key advantage of PyTorch tensors over standard NumPy arrays?",
+        "options": [
+          "Tensors consume significantly less memory on the CPU.",
+          "Tensors natively support execution on GPUs.",
+          "Tensors can only store integer data types.",
+          "NumPy arrays cannot be multi-dimensional."
+        ],
+        "correct_answer": 1,
+        "explanation": "While both represent multi-dimensional arrays, PyTorch tensors can be easily moved to and computed on a GPU, whereas NumPy arrays run exclusively on the CPU.",
+        "difficulty": "easy"
+      },
+      {
+        "question_number": 5,
+        "question_text": "If tensor A has shape (2, 3) and tensor B has shape (3, 4), what will be the shape of the result of torch.matmul(A, B)?",
+        "options": [
+          "(2, 3)",
+          "(3, 4)",
+          "(2, 4)",
+          "(6, 12)"
+        ],
+        "correct_answer": 2,
+        "explanation": "In matrix multiplication, the inner dimensions must match (3 and 3), and the resulting matrix takes the outer dimensions (2 and 4).",
+        "difficulty": "medium"
+      },
+      {
+        "question_number": 6,
+        "question_text": "What does the PyTorch code `x.view(-1)` accomplish?",
+        "options": [
+          "It reverses the values in the tensor.",
+          "It flattens the tensor into a 1-dimensional array.",
+          "It deletes the tensor from memory.",
+          "It subtracts 1 from all elements in the tensor."
+        ],
+        "correct_answer": 1,
+        "explanation": "Passing -1 to .view() tells PyTorch to automatically infer the size of that dimension based on the total number of elements, effectively flattening it to 1D.",
+        "difficulty": "medium"
+      },
+      {
+        "question_number": 7,
+        "question_text": "How do you correctly move a CPU tensor `my_tensor` to an available GPU?",
+        "options": [
+          "my_tensor.gpu()",
+          "torch.move(my_tensor, 'cuda')",
+          "my_tensor.to('cuda')",
+          "my_tensor.cuda_enable()"
+        ],
+        "correct_answer": 2,
+        "explanation": "The standard and most flexible way to transfer tensors between devices in PyTorch is using the .to(device) method, such as .to('cuda').",
+        "difficulty": "medium"
+      },
+      {
+        "question_number": 8,
+        "question_text": "What is a PyTorch 'computational graph' primarily used for?",
+        "options": [
+          "Visualizing data points on a dashboard.",
+          "Tracking operations on tensors to automatically calculate gradients.",
+          "Connecting computers in a distributed GPU cluster.",
+          "Storing the names of variables in the script."
+        ],
+        "correct_answer": 1,
+        "explanation": "Computational graphs track the sequence of operations applied to tensors, which allows PyTorch to automatically compute gradients during backpropagation via autograd.",
+        "difficulty": "medium"
+      },
+      {
+        "question_number": 9,
+        "question_text": "If you perform an operation between a tensor residing on the CPU and a tensor residing on the GPU, what happens?",
+        "options": [
+          "The CPU tensor is automatically moved to the GPU.",
+          "PyTorch throws a Runtime Error.",
+          "The operation occurs on the CPU.",
+          "The result is stored in RAM."
+        ],
+        "correct_answer": 1,
+        "explanation": "PyTorch requires that all tensors involved in an operation reside on the same device. Attempting to add a CPU tensor to a GPU tensor will raise a RuntimeError.",
+        "difficulty": "hard"
+      },
+      {
+        "question_number": 10,
+        "question_text": "When using `torch.cuda.is_available()`, what is occurring under the hood?",
+        "options": [
+          "PyTorch is downloading NVIDIA drivers.",
+          "PyTorch checks if the underlying C++ backend can detect a CUDA-compatible GPU and proper drivers.",
+          "It allocates memory on the GPU for future operations.",
+          "It converts all existing CPU tensors to GPU tensors."
+        ],
+        "correct_answer": 1,
+        "explanation": "This function acts as a boolean check. It queries the system environment to confirm if the NVIDIA drivers and CUDA toolkit are correctly installed and accessible by PyTorch.",
+        "difficulty": "hard"
+      }
+    ]
+  },
+  {
+    "lesson_number": 2,
+    "title": "The Perceptron & Linear Layers",
+    "slug": "perceptron-linear-layers",
+    "difficulty_level": "beginner",
+    "estimated_time_minutes": 45,
+    "introduction": "In the previous lesson, we learned about the data structures that power deep learning. Now, we will explore the core processing unit of neural networks: the artificial neuron, historically known as the Perceptron. Inspired by biological neurons in the human brain, these artificial constructs receive input signals, apply mathematical weights, and generate an output.\n\nAt a fundamental level, an artificial neuron performs a simple linear transformation represented by the equation y = wx + b. Here, 'x' is the input data, 'w' represents the weights (how important each input is), and 'b' is the bias (a shift applied to the output). When we group many of these neurons together side-by-side, we create what is known as a Fully Connected or 'Dense' layer, represented in PyTorch as nn.Linear.\n\nIn this lesson, you will build your very first neural network layer. We will manually inspect the weights and biases that PyTorch initializes for us, and we will pass data through this layer to perform a 'forward pass'. Understanding this linear transformation is critical, as it forms the backbone of every complex deep learning architecture in existence today.",
+    "code_example": "import torch\nimport torch.nn as nn\n\n# Set a manual seed to ensure random initializations are reproducible\ntorch.manual_seed(42)\n\n# 1. Define a single-layer perceptron (A Linear Layer)\n# in_features: number of input variables (e.g., height, weight, age)\n# out_features: number of output neurons (e.g., 1 prediction score)\nprint(\"--- 1. Initializing Linear Layer ---\")\nlinear_layer = nn.Linear(in_features=3, out_features=1)\n\n# Inspect the randomly initialized weights and biases\n# We use .detach() to view the tensor without its gradient tracking history\nprint(f\"Initialized Weights shape: {linear_layer.weight.shape}\")\nprint(f\"Weights values:\\n{linear_layer.weight.detach()}\")\nprint(f\"Initialized Bias shape: {linear_layer.bias.shape}\")\nprint(f\"Bias values:\\n{linear_layer.bias.detach()}\")\n\n# 2. Create dummy input data\n# We often process data in 'batches'. Here, Batch size = 2, Features = 3\nprint(\"\\n--- 2. Preparing Input Data ---\")\ninput_data = torch.tensor([[1.0, 2.0, 3.0],   # Sample 1\n                           [-1.0, 0.0, 1.5]]) # Sample 2\nprint(f\"Input data shape: {input_data.shape} -> [Batch Size, Features]\")\n\n# 3. The Forward Pass\n# Passing data through the layer applies the operation: y = x * W^T + b\nprint(\"\\n--- 3. Forward Pass ---\")\noutput = linear_layer(input_data)\n\nprint(f\"Output data shape: {output.shape} -> [Batch Size, Output Features]\")\nprint(f\"Output values (Predictions):\\n{output.detach()}\")\n\n# Best Practice Note: \n# Never call linear_layer.forward(input_data) directly.\n# Always call the layer object as a function: linear_layer(input_data)\n# This ensures PyTorch hooks and state management execute properly.",
+    "key_takeaways": [
+      "An artificial neuron applies a simple linear equation to input data: y = wx + b.",
+      "Weights (w) determine the importance of specific inputs, while biases (b) shift the output baseline.",
+      "In PyTorch, a grouping of neurons where every input connects to every output is created using nn.Linear.",
+      "PyTorch automatically initializes weights and biases with random numbers when a layer is created.",
+      "Passing data through a model to get a prediction is called the 'forward pass'."
+    ],
+    "topics": [
+      "Artificial neurons",
+      "Weights and biases",
+      "Linear transformations (y = wx + b)",
+      "Fully connected (dense) layers",
+      "Forward pass"
+    ],
+    "quiz_questions": [
+      {
+        "question_number": 1,
+        "question_text": "What mathematical operation does a basic linear layer (perceptron) perform?",
+        "options": [
+          "y = mx / c",
+          "y = wx + b",
+          "y = w^2 + x",
+          "y = log(wx) + b"
+        ],
+        "correct_answer": 1,
+        "explanation": "A linear layer computes y = wx + b, calculating the dot product of inputs and weights, and then adding a bias term.",
+        "difficulty": "easy"
+      },
+      {
+        "question_number": 2,
+        "question_text": "Which PyTorch class is used to create a fully connected dense layer?",
+        "options": [
+          "nn.Dense",
+          "nn.Linear",
+          "nn.Perceptron",
+          "nn.FullyConnected"
+        ],
+        "correct_answer": 1,
+        "explanation": "In PyTorch, fully connected layers are implemented using the `nn.Linear` class, representing a linear transformation.",
+        "difficulty": "easy"
+      },
+      {
+        "question_number": 3,
+        "question_text": "In a neural network, what is the purpose of the 'bias' term?",
+        "options": [
+          "To scale the inputs dynamically.",
+          "To divide the weights by a constant.",
+          "To allow the activation boundary to shift away from the origin (zero).",
+          "To randomly drop connections during training."
+        ],
+        "correct_answer": 2,
+        "explanation": "The bias shifts the output of the linear transformation. Without it, a model would always output zero when the input is zero, severely limiting what it can learn.",
+        "difficulty": "easy"
+      },
+      {
+        "question_number": 4,
+        "question_text": "What does the term 'forward pass' refer to?",
+        "options": [
+          "Updating the weights based on error.",
+          "Passing data from the input layer through the network to generate an output.",
+          "Skipping a layer during training.",
+          "Reversing the input data sequence."
+        ],
+        "correct_answer": 1,
+        "explanation": "The forward pass is the process of feeding input data forward through the network's mathematical operations to produce a final prediction.",
+        "difficulty": "easy"
+      },
+      {
+        "question_number": 5,
+        "question_text": "If `layer = nn.Linear(in_features=10, out_features=5)`, what is the shape of the weight matrix stored in this layer?",
+        "options": [
+          "(10, 5)",
+          "(5, 10)",
+          "(10, 10)",
+          "(5, 5)"
+        ],
+        "correct_answer": 1,
+        "explanation": "PyTorch stores the weight matrix internally as (out_features, in_features), which is (5, 10), optimizing for the internal matrix multiplication PyTorch performs.",
+        "difficulty": "medium"
+      },
+      {
+        "question_number": 6,
+        "question_text": "When you create `layer = nn.Linear(4, 2)`, what values do the weights have immediately after creation?",
+        "options": [
+          "They are all initialized to exactly zero.",
+          "They are all initialized to exactly one.",
+          "They are populated with random numbers drawn from a specific distribution.",
+          "They are empty (NaN) until data is passed through."
+        ],
+        "correct_answer": 2,
+        "explanation": "PyTorch automatically initializes weights and biases with random numbers (usually using a uniform distribution based on layer size) to break symmetry and allow learning.",
+        "difficulty": "medium"
+      },
+      {
+        "question_number": 7,
+        "question_text": "Why should you call a layer object directly like `layer(input_data)` instead of `layer.forward(input_data)`?",
+        "options": [
+          "`layer.forward()` will throw a syntax error.",
+          "Calling it directly ensures background PyTorch hooks and state management are executed.",
+          "`layer.forward()` bypasses the weights.",
+          "There is no difference; both are equally recommended."
+        ],
+        "correct_answer": 1,
+        "explanation": "Calling the object directly invokes the `__call__` method, which safely triggers pre- and post-processing hooks registered to the module, whereas `.forward()` skips them.",
+        "difficulty": "medium"
+      },
+      {
+        "question_number": 8,
+        "question_text": "If your input batch size is 32 and you have 10 input features, what is the shape of your input tensor?",
+        "options": [
+          "(10, 32)",
+          "(32, 1)",
+          "(32, 10)",
+          "(10, 10, 32)"
+        ],
+        "correct_answer": 2,
+        "explanation": "In PyTorch, the standard convention is that the first dimension is the batch size, and the second dimension is the feature count, making it (32, 10).",
+        "difficulty": "medium"
+      },
+      {
+        "question_number": 9,
+        "question_text": "Given `layer = nn.Linear(3, 1)`, and an input tensor of shape `(100, 3)`, what will be the shape of the resulting output tensor?",
+        "options": [
+          "(1, 100)",
+          "(100, 1)",
+          "(100, 3)",
+          "(300, 1)"
+        ],
+        "correct_answer": 1,
+        "explanation": "The linear layer transforms the 3 input features into 1 output feature for each item in the batch. The batch size (100) remains unchanged, resulting in shape (100, 1).",
+        "difficulty": "hard"
+      },
+      {
+        "question_number": 10,
+        "question_text": "Mathematically, how does `nn.Linear` compute the forward pass for a batch of inputs X?",
+        "options": [
+          "X * W + b",
+          "X @ W^T + b",
+          "W @ X + b",
+          "X^T @ W + b"
+        ],
+        "correct_answer": 1,
+        "explanation": "PyTorch implements the forward pass as the matrix multiplication of X with the transpose of the weight matrix (W^T), followed by broadcasting the addition of the bias vector (b).",
+        "difficulty": "hard"
+      }
+    ]
+  },
+  {
+    "lesson_number": 3,
+    "title": "Activation Functions & Non-Linearity",
+    "slug": "activation-functions-non-linearity",
+    "difficulty_level": "intermediate",
+    "estimated_time_minutes": 45,
+    "introduction": "If neural networks only used linear layers (y = wx + b), stacking multiple layers would be mathematically pointless. A linear function applied to another linear function just results in a single, slightly different linear function. This means a 100-layer network would have the exact same predictive power as a 1-layer network. To solve complex, real-world problems—like recognizing faces or translating languages—we must introduce curves and complexities into our models.\n\nThis is where Activation Functions come in. Placed immediately after a linear layer, an activation function applies a non-linear mathematical transformation to the data. It decides whether a neuron should 'fire' (activate) based on its current input. Common functions include ReLU (which zeros out negative numbers), Sigmoid (which squashes outputs between 0 and 1), and Tanh.\n\nIn this lesson, we will explore the most popular activation functions. You will see how they manipulate tensor data to introduce the non-linearity required for deep learning. We will also touch upon the 'vanishing gradient' problem, a historical issue that makes training deep networks difficult and explains why modern networks favor the ReLU function.",
+    "code_example": "import torch\nimport torch.nn.functional as F\n\n# 1. Create a sample tensor spanning negative and positive values\ndata = torch.tensor([-3.0, -1.0, 0.0, 1.0, 3.0])\nprint(\"--- Input Data ---\")\nprint(f\"Original Data: {data}\\n\")\n\n# 2. Sigmoid Activation\n# Concept: Squashes any number to a range between 0 and 1.\n# Use case: Binary classification outputs (probabilities).\nsigmoid_out = torch.sigmoid(data)\nprint(\"--- Sigmoid ---\")\nprint(f\"Output:\\n{sigmoid_out}\\n\")\n\n# 3. Tanh Activation\n# Concept: Squashes any number to a range between -1 and 1.\n# Use case: Hidden layers in recurrent neural networks (RNNs).\ntanh_out = torch.tanh(data)\nprint(\"--- Tanh ---\")\nprint(f\"Output:\\n{tanh_out}\\n\")\n\n# 4. ReLU (Rectified Linear Unit) Activation\n# Concept: max(0, x). Zeroes out negatives, keeps positives unchanged.\n# Use case: The default choice for hidden layers in modern deep learning.\n# Benefit: Helps mitigate the vanishing gradient problem.\nrelu_out = F.relu(data)\nprint(\"--- ReLU ---\")\nprint(f\"Output:\\n{relu_out}\\n\")\n\n# 5. Softmax Activation\n# Concept: Converts a vector of raw scores (logits) into probabilities that sum to 1.0.\n# Use case: Multi-class classification output layers.\nlogits = torch.tensor([[1.0, 2.0, 3.0]]) # Example: 1 image, 3 possible class scores\n# dim=1 means we calculate softmax across the columns (the classes)\nsoftmax_out = F.softmax(logits, dim=1)\n\nprint(\"--- Softmax Example ---\")\nprint(f\"Raw Scores (Logits): {logits}\")\nprint(f\"Softmax Probabilities: {softmax_out}\")\nprint(f\"Sum of probabilities: {softmax_out.sum().item():.2f}\")",
+    "key_takeaways": [
+      "Without non-linear activation functions, a deep neural network behaves exactly like a single-layer network.",
+      "ReLU (Rectified Linear Unit) is the most widely used activation function for hidden layers because of its computational efficiency.",
+      "The Sigmoid function squashes outputs between 0 and 1, making it perfect for predicting binary probabilities.",
+      "Softmax is used in the final layer of multi-class classification models to generate probability distributions that sum to 1.",
+      "The Vanishing Gradient problem occurs when derivatives of activations (like Sigmoid) become extremely small, slowing down learning in deep networks."
+    ],
+    "topics": [
+      "Why we need non-linearity",
+      "Sigmoid",
+      "ReLU",
+      "Tanh",
+      "Softmax and Vanishing Gradients"
+    ],
+    "quiz_questions": [
+      {
+        "question_number": 1,
+        "question_text": "Why are activation functions essential in deep learning?",
+        "options": [
+          "They compress the size of the model on the hard drive.",
+          "They introduce non-linearity, allowing the network to learn complex patterns.",
+          "They convert strings into floating point numbers.",
+          "They automatically split the data into training and testing sets."
+        ],
+        "correct_answer": 1,
+        "explanation": "Activation functions break linearity. Without them, no matter how many layers a network has, it would only be capable of learning simple, linear relationships.",
+        "difficulty": "easy"
+      },
+      {
+        "question_number": 2,
+        "question_text": "What is the mathematical definition of the ReLU activation function?",
+        "options": [
+          "f(x) = 1 / (1 + e^-x)",
+          "f(x) = x^2",
+          "f(x) = max(0, x)",
+          "f(x) = min(0, x)"
+        ],
+        "correct_answer": 2,
+        "explanation": "ReLU (Rectified Linear Unit) returns the input itself if it is positive, and returns zero if the input is negative. Hence, max(0, x).",
+        "difficulty": "easy"
+      },
+      {
+        "question_number": 3,
+        "question_text": "Which activation function is best suited for the final layer of a binary classification model (e.g., Cat vs. Dog)?",
+        "options": [
+          "ReLU",
+          "Tanh",
+          "Sigmoid",
+          "Linear"
+        ],
+        "correct_answer": 2,
+        "explanation": "The Sigmoid function maps any real-valued number into a range between 0 and 1, making it ideal for interpreting the output as a probability of a binary event.",
+        "difficulty": "easy"
+      },
+      {
+        "question_number": 4,
+        "question_text": "What is the key characteristic of the Softmax function's output?",
+        "options": [
+          "All output values sum to exactly 1.0.",
+          "All negative inputs are dropped.",
+          "It returns values strictly between -1 and 1.",
+          "It forces all values to be integers."
+        ],
+        "correct_answer": 0,
+        "explanation": "Softmax normalizes an array of numbers into a probability distribution, ensuring that every value is between 0 and 1, and the total sum of all values is 1.0.",
+        "difficulty": "easy"
+      },
+      {
+        "question_number": 5,
+        "question_text": "If a hidden layer receives an input of -5.0 and uses a ReLU activation function, what will the output be?",
+        "options": [
+          "-5.0",
+          "0.0",
+          "1.0",
+          "5.0"
+        ],
+        "correct_answer": 1,
+        "explanation": "Because ReLU is defined as max(0, x), passing a negative number like -5.0 results in 0.0.",
+        "difficulty": "medium"
+      },
+      {
+        "question_number": 6,
+        "question_text": "What is the 'vanishing gradient problem' primarily associated with?",
+        "options": [
+          "Using GPUs with insufficient VRAM.",
+          "Using ReLU functions in the output layer.",
+          "Using Sigmoid or Tanh in deep networks, causing gradients to become nearly zero.",
+          "Learning rates that are set too high."
+        ],
+        "correct_answer": 2,
+        "explanation": "Sigmoid and Tanh functions have very flat slopes at their extremes. In deep networks, multiplying these small gradients together during backpropagation causes the error signal to 'vanish' before reaching earlier layers.",
+        "difficulty": "medium"
+      },
+      {
+        "question_number": 7,
+        "question_text": "What does the `dim` argument specify in `F.softmax(tensor, dim=1)`?",
+        "options": [
+          "The number of decimal places to round to.",
+          "The dimension along which the softmax will be computed.",
+          "The physical size of the tensor.",
+          "The batch size to process."
+        ],
+        "correct_answer": 1,
+        "explanation": "In PyTorch, `dim=1` tells the softmax function to normalize the values across the columns (typically the class scores) rather than across the batch (rows).",
+        "difficulty": "medium"
+      },
+      {
+        "question_number": 8,
+        "question_text": "If you input `[100, 200, 300]` into a Softmax function, which value will be assigned the highest probability?",
+        "options": [
+          "100",
+          "200",
+          "300",
+          "They will all be equal."
+        ],
+        "correct_answer": 2,
+        "explanation": "Softmax preserves rank order. The largest input value (300) will exponentially dominate the others and receive a probability very close to 1.0.",
+        "difficulty": "medium"
+      },
+      {
+        "question_number": 9,
+        "question_text": "What is the primary mathematical reason ReLU helps solve the vanishing gradient problem?",
+        "options": [
+          "Its derivative for positive inputs is exactly 1, preventing the gradient from shrinking when multiplied.",
+          "It maps all values to a strict range between -1 and 1.",
+          "It allows gradients to skip layers randomly.",
+          "It converts all inputs into a probability distribution."
+        ],
+        "correct_answer": 0,
+        "explanation": "For any input x > 0, the derivative (slope) of ReLU is 1. Multiplying by 1 during backpropagation prevents the gradient from shrinking as it flows backwards through multiple layers.",
+        "difficulty": "hard"
+      },
+      {
+        "question_number": 10,
+        "question_text": "In PyTorch, what is the difference between `torch.nn.ReLU()` and `torch.nn.functional.relu()`?",
+        "options": [
+          "The functional version calculates faster on the GPU.",
+          "The functional version requires manual gradient calculations.",
+          "`nn.ReLU()` is an object-oriented class instance used inside `nn.Sequential`, while `functional.relu()` is a stateless function call.",
+          "There is no functional version; it is a trick question."
+        ],
+        "correct_answer": 2,
+        "explanation": "Both apply the same math. However, `nn.ReLU()` is a module designed to be instantiated in an `__init__` block and tracked in network architecture, whereas `F.relu` is a simple Python function to be called in the `forward` method.",
+        "difficulty": "hard"
+      }
+    ]
+  },
+  {
+    "lesson_number": 4,
+    "title": "Loss Functions & Gradient Descent",
+    "slug": "loss-functions-gradient-descent",
+    "difficulty_level": "intermediate",
+    "estimated_time_minutes": 45,
+    "introduction": "So far, our network can take an input, apply mathematical weights, pass it through an activation function, and give us a prediction. But how does it actually learn? How does it know if its prediction was right or wrong? This is where Loss Functions and Optimizers enter the stage. The learning process in deep learning is essentially an exercise in minimizing error.\n\nA Loss Function measures the difference between our model's prediction and the actual correct answer (the ground truth). For continuous numbers (like predicting house prices), we use Mean Squared Error (MSE). For classification tasks, we use Cross-Entropy Loss. Once we have this 'error score', we use an Optimizer—like Stochastic Gradient Descent (SGD) or Adam—to tweak the network's weights. The Optimizer's job is to figure out which direction to adjust the weights to reduce the loss in the next pass.\n\nIn this lesson, you will learn the core PyTorch training loop. You will compute a loss, calculate gradients (the direction of steepest descent), and use an optimizer to update the model parameters. This three-step dance—zero_grad, backward, and step—is the heartbeat of every deep learning training loop.",
+    "code_example": "import torch\nimport torch.nn as nn\nimport torch.optim as optim\n\ntorch.manual_seed(42)\n\n# 1. Setup a simple model, loss function, and optimizer\nprint(\"--- 1. Setup ---\")\nmodel = nn.Linear(1, 1) # simple y = wx + b model\n\n# criterion represents the Loss Function. MSE is used for regression.\ncriterion = nn.MSELoss() \n\n# The optimizer handles weight updates. We pass it the model's parameters and a learning rate (lr).\n# Adam is generally preferred over standard SGD for modern deep learning.\noptimizer = optim.SGD(model.parameters(), lr=0.1) \n\n# 2. Toy Data (We want the model to learn the rule: y = 2x)\ninputs = torch.tensor([[1.0], [2.0], [3.0]])\ntargets = torch.tensor([[2.0], [4.0], [6.0]])\n\nprint(\"Initial State:\")\nprint(f\"Weight: {model.weight.item():.4f}, Bias: {model.bias.item():.4f}\\n\")\n\n# 3. The Standard Training Step\nprint(\"--- 2. The Training Step ---\")\n\n# Step A: Clear old gradients from the previous step\noptimizer.zero_grad()\n\n# Step B: Forward Pass (make predictions)\npredictions = model(inputs)\n\n# Step C: Calculate Loss (How wrong were we?)\nloss = criterion(predictions, targets)\nprint(f\"Loss before optimization: {loss.item():.4f}\")\n\n# Step D: Backward Pass (Calculate Gradients)\n# This computes d(Loss)/d(Weights), finding the direction to reduce error\nloss.backward()\nprint(f\"Calculated Gradient for Weight: {model.weight.grad.item():.4f}\")\n\n# Step E: Optimizer Step (Update Weights)\n# The optimizer nudges the weights based on the calculated gradients\noptimizer.step()\n\nprint(\"\\n--- 3. State After 1 Optimization Step ---\")\nprint(f\"Weight: {model.weight.item():.4f}, Bias: {model.bias.item():.4f}\")\nprint(\"Notice the weight moved closer to our target rule (Weight = 2.0)!\")",
+    "key_takeaways": [
+      "A Loss Function quantifies how far off a model's prediction is from the actual truth.",
+      "MSE is used for predicting continuous numbers, while Cross-Entropy is used for classification.",
+      "An Optimizer (like SGD or Adam) uses calculated gradients to adjust the network's weights and reduce loss.",
+      "The Learning Rate dictates how large of a step the optimizer takes; too high and it overshoots, too low and it learns too slowly.",
+      "The holy trinity of PyTorch training is: optimizer.zero_grad(), loss.backward(), and optimizer.step()."
+    ],
+    "topics": [
+      "Measuring error (MSE, Cross-Entropy)",
+      "Learning rate",
+      "Optimizers (SGD, Adam)",
+      "The concept of gradients",
+      "The standard training step"
+    ],
+    "quiz_questions": [
+      {
+        "question_number": 1,
+        "question_text": "What is the primary role of a Loss Function in deep learning?",
+        "options": [
+          "To format the input data.",
+          "To measure the error between the model's prediction and the true label.",
+          "To save the model to the hard drive.",
+          "To increase the speed of the GPU."
+        ],
+        "correct_answer": 1,
+        "explanation": "The loss function calculates a mathematical score representing how 'wrong' the model is. The goal of training is to minimize this score.",
+        "difficulty": "easy"
+      },
+      {
+        "question_number": 2,
+        "question_text": "Which loss function is standard for regression tasks (predicting a continuous number)?",
+        "options": [
+          "Cross-Entropy Loss",
+          "Mean Squared Error (MSE)",
+          "Binary Cross-Entropy (BCE)",
+          "Hinge Loss"
+        ],
+        "correct_answer": 1,
+        "explanation": "Mean Squared Error calculates the square of the difference between predictions and actual values, penalizing larger errors heavily, making it ideal for regression.",
+        "difficulty": "easy"
+      },
+      {
+        "question_number": 3,
+        "question_text": "What does an Optimizer do in a neural network?",
+        "options": [
+          "It updates the weights and biases of the network to minimize the loss.",
+          "It optimizes the image sizes in the dataset.",
+          "It deletes unused neurons from the network.",
+          "It generates new training data automatically."
+        ],
+        "correct_answer": 0,
+        "explanation": "Optimizers apply algorithms (like Gradient Descent) to adjust the network parameters (weights/biases) in the direction that reduces the loss.",
+        "difficulty": "easy"
+      },
+      {
+        "question_number": 4,
+        "question_text": "What is the 'Learning Rate'?",
+        "options": [
+          "The speed at which the CPU reads data.",
+          "A hyperparameter that controls how much to change the model in response to the estimated error each time the model weights are updated.",
+          "The percentage of data used for testing.",
+          "The time it takes for one epoch to finish."
+        ],
+        "correct_answer": 1,
+        "explanation": "The learning rate acts as a multiplier for the gradients. It determines the size of the 'steps' the optimizer takes when updating weights.",
+        "difficulty": "easy"
+      },
+      {
+        "question_number": 5,
+        "question_text": "Why must we call `optimizer.zero_grad()` before calculating new gradients?",
+        "options": [
+          "Because PyTorch accumulates gradients by default; failing to clear them means adding new gradients to the old ones.",
+          "To prevent the GPU from overheating.",
+          "Because it is required to reset the weights to zero.",
+          "To shuffle the dataset before the next batch."
+        ],
+        "correct_answer": 0,
+        "explanation": "PyTorch's design choice is to accumulate gradients on subsequent backward passes. For standard training, we must zero them out first so they don't mix with gradients from the previous batch.",
+        "difficulty": "medium"
+      },
+      {
+        "question_number": 6,
+        "question_text": "What specifically happens when you call `loss.backward()`?",
+        "options": [
+          "The optimizer updates the weights.",
+          "The data is passed backward through the network to generate a prediction.",
+          "PyTorch computes the derivative of the loss with respect to every parameter in the network (backpropagation).",
+          "The learning rate is automatically reduced."
+        ],
+        "correct_answer": 2,
+        "explanation": "This method triggers the autograd engine to calculate the gradients (partial derivatives) of the loss with respect to all tensors that have `requires_grad=True`.",
+        "difficulty": "medium"
+      },
+      {
+        "question_number": 7,
+        "question_text": "Which PyTorch command actually modifies the weights of the model?",
+        "options": [
+          "loss.backward()",
+          "optimizer.step()",
+          "model.update()",
+          "criterion(predictions, targets)"
+        ],
+        "correct_answer": 1,
+        "explanation": "While `backward()` calculates the direction and magnitude of the change, it is `optimizer.step()` that applies those changes to the actual weight tensors.",
+        "difficulty": "medium"
+      },
+      {
+        "question_number": 8,
+        "question_text": "In modern deep learning, which optimizer is widely considered the default choice due to its adaptive learning rate capabilities?",
+        "options": [
+          "Standard SGD",
+          "RMSprop",
+          "Adam",
+          "Adagrad"
+        ],
+        "correct_answer": 2,
+        "explanation": "Adam (Adaptive Moment Estimation) combines the best properties of other optimizers, automatically adapting the learning rate for each parameter individually, making it highly robust.",
+        "difficulty": "medium"
+      },
+      {
+        "question_number": 9,
+        "question_text": "If you set your learning rate too high, what is the most likely consequence during training?",
+        "options": [
+          "The model will train perfectly but take a very long time.",
+          "The loss will decrease too slowly.",
+          "The optimizer may overshoot the minimum loss, causing the loss to diverge and increase rapidly.",
+          "The model will automatically switch to a different loss function."
+        ],
+        "correct_answer": 2,
+        "explanation": "A high learning rate causes the weight updates to be massive. This can cause the optimizer to repeatedly jump over the optimal values, resulting in unstable, increasing loss.",
+        "difficulty": "hard"
+      },
+      {
+        "question_number": 10,
+        "question_text": "What is the primary difference between Mean Squared Error (MSE) and Cross-Entropy Loss mathematically in how they penalize errors?",
+        "options": [
+          "MSE penalizes based on the square of the difference, while Cross-Entropy penalizes based on the logarithm of the predicted probability.",
+          "There is no mathematical difference; they are aliases for the same function.",
+          "MSE only works with integers, while Cross-Entropy works with floats.",
+          "Cross-Entropy calculates absolute differences, while MSE calculates binary differences."
+        ],
+        "correct_answer": 0,
+        "explanation": "MSE uses the squared difference (L2 norm), effectively handling continuous distances. Cross-Entropy uses logarithmic scoring, heavily penalizing high-confidence wrong predictions in probability distributions.",
+        "difficulty": "hard"
+      }
+    ]
+  },
+  {
+    "lesson_number": 5,
+    "title": "Backpropagation & Training a Multi-Layer Perceptron (MLP)",
+    "slug": "backpropagation-training-mlp",
+    "difficulty_level": "intermediate",
+    "estimated_time_minutes": 45,
+    "introduction": "You have seen all the individual pieces: layers, activations, loss functions, and optimizers. It is time to put them all together to construct and train a complete Multi-Layer Perceptron (MLP). In PyTorch, we organize our neural network architectures using the 'nn.Module' class. This object-oriented approach allows us to define complex networks cleanly and modularly.\n\nTo train our model effectively, we must manage our data properly. Feeding an entire dataset of millions of images into a GPU at once is impossible due to memory limits. Instead, we use 'Batches'. A PyTorch DataLoader automates the process of shuffling data and splitting it into manageable mini-batches. One full pass through the entire dataset is called an 'Epoch'.\n\nIn this code example, you will build a custom neural network class, wrap dummy data in a DataLoader, and write a complete, multi-epoch training loop. You will see the magic of 'Backpropagation' in action, where the Chain Rule of calculus is applied behind the scenes to propagate error gradients from the output layer all the way back to the input layer.",
+    "code_example": "import torch\nimport torch.nn as nn\nimport torch.optim as optim\nfrom torch.utils.data import TensorDataset, DataLoader\n\ntorch.manual_seed(42)\n\n# 1. Define a custom MLP using nn.Module\nclass SimpleMLP(nn.Module):\n    def __init__(self):\n        super().__init__()\n        # Define the layers\n        self.hidden_layer = nn.Linear(in_features=2, out_features=8)\n        self.relu = nn.ReLU()\n        self.output_layer = nn.Linear(in_features=8, out_features=1)\n        self.sigmoid = nn.Sigmoid()\n\n    def forward(self, x):\n        # Define the forward pass sequence\n        x = self.hidden_layer(x)\n        x = self.relu(x)\n        x = self.output_layer(x)\n        return self.sigmoid(x) # Output between 0 and 1 for binary classification\n\n# 2. Prepare Data and DataLoader\n# Create dummy data: 100 samples, 2 features each. Target is 0 or 1.\nX = torch.rand(100, 2)\ny = torch.randint(0, 2, (100, 1), dtype=torch.float32)\n\n# TensorDataset pairs X and y. DataLoader handles batching and shuffling.\ndataset = TensorDataset(X, y)\ndataloader = DataLoader(dataset, batch_size=10, shuffle=True)\n\n# 3. Initialize Model, Loss, and Optimizer\nmodel = SimpleMLP()\ncriterion = nn.BCELoss() # Binary Cross Entropy (used with Sigmoid)\noptimizer = optim.Adam(model.parameters(), lr=0.01)\n\n# 4. The Complete Training Loop\nprint(\"--- Starting Training ---\")\nepochs = 3\n\nfor epoch in range(epochs):\n    epoch_loss = 0.0\n    \n    # Iterate through the data in batches\n    for batch_X, batch_y in dataloader:\n        # The core PyTorch training step\n        optimizer.zero_grad()           # Clear gradients\n        predictions = model(batch_X)    # Forward pass\n        loss = criterion(predictions, batch_y) # Calculate loss\n        loss.backward()                 # Backward pass (Backpropagation)\n        optimizer.step()                # Update weights\n        \n        epoch_loss += loss.item()\n    \n    # Calculate average loss for the epoch\n    avg_loss = epoch_loss / len(dataloader)\n    print(f\"Epoch {epoch+1}/{epochs} completed. Average Loss: {avg_loss:.4f}\")",
+    "key_takeaways": [
+      "Custom neural networks in PyTorch are created by inheriting from the `nn.Module` class.",
+      "The `__init__` method defines the layers, while the `forward` method defines how data passes through them.",
+      "A DataLoader manages memory efficiently by feeding data into the model in smaller 'batches' instead of all at once.",
+      "An 'Epoch' represents one complete pass over the entire training dataset.",
+      "Backpropagation uses the calculus Chain Rule to calculate gradients, propagating error backwards through the network."
+    ],
+    "topics": [
+      "The Chain Rule and Backprop",
+      "Epochs vs Batches",
+      "DataLoader and TensorDataset",
+      "Constructing an nn.Module class",
+      "Writing a full training loop"
+    ],
+    "quiz_questions": [
+      {
+        "question_number": 1,
+        "question_text": "In PyTorch, which base class must you inherit from when creating a custom neural network architecture?",
+        "options": [
+          "torch.Network",
+          "torch.nn.Model",
+          "torch.nn.Module",
+          "torch.BaseNet"
+        ],
+        "correct_answer": 2,
+        "explanation": "All custom neural networks in PyTorch should subclass `nn.Module`. This provides built-in functionality for tracking parameters, moving to GPUs, and saving models.",
+        "difficulty": "easy"
+      },
+      {
+        "question_number": 2,
+        "question_text": "What is the primary purpose of a PyTorch DataLoader?",
+        "options": [
+          "To automatically download datasets from the internet.",
+          "To batch, shuffle, and load data in parallel to feed into the model efficiently.",
+          "To save the model weights to the hard drive.",
+          "To clean and remove null values from raw data."
+        ],
+        "correct_answer": 1,
+        "explanation": "The DataLoader provides an iterable over a dataset, managing the creation of mini-batches, shuffling the data, and utilizing multi-processing for faster data loading.",
+        "difficulty": "easy"
+      },
+      {
+        "question_number": 3,
+        "question_text": "What is the definition of an 'Epoch' in deep learning training?",
+        "options": [
+          "One update of the model's weights.",
+          "One complete pass through the entire training dataset.",
+          "Passing a single batch of data through the network.",
+          "The time it takes to calculate the loss function."
+        ],
+        "correct_answer": 1,
+        "explanation": "An epoch occurs when every single sample in the training dataset has been passed forward and backward through the neural network exactly once.",
+        "difficulty": "easy"
+      },
+      {
+        "question_number": 4,
+        "question_text": "Which mathematical principle underlies the Backpropagation algorithm?",
+        "options": [
+          "The Pythagorean Theorem",
+          "The Chain Rule of Calculus",
+          "The Law of Large Numbers",
+          "The Quadratic Formula"
+        ],
+        "correct_answer": 1,
+        "explanation": "Backpropagation relies on the Chain Rule to compute the derivative of the loss with respect to each weight, traversing backward from the output to the input.",
+        "difficulty": "easy"
+      },
+      {
+        "question_number": 5,
+        "question_text": "In a custom `nn.Module`, where should you define the layers (like `nn.Linear`)?",
+        "options": [
+          "Inside the `forward()` method.",
+          "Inside the `__init__()` method.",
+          "Outside the class globally.",
+          "Inside a `train()` method."
+        ],
+        "correct_answer": 1,
+        "explanation": "Layers with state (like weights and biases) must be instantiated in the `__init__` method so they are registered as parameters of the module.",
+        "difficulty": "medium"
+      },
+      {
+        "question_number": 6,
+        "question_text": "In a custom `nn.Module`, what is the purpose of the `forward()` method?",
+        "options": [
+          "To calculate the gradients.",
+          "To define the sequence of operations applied to the input tensor.",
+          "To update the weights using the optimizer.",
+          "To shuffle the dataset."
+        ],
+        "correct_answer": 1,
+        "explanation": "The `forward` method specifies the computation performed at every call. It dictates the path the data takes through the layers defined in `__init__`.",
+        "difficulty": "medium"
+      },
+      {
+        "question_number": 7,
+        "question_text": "If you have a dataset of 1,000 images and a batch size of 100, how many times will the optimizer update the weights in one epoch?",
+        "options": [
+          "1",
+          "10",
+          "100",
+          "1000"
+        ],
+        "correct_answer": 1,
+        "explanation": "1,000 total images / batch size of 100 = 10 batches. The optimizer updates the weights once per batch, resulting in 10 updates per epoch.",
+        "difficulty": "medium"
+      },
+      {
+        "question_number": 8,
+        "question_text": "Why do we use `nn.BCELoss` (Binary Cross Entropy) instead of `nn.MSELoss` in the code example?",
+        "options": [
+          "Because BCE computes faster on CPUs.",
+          "Because the task is binary classification (outputting a probability between 0 and 1 via Sigmoid).",
+          "Because MSE cannot handle float values.",
+          "Because BCE automatically adds an extra hidden layer."
+        ],
+        "correct_answer": 1,
+        "explanation": "BCE is the standard loss function for binary classification tasks. When paired with a Sigmoid activation, it heavily penalizes confident wrong predictions.",
+        "difficulty": "medium"
+      },
+      {
+        "question_number": 9,
+        "question_text": "What happens if you forget to include `super().__init__()` in your custom `nn.Module` class?",
+        "options": [
+          "The model will train, but very slowly.",
+          "PyTorch will throw an AttributeError because internal module states (like parameter tracking) won't be initialized.",
+          "It will default to using a standard PyTorch configuration.",
+          "The model will automatically assume it is a CNN."
+        ],
+        "correct_answer": 1,
+        "explanation": "`super().__init__()` calls the constructor of the parent `nn.Module` class. Without it, PyTorch cannot register your layers or track your parameters, leading to immediate errors.",
+        "difficulty": "hard"
+      },
+      {
+        "question_number": 10,
+        "question_text": "Why do we calculate the `epoch_loss` by accumulating `loss.item()` rather than just `loss`?",
+        "options": [
+          "Because `loss.item()` converts the tensor to an integer.",
+          "Because `loss.item()` extracts the Python float from a single-value tensor, preventing memory leaks by not storing the entire computational graph in memory.",
+          "Because `loss` is encrypted, and `.item()` decrypts it.",
+          "Because the print statement cannot print tensors."
+        ],
+        "correct_answer": 1,
+        "explanation": "The variable `loss` is a PyTorch tensor attached to the computational graph. Accumulating `loss` directly keeps the entire graph for every batch in memory, causing out-of-memory errors. `.item()` extracts just the raw float value.",
+        "difficulty": "hard"
+      }
+    ]
+  },
+  {
+    "lesson_number": 6,
+    "title": "Convolutional Neural Networks (CNNs)",
+    "slug": "convolutional-neural-networks",
+    "difficulty_level": "advanced",
+    "estimated_time_minutes": 45,
+    "introduction": "While dense layers (MLPs) are powerful, they have a major flaw when dealing with images: they ignore spatial structure. If you flatten a 2D image into a 1D array to feed into a linear layer, the network loses the context that a pixel on row 1 is physically next to a pixel on row 2. Convolutional Neural Networks (CNNs) were invented specifically to solve this problem for computer vision tasks.\n\nCNNs introduce a new type of layer: the Convolutional Layer. Instead of learning a massive weight matrix for every single pixel, a CNN learns small 'filters' (or kernels)—like a 3x3 grid. These filters slide across the image, looking for specific patterns like vertical edges, textures, or shapes, regardless of where they appear in the image. This is followed by 'Max Pooling', which shrinks the image down, keeping only the most important features.\n\nIn this lesson, you will build a CNN architecture. You will learn how to handle the 4-dimensional tensors required for image data: [Batch Size, Channels, Height, Width]. You will apply convolutions, shrink the spatial dimensions with pooling, and finally 'flatten' the tensor to feed it into a standard linear layer for classification.",
+    "code_example": "import torch\nimport torch.nn as nn\n\n# 1. Define a Convolutional Neural Network\nclass SimpleCNN(nn.Module):\n    def __init__(self):\n        super().__init__()\n        # Convolutional Layer 1\n        # in_channels: 1 for grayscale, 3 for RGB.\n        # out_channels: We are asking the layer to learn 16 different filters/patterns.\n        # kernel_size: 3x3 sliding window.\n        self.conv1 = nn.Conv2d(in_channels=1, out_channels=16, kernel_size=3, padding=1)\n        self.relu = nn.ReLU()\n        \n        # Max Pooling Layer\n        # Shrinks the spatial dimensions by a factor of 2 (e.g., 28x28 becomes 14x14)\n        self.pool = nn.MaxPool2d(kernel_size=2, stride=2)\n        \n        # Fully Connected Layer (Classifier)\n        # After a 28x28 image passes through pooling, it becomes 14x14.\n        # Since we have 16 channels, the flattened size is 16 * 14 * 14 = 3136 features.\n        self.fc = nn.Linear(in_features=16 * 14 * 14, out_features=10) # 10 classes\n\n    def forward(self, x):\n        # 1. Feature Extraction: Convolution + Activation + Pooling\n        x = self.conv1(x)   # Shape: [Batch, 16, 28, 28]\n        x = self.relu(x)\n        x = self.pool(x)    # Shape: [Batch, 16, 14, 14]\n        \n        # 2. Flattening\n        # We keep the batch dimension (x.size(0)), and flatten the rest into 1D.\n        x = x.view(x.size(0), -1) # Shape: [Batch, 3136]\n        \n        # 3. Classification\n        x = self.fc(x)      # Shape: [Batch, 10]\n        return x\n\n# 2. Test the network with a dummy image tensor\nmodel = SimpleCNN()\n\n# PyTorch Image Tensor format: [Batch Size, Channels, Height, Width]\n# Let's create a batch of 2 dummy grayscale images of size 28x28\ndummy_images = torch.randn(2, 1, 28, 28)\n\nprint(\"--- CNN Processing Data ---\")\nprint(f\"Input shape: {dummy_images.shape}\")\n\n# Pass the images through the model\noutput = model(dummy_images)\n\nprint(f\"Output shape: {output.shape} -> [Batch Size, Number of Classes]\")",
+    "key_takeaways": [
+      "CNNs are specialized neural networks designed to process grid-like data, particularly images, preserving spatial relationships.",
+      "PyTorch expects image data in a 4D tensor format: [Batch Size, Channels, Height, Width].",
+      "Convolutional layers learn spatial filters (kernels) that slide over the image to detect edges, textures, and patterns.",
+      "Max Pooling is used to downsample spatial dimensions (height/width), reducing computation while retaining dominant features.",
+      "Before passing 2D feature maps into a final classification Linear layer, the data must be 'flattened' into a 1D vector."
+    ],
+    "topics": [
+      "Image data structure (Channels, Height, Width)",
+      "Convolutions and sliding windows",
+      "Filters/Kernels",
+      "Max Pooling for downsampling",
+      "Flattening spatial data"
+    ],
+    "quiz_questions": [
+      {
+        "question_number": 1,
+        "question_text": "Why are standard Multi-Layer Perceptrons (MLPs) generally poor at processing raw images?",
+        "options": [
+          "They cannot perform matrix multiplication fast enough.",
+          "They require the image to be flattened, destroying all 2D spatial context and relationships between adjacent pixels.",
+          "They only accept 10 inputs at a time.",
+          "They cannot use the ReLU activation function."
+        ],
+        "correct_answer": 1,
+        "explanation": "Flattening a 2D image into a 1D vector removes spatial geometry. A pixel above another pixel becomes arbitrarily distant in a 1D array, making spatial patterns hard to learn for an MLP.",
+        "difficulty": "easy"
+      },
+      {
+        "question_number": 2,
+        "question_text": "In PyTorch, what is the expected dimensional order for a batch of image tensors?",
+        "options": [
+          "[Height, Width, Channels, Batch]",
+          "[Batch, Height, Width, Channels]",
+          "[Batch, Channels, Height, Width]",
+          "[Channels, Batch, Height, Width]"
+        ],
+        "correct_answer": 2,
+        "explanation": "PyTorch uses the 'channels-first' convention. The exact shape required is [Batch Size, Number of Channels, Height, Width].",
+        "difficulty": "easy"
+      },
+      {
+        "question_number": 3,
+        "question_text": "What does a Convolutional Layer (nn.Conv2d) actually 'learn' during training?",
+        "options": [
+          "The pixel colors of the original image.",
+          "The numerical values of small sliding filters/kernels that detect visual features.",
+          "The exact location of the object in the image.",
+          "A random string of text."
+        ],
+        "correct_answer": 1,
+        "explanation": "The weights in a CNN are the actual values inside the sliding kernels. Through training, they adapt to detect useful patterns like edges or specific textures.",
+        "difficulty": "easy"
+      },
+      {
+        "question_number": 4,
+        "question_text": "What is the primary function of a Max Pooling layer?",
+        "options": [
+          "To increase the resolution of the image.",
+          "To add more color channels.",
+          "To reduce the spatial dimensions (height and width), keeping the most prominent features and reducing computational load.",
+          "To convert the image to grayscale."
+        ],
+        "correct_answer": 2,
+        "explanation": "Max Pooling slides a window over the feature map and takes only the maximum value in that window, effectively shrinking the map's size while retaining the strongest activations.",
+        "difficulty": "easy"
+      },
+      {
+        "question_number": 5,
+        "question_text": "If you input an RGB image into your first convolutional layer, what should the `in_channels` argument be?",
+        "options": [
+          "1",
+          "3",
+          "16",
+          "255"
+        ],
+        "correct_answer": 1,
+        "explanation": "An RGB image consists of 3 color channels (Red, Green, Blue). Therefore, the first convolutional layer must accept an input with 3 channels.",
+        "difficulty": "medium"
+      },
+      {
+        "question_number": 6,
+        "question_text": "What does the `out_channels` argument in `nn.Conv2d` dictate?",
+        "options": [
+          "The number of classes the model will predict.",
+          "The number of individual filters/kernels the layer will apply, resulting in that many feature maps.",
+          "The physical size of the output image.",
+          "The batch size."
+        ],
+        "correct_answer": 1,
+        "explanation": "Setting `out_channels=16` means the layer will learn 16 different filters. The output tensor will then contain a 'stack' of 16 feature maps.",
+        "difficulty": "medium"
+      },
+      {
+        "question_number": 7,
+        "question_text": "Why must you 'flatten' the tensor before passing it to the final `nn.Linear` layer?",
+        "options": [
+          "Because linear layers expect a 1D vector (per batch item), not a multi-dimensional spatial grid.",
+          "To remove negative numbers.",
+          "To calculate the final loss.",
+          "Because GPUs cannot process 4D tensors."
+        ],
+        "correct_answer": 0,
+        "explanation": "Linear layers perform a standard matrix multiplication. They do not understand channels, heights, or widths. They only understand a flat list of features, so the spatial dimensions must be unrolled.",
+        "difficulty": "medium"
+      },
+      {
+        "question_number": 8,
+        "question_text": "In the code `x.view(x.size(0), -1)`, what does `x.size(0)` represent?",
+        "options": [
+          "The number of channels.",
+          "The width of the image.",
+          "The batch size, which must remain separate from the flattened features.",
+          "The index of the correct class."
+        ],
+        "correct_answer": 2,
+        "explanation": "`x.size(0)` is the first dimension of the tensor, which is the batch size. We want to keep samples separate, so we flatten all other dimensions (-1) while preserving the batch dimension.",
+        "difficulty": "medium"
+      },
+      {
+        "question_number": 9,
+        "question_text": "If a feature map has a shape of [Batch=1, Channels=10, Height=8, Width=8], what will the shape be after passing through `nn.MaxPool2d(kernel_size=2, stride=2)`?",
+        "options": [
+          "[1, 10, 4, 4]",
+          "[1, 5, 8, 8]",
+          "[1, 10, 16, 16]",
+          "[1, 10, 8, 8]"
+        ],
+        "correct_answer": 0,
+        "explanation": "A 2x2 max pool with a stride of 2 halves both the height and the width. 8/2 = 4. The number of channels and batch size remain unaffected.",
+        "difficulty": "hard"
+      },
+      {
+        "question_number": 10,
+        "question_text": "Calculating flattened sizes can be tricky. If an input is `1x28x28`, passes through a convolution with `padding=0`, `kernel_size=3` (reducing size to `16x26x26`), and then a 2x2 max pool, what is the required `in_features` for the subsequent linear layer?",
+        "options": [
+          "16 * 14 * 14",
+          "16 * 13 * 13",
+          "16 * 26 * 26",
+          "28 * 28"
+        ],
+        "correct_answer": 1,
+        "explanation": "After the convolution (without padding), a 3x3 kernel shrinks a 28x28 image to 26x26. The 2x2 pool halves this to 13x13. With 16 channels, the flattened size is 16 * 13 * 13.",
+        "difficulty": "hard"
+      }
+    ]
+  },
+  {
+    "lesson_number": 7,
+    "title": "Overfitting, Regularization & Model Evaluation",
+    "slug": "overfitting-regularization-evaluation",
+    "difficulty_level": "advanced",
+    "estimated_time_minutes": 45,
+    "introduction": "A common trap in deep learning is creating a model that memorizes the training data perfectly, but fails miserably when shown new, unseen data. This phenomenon is called 'Overfitting'. It is equivalent to a student memorizing the exact answers to a practice test without understanding the underlying concepts, only to fail the final exam. \n\nTo combat overfitting, we rely on 'Regularization' techniques. One powerful method is 'Dropout', where we randomly turn off a percentage of neurons during training, forcing the network to learn robust, redundant pathways. Another is 'Weight Decay' (L2 Regularization), which penalizes the model for having excessively large weights. Furthermore, it is critical to split your data into Training, Validation, and Testing sets to honestly assess your model's true generalization capabilities.\n\nIn this final lesson, you will learn how to implement these regularization techniques in PyTorch. More importantly, you will learn how to write a proper evaluation loop. During evaluation, we must explicitly tell PyTorch to stop tracking gradients using `torch.no_grad()`, and we must toggle our model into `.eval()` mode so that layers like Dropout behave correctly when predicting on real data.",
+    "code_example": "import torch\nimport torch.nn as nn\nimport torch.optim as optim\n\n# 1. Define a model incorporating Dropout Regularization\nclass RegularizedNet(nn.Module):\n    def __init__(self):\n        super().__init__()\n        self.layer1 = nn.Linear(10, 20)\n        \n        # Dropout Layer: Randomly zeroes out 50% of the elements during training\n        # This prevents neurons from over-relying on specific inputs\n        self.dropout = nn.Dropout(p=0.5)\n        \n        self.layer2 = nn.Linear(20, 2)\n\n    def forward(self, x):\n        x = torch.relu(self.layer1(x))\n        x = self.dropout(x) # Apply dropout after the activation\n        return self.layer2(x)\n\nmodel = RegularizedNet()\n\n# 2. Optimizer with Weight Decay (L2 Regularization)\n# weight_decay penalizes large weights, keeping the model simpler\noptimizer = optim.Adam(model.parameters(), lr=0.001, weight_decay=1e-4)\n\n# 3. Simulate Data\ndummy_input = torch.randn(5, 10)\n\n# 4. Train vs. Eval Modes\nprint(\"--- Train Mode ---\")\n# .train() is the default. Dropout IS active.\nmodel.train()\ntrain_out1 = model(dummy_input)\ntrain_out2 = model(dummy_input)\nprint(\"Notice that outputs differ on the exact same input due to Dropout:\")\nprint(f\"Pass 1: {train_out1[0].detach().numpy()}\")\nprint(f\"Pass 2: {train_out2[0].detach().numpy()}\\n\")\n\nprint(\"--- Evaluation Mode ---\")\n# .eval() disables Dropout (and affects Batch Norm). Must use before inference!\nmodel.eval()\n\n# 5. Clean Evaluation Loop\n# torch.no_grad() disables gradient tracking. \n# This saves massive amounts of memory and speeds up computation during inference.\nwith torch.no_grad():\n    eval_out1 = model(dummy_input)\n    eval_out2 = model(dummy_input)\n    \n    print(\"In eval mode, outputs are deterministic (Dropout is off):\")\n    print(f\"Pass 1: {eval_out1[0].numpy()}\")\n    print(f\"Pass 2: {eval_out2[0].numpy()}\")\n    \n    print(f\"\\nDoes the output require gradients? {eval_out1.requires_grad}\")",
+    "key_takeaways": [
+      "Overfitting occurs when a model performs exceptionally well on training data but poorly on unseen validation/test data.",
+      "Dropout is a regularization technique that randomly disables neurons during training, forcing the network to learn robust features.",
+      "Weight Decay (L2 Regularization) is applied within the Optimizer to penalize large, complex weights.",
+      "Always call `model.eval()` before making predictions to ensure layers like Dropout and BatchNorm behave correctly for inference.",
+      "Always wrap your evaluation or testing code inside a `with torch.no_grad():` block to disable memory-heavy gradient tracking."
+    ],
+    "topics": [
+      "Train/Validation/Test splits",
+      "Identifying overfitting",
+      "Dropout layers",
+      "Weight Decay (L2 Regularization)",
+      "model .train() vs .eval() modes"
+    ],
+    "quiz_questions": [
+      {
+        "question_number": 1,
+        "question_text": "What is 'Overfitting' in the context of deep learning?",
+        "options": [
+          "When a model's file size is too large for the hard drive.",
+          "When a model memorizes the training data but fails to generalize to new, unseen data.",
+          "When a model takes too many epochs to finish training.",
+          "When a model has too few layers to solve a problem."
+        ],
+        "correct_answer": 1,
+        "explanation": "Overfitting happens when a model learns the noise and exact details of the training dataset to the point where it negatively impacts the performance on new data.",
+        "difficulty": "easy"
+      },
+      {
+        "question_number": 2,
+        "question_text": "What is the purpose of splitting data into Training, Validation, and Test sets?",
+        "options": [
+          "To use more RAM on the computer.",
+          "To evaluate the model on data it hasn't seen during training, ensuring it is actually generalizing rather than memorizing.",
+          "To speed up the training process by using less data.",
+          "To force the use of multiple GPUs."
+        ],
+        "correct_answer": 1,
+        "explanation": "The split allows us to train on one chunk, tune hyperparameters based on the validation chunk, and finally test true generalization on the completely unseen test chunk.",
+        "difficulty": "easy"
+      },
+      {
+        "question_number": 3,
+        "question_text": "How does a Dropout layer help prevent overfitting?",
+        "options": [
+          "It randomly turns off a percentage of neurons during training, preventing the network from relying too heavily on specific pathways.",
+          "It drops the dataset size by half.",
+          "It permanently deletes weights that are close to zero.",
+          "It forces the model to stop training early."
+        ],
+        "correct_answer": 0,
+        "explanation": "By randomly 'dropping out' neurons on each forward pass, the network cannot rely on any single feature. It is forced to learn redundant, more robust representations.",
+        "difficulty": "easy"
+      },
+      {
+        "question_number": 4,
+        "question_text": "Why must you explicitly call `model.eval()` before evaluating your model?",
+        "options": [
+          "It tells PyTorch to calculate the final accuracy percentage.",
+          "It switches off training-specific behaviors like Dropout, ensuring the model uses its full capacity for prediction.",
+          "It converts the model's weights into integers.",
+          "It saves the model automatically."
+        ],
+        "correct_answer": 1,
+        "explanation": "`model.eval()` toggles the behavior of specific layers. For example, it turns off Dropout so all neurons are active, and changes BatchNorm to use running statistics instead of batch statistics.",
+        "difficulty": "easy"
+      },
+      {
+        "question_number": 5,
+        "question_text": "What does Weight Decay (L2 Regularization) do?",
+        "options": [
+          "It makes the weights decay to zero over time, destroying the model.",
+          "It penalizes large weights mathematically in the optimizer, pushing the model toward simpler, smoother solutions.",
+          "It reduces the learning rate automatically as training progresses.",
+          "It deletes the bias terms."
+        ],
+        "correct_answer": 1,
+        "explanation": "Weight decay adds a small penalty proportional to the size of the weights to the loss. This discourages the network from assigning massive importance to a single feature, reducing overfitting.",
+        "difficulty": "medium"
+      },
+      {
+        "question_number": 6,
+        "question_text": "What is the primary benefit of wrapping your evaluation loop in `with torch.no_grad():`?",
+        "options": [
+          "It improves the model's accuracy by 5%.",
+          "It significantly reduces memory consumption and speeds up computation because PyTorch stops tracking operations for backpropagation.",
+          "It automatically prints the loss.",
+          "It ensures the gradients are updated smoothly."
+        ],
+        "correct_answer": 1,
+        "explanation": "By default, PyTorch builds a computational graph to calculate gradients. During evaluation, we don't backpropagate, so building this graph wastes memory and time. `no_grad()` prevents this.",
+        "difficulty": "medium"
+      },
+      {
+        "question_number": 7,
+        "question_text": "If you observe that your training loss is continuing to decrease, but your validation loss starts to increase rapidly, what is happening?",
+        "options": [
+          "The model is Underfitting.",
+          "The model is Overfitting.",
+          "The learning rate is too low.",
+          "The data is corrupted."
+        ],
+        "correct_answer": 1,
+        "explanation": "This is the classic signature of overfitting. The model is getting better and better at memorizing the training data (low training loss), but losing its ability to generalize to unseen data (rising validation loss).",
+        "difficulty": "medium"
+      },
+      {
+        "question_number": 8,
+        "question_text": "What happens if you leave `model.train()` active while making predictions in production?",
+        "options": [
+          "The model will crash.",
+          "Nothing, it behaves identically to `model.eval()`.",
+          "Dropout will remain active, causing the model to give slightly different, inconsistent predictions for the exact same input.",
+          "The model will automatically retrain itself on the new data."
+        ],
+        "correct_answer": 2,
+        "explanation": "If `model.train()` is active, layers like Dropout will continue dropping neurons randomly. This leads to non-deterministic, noisy outputs, which is highly undesirable in production inference.",
+        "difficulty": "medium"
+      },
+      {
+        "question_number": 9,
+        "question_text": "Where is Weight Decay specified when coding a PyTorch pipeline?",
+        "options": [
+          "Inside the `nn.Linear` layer definition.",
+          "As an argument to the loss function `criterion = nn.MSELoss(weight_decay=...)`.",
+          "As an argument passed into the Optimizer `optim.Adam(..., weight_decay=...)`.",
+          "Inside the `model.train()` function."
+        ],
+        "correct_answer": 2,
+        "explanation": "In PyTorch, L2 Regularization (Weight Decay) is conveniently implemented as an argument within the Optimizer classes (like SGD or Adam).",
+        "difficulty": "hard"
+      },
+      {
+        "question_number": 10,
+        "question_text": "What is the relationship between Dropout during training versus inference?",
+        "options": [
+          "During inference, the weights are scaled by the dropout probability to compensate for all neurons being active.",
+          "Dropout is applied twice as much during inference.",
+          "During inference, the removed neurons are replaced with random noise.",
+          "There is no difference; dropout operates the exact same way in both phases."
+        ],
+        "correct_answer": 0,
+        "explanation": "Because all neurons are turned on during inference, the total signal passing through the network is larger than during training. PyTorch handles this under the hood by automatically scaling the weights by the dropout probability so the expected sum remains the same.",
+        "difficulty": "hard"
+      }
+    ]
+  }
+]

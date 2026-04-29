@@ -97,14 +97,15 @@ const Results = () => {
         </div>
       </Card>
 
-      {/* Revision Notice */}
-      {scorePercentage < 70 && (
-        <div className="p-4 bg-destructive/10 border border-destructive/20 rounded-lg">
-          <p className="text-destructive font-medium flex items-center justify-center">
-            ⚠️ You scored below the 70% passing threshold. This lesson has not been marked as completed. Please revise the material and try again.
-          </p>
-        </div>
-      )}
+      {/* Lesson Completion Notice */}
+      <div className={`p-4 rounded-lg border ${scorePercentage >= 70 ? 'bg-success/10 border-success/20' : 'bg-secondary/10 border-secondary/20'}`}>
+        <p className={`font-medium flex items-center justify-center gap-2 ${scorePercentage >= 70 ? 'text-success' : 'text-secondary'}`}>
+          {scorePercentage >= 70 ? '✅' : '📚'}
+          {scorePercentage >= 70
+            ? 'Lesson marked as completed! You can retake anytime to improve your score.'
+            : 'Lesson marked as completed. Retake the quiz to improve your score!'}
+        </p>
+      </div>
 
       {/* Stats Grid */}
       <div className="grid gap-6 md:grid-cols-3">
@@ -224,21 +225,12 @@ const Results = () => {
             Back to Subjects
           </Button>
         </Link>
-        {scorePercentage >= 70 ? (
-          <Link to={`/subjects`}>
-            <Button size="lg" className="bg-gradient-to-r from-success to-success/80 text-primary-foreground hover:opacity-90 transition-opacity w-full sm:w-auto">
-              Proceed to Next Lesson
-              <ArrowRight className="ml-2 h-4 w-4" />
-            </Button>
-          </Link>
-        ) : (
-          <Link to={`/quiz/${bundleId}`}>
-            <Button size="lg" className="bg-gradient-to-r from-primary to-primary-glow hover:opacity-90 transition-opacity w-full sm:w-auto">
-              Try Again
-              <ArrowRight className="ml-2 h-4 w-4" />
-            </Button>
-          </Link>
-        )}
+        <Link to={`/quiz/${bundleId}`}>
+          <Button size="lg" className="bg-gradient-to-r from-primary to-primary-glow hover:opacity-90 transition-opacity w-full sm:w-auto">
+            {scorePercentage >= 70 ? 'Retake Quiz' : 'Try Again'}
+            <ArrowRight className="ml-2 h-4 w-4" />
+          </Button>
+        </Link>
       </div>
     </div>
   );

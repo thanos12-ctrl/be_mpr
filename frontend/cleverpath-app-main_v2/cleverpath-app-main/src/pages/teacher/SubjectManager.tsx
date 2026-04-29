@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { Plus, Edit, Trash2, Eye } from 'lucide-react';
-import { fetchSubjects, createSubject, updateSubject, Subject } from '@/services/api';
+import { Plus, Edit, Trash2, Users, BookOpen } from 'lucide-react';
+import { fetchAdminSubjects, createSubject, updateSubject, deleteSubject, fetchLessons, getTeacherStudents, Subject, Lesson, StudentProgress } from '@/services/api';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -14,14 +14,16 @@ import {
     DialogTitle,
 } from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
+import { Badge } from '@/components/ui/badge';
 import { toast } from 'sonner';
 
 const SubjectManager = () => {
     const [subjects, setSubjects] = useState<Subject[]>([]);
+    const [lessons, setLessons] = useState<Lesson[]>([]);
+    const [students, setStudents] = useState<StudentProgress[]>([]);
     const [loading, setLoading] = useState(true);
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
-    const [isViewDialogOpen, setIsViewDialogOpen] = useState(false);
     const [selectedSubject, setSelectedSubject] = useState<Subject | null>(null);
     const [formData, setFormData] = useState({
         subject_id: '',
@@ -32,16 +34,22 @@ const SubjectManager = () => {
     const [submitting, setSubmitting] = useState(false);
 
     useEffect(() => {
-        loadSubjects();
+        loadData();
     }, []);
 
-    const loadSubjects = async () => {
+    const loadData = async () => {
         try {
-            const data = await fetchSubjects();
-            setSubjects(data);
+            const [subjectsData, lessonsData, studentsData] = await Promise.all([
+                fetchAdminSubjects(),
+                fetchLessons(),
+                getTeacherStudents()
+            ]);
+            setSubjects(subjectsData);
+            setLessons(lessonsData);
+            setStudents(studentsData);
         } catch (error) {
-            console.error('Failed to load subjects:', error);
-            toast.error('Failed to load subjects');
+            console.error('Failed to load data:', error);
+            toast.error('Failed to load subjects data');
         } finally {
             setLoading(false);
         }
@@ -67,18 +75,13 @@ const SubjectManager = () => {
             toast.success('Subject created successfully!');
             setIsDialogOpen(false);
             setFormData({ subject_id: '', name: '', description: '', icon: '📚' });
-            loadSubjects();
+            loadData();
         } catch (error: any) {
             console.error('Failed to create subject:', error);
             toast.error(error.response?.data?.detail || 'Failed to create subject');
         } finally {
             setSubmitting(false);
         }
-    };
-
-    const handleView = (subject: Subject) => {
-        setSelectedSubject(subject);
-        setIsViewDialogOpen(true);
     };
 
     const handleEdit = (subject: Subject) => {
@@ -112,12 +115,28 @@ const SubjectManager = () => {
             setIsEditDialogOpen(false);
             setFormData({ subject_id: '', name: '', description: '', icon: '📚' });
             setSelectedSubject(null);
-            loadSubjects();
+            loadData();
         } catch (error: any) {
             console.error('Failed to update subject:', error);
             toast.error(error.response?.data?.detail || 'Failed to update subject');
         } finally {
             setSubmitting(false);
+        }
+    };
+
+    const handleDelete = async (subject: Subject) => {
+        if (!confirm(`Are you sure you want to delete "${subject.name}"? This action cannot be undone.`)) {
+            return;
+        }
+        
+        try {
+            // Note: The API must support deleteSubject, assuming it does
+            await deleteSubject(subject.id);
+            toast.success('Subject deleted successfully!');
+            loadData();
+        } catch (error: any) {
+            console.error('Failed to delete subject:', error);
+            toast.error('Failed to delete subject');
         }
     };
 
@@ -135,29 +154,27 @@ const SubjectManager = () => {
     }
 
     return (
-        <div className="max-w-6xl mx-auto space-y-8">
-            {/* Header */}
+        <div className="space-y-8">
             <div className="flex items-center justify-between">
                 <div>
-                    <h1 className="text-3xl font-bold">Manage Subjects</h1>
-                    <p className="text-muted-foreground mt-2">Create and organize your course subjects</p>
+                    <h1 className="text-3xl font-bold tracking-tight">My Published Subjects</h1>
+                    <p className="text-muted-foreground mt-1">Manage and monitor your curriculum offerings.</p>
                 </div>
-                <Button onClick={() => setIsDialogOpen(true)} className="bg-gradient-to-r from-primary to-primary-glow">
+                <Button onClick={() => setIsDialogOpen(true)} className="bg-primary hover:bg-primary/90 text-primary-foreground">
                     <Plus className="h-4 w-4 mr-2" />
-                    Create Subject
+                    Create New Subject
                 </Button>
             </div>
 
-            {/* Subjects Grid */}
             {subjects.length === 0 ? (
                 <Card className="p-12 text-center bg-card border-border">
                     <div className="max-w-md mx-auto">
                         <div className="text-6xl mb-4">📚</div>
                         <h3 className="text-xl font-semibold mb-2">No subjects yet</h3>
                         <p className="text-muted-foreground mb-6">
-                            Get started by creating your first subject. Subjects are the main categories for your lessons.
+                            Get started by creating your first subject.
                         </p>
-                        <Button onClick={() => setIsDialogOpen(true)} className="bg-gradient-to-r from-primary to-primary-glow">
+                        <Button onClick={() => setIsDialogOpen(true)} className="bg-primary text-primary-foreground">
                             <Plus className="h-4 w-4 mr-2" />
                             Create Your First Subject
                         </Button>
@@ -165,37 +182,58 @@ const SubjectManager = () => {
                 </Card>
             ) : (
                 <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                    {subjects.map((subject) => (
-                        <Card key={subject.id} className="p-6 bg-card border-border hover:shadow-[var(--shadow-elevated)] transition-all">
-                            <div className="space-y-4">
-                                <div className="flex items-start justify-between">
-                                    <div className="text-4xl">{subject.icon}</div>
-                                    <div className={`px-2 py-1 rounded text-xs ${subject.is_published
-                                        ? 'bg-success/10 text-success'
-                                        : 'bg-muted text-muted-foreground'
-                                        }`}>
-                                        {subject.is_published ? 'Published' : 'Draft'}
+                    {subjects.map((subject) => {
+                        const subjectLessonsCount = lessons.filter(l => l.subject_id === subject.id).length;
+                        const studentCount = students.filter(s => s.subject_id === subject.id).length;
+                        
+                        return (
+                            <Card key={subject.id} className="overflow-hidden bg-card border-border flex flex-col">
+                                <div className="h-40 bg-gradient-to-br from-primary/20 to-accent/20 relative flex items-center justify-center">
+                                    <div className="text-6xl">{subject.icon}</div>
+                                    <div className="absolute top-3 right-3">
+                                        <Badge variant="secondary" className={`bg-background/80 backdrop-blur-sm ${subject.is_published ? 'text-success' : 'text-muted-foreground'}`}>
+                                            <span className={`w-2 h-2 rounded-full mr-2 ${subject.is_published ? 'bg-success' : 'bg-muted-foreground'}`}></span>
+                                            {subject.is_published ? 'Active' : 'Draft'}
+                                        </Badge>
                                     </div>
                                 </div>
 
-                                <div>
-                                    <h3 className="font-semibold text-lg mb-1">{subject.name}</h3>
-                                    <p className="text-sm text-muted-foreground line-clamp-2">{subject.description}</p>
-                                </div>
+                                <div className="p-5 flex-1 flex flex-col">
+                                    <h3 className="font-semibold text-xl mb-3 line-clamp-1">{subject.name}</h3>
+                                    
+                                    <div className="flex flex-wrap gap-2 mb-4">
+                                        <Badge variant="secondary" className="bg-primary/10 text-primary hover:bg-primary/20 font-normal">
+                                            {subject.name.includes('Data') ? 'Intermediate' : 'Beginner'}
+                                        </Badge>
+                                        <Badge variant="secondary" className="bg-secondary/10 text-secondary hover:bg-secondary/20 font-normal">
+                                            Core Tech
+                                        </Badge>
+                                    </div>
 
-                                <div className="flex items-center space-x-2 pt-4 border-t border-border">
-                                    <Button variant="outline" size="sm" className="flex-1" onClick={() => handleView(subject)}>
-                                        <Eye className="h-4 w-4 mr-1" />
-                                        View
-                                    </Button>
-                                    <Button variant="outline" size="sm" className="flex-1" onClick={() => handleEdit(subject)}>
-                                        <Edit className="h-4 w-4 mr-1" />
-                                        Edit
-                                    </Button>
+                                    <div className="flex items-center justify-between mt-auto pt-4 border-t border-border text-sm text-muted-foreground mb-4">
+                                        <div className="flex items-center space-x-1">
+                                            <Users className="h-4 w-4" />
+                                            <span>{studentCount} Students</span>
+                                        </div>
+                                        <div className="flex items-center space-x-1">
+                                            <BookOpen className="h-4 w-4" />
+                                            <span>{subjectLessonsCount} Lessons</span>
+                                        </div>
+                                    </div>
+
+                                    <div className="flex items-center space-x-2">
+                                        <Button variant="outline" className="flex-1 bg-primary/5 text-primary hover:bg-primary/10 border-primary/20" onClick={() => handleEdit(subject)}>
+                                            <Edit className="h-4 w-4 mr-2" />
+                                            Edit
+                                        </Button>
+                                        <Button variant="outline" size="icon" className="text-destructive hover:bg-destructive/10 border-destructive/20 hover:text-destructive" onClick={() => handleDelete(subject)}>
+                                            <Trash2 className="h-4 w-4" />
+                                        </Button>
+                                    </div>
                                 </div>
-                            </div>
-                        </Card>
-                    ))}
+                            </Card>
+                        );
+                    })}
                 </div>
             )}
 
@@ -278,69 +316,11 @@ const SubjectManager = () => {
                             <Button type="button" variant="outline" onClick={() => setIsDialogOpen(false)}>
                                 Cancel
                             </Button>
-                            <Button type="submit" disabled={submitting} className="bg-gradient-to-r from-primary to-primary-glow">
+                            <Button type="submit" disabled={submitting} className="bg-primary">
                                 {submitting ? 'Creating...' : 'Create Subject'}
                             </Button>
                         </DialogFooter>
                     </form>
-                </DialogContent>
-            </Dialog>
-
-            {/* View Subject Dialog */}
-            <Dialog open={isViewDialogOpen} onOpenChange={setIsViewDialogOpen}>
-                <DialogContent className="sm:max-w-[500px]">
-                    <DialogHeader>
-                        <DialogTitle>Subject Details</DialogTitle>
-                        <DialogDescription>
-                            View subject information
-                        </DialogDescription>
-                    </DialogHeader>
-
-                    {selectedSubject && (
-                        <div className="space-y-4 py-4">
-                            <div className="flex items-center space-x-4">
-                                <div className="text-5xl">{selectedSubject.icon}</div>
-                                <div className="flex-1">
-                                    <h3 className="text-xl font-semibold">{selectedSubject.name}</h3>
-                                    <p className="text-sm text-muted-foreground">ID: {selectedSubject.subject_id}</p>
-                                </div>
-                                <div className={`px-3 py-1 rounded text-sm ${selectedSubject.is_published
-                                    ? 'bg-success/10 text-success'
-                                    : 'bg-muted text-muted-foreground'
-                                    }`}>
-                                    {selectedSubject.is_published ? 'Published' : 'Draft'}
-                                </div>
-                            </div>
-
-                            <div className="space-y-2">
-                                <Label>Description</Label>
-                                <p className="text-sm text-muted-foreground">{selectedSubject.description}</p>
-                            </div>
-
-                            <div className="grid grid-cols-2 gap-4 pt-4 border-t border-border">
-                                <div>
-                                    <Label className="text-xs text-muted-foreground">Created At</Label>
-                                    <p className="text-sm">{new Date(selectedSubject.created_at).toLocaleDateString()}</p>
-                                </div>
-                                <div>
-                                    <Label className="text-xs text-muted-foreground">Status</Label>
-                                    <p className="text-sm">{selectedSubject.is_published ? 'Published' : 'Draft'}</p>
-                                </div>
-                            </div>
-                        </div>
-                    )}
-
-                    <DialogFooter>
-                        <Button variant="outline" onClick={() => setIsViewDialogOpen(false)}>
-                            Close
-                        </Button>
-                        <Button onClick={() => {
-                            setIsViewDialogOpen(false);
-                            if (selectedSubject) handleEdit(selectedSubject);
-                        }}>
-                            Edit Subject
-                        </Button>
-                    </DialogFooter>
                 </DialogContent>
             </Dialog>
 
@@ -427,7 +407,7 @@ const SubjectManager = () => {
                             }}>
                                 Cancel
                             </Button>
-                            <Button type="submit" disabled={submitting} className="bg-gradient-to-r from-primary to-primary-glow">
+                            <Button type="submit" disabled={submitting} className="bg-primary">
                                 {submitting ? 'Updating...' : 'Update Subject'}
                             </Button>
                         </DialogFooter>

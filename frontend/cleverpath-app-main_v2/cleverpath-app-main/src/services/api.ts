@@ -222,9 +222,25 @@ export const fetchSubjects = async (): Promise<Subject[]> => {
   return response.data;
 };
 
+export const fetchAdminSubjects = async (): Promise<Subject[]> => {
+  const response = await api.get('/api/admin/subjects');
+  return response.data;
+};
+
 export const fetchLessons = async (subjectId?: string): Promise<Lesson[]> => {
   const params = subjectId ? { subject_id: subjectId } : {};
   const response = await api.get('/api/lessons', { params });
+  return response.data;
+};
+
+export interface LessonProgressSummary {
+  lesson_id: string;
+  is_completed: boolean;
+  completed_at: string | null;
+}
+
+export const fetchLessonProgress = async (): Promise<LessonProgressSummary[]> => {
+  const response = await api.get('/api/progress/lessons');
   return response.data;
 };
 
@@ -245,6 +261,12 @@ export const updateSubject = async (id: string, data: {
   return response.data;
 };
 
+// Delete a subject
+export const deleteSubject = async (id: string): Promise<{ message: string }> => {
+  const response = await api.delete(`/api/admin/subjects/${id}`);
+  return response.data;
+};
+
 // Create a new lesson
 export const createLesson = async (lessonData: any): Promise<Lesson> => {
   const response = await api.post('/api/lessons', lessonData);
@@ -253,6 +275,16 @@ export const createLesson = async (lessonData: any): Promise<Lesson> => {
 
 export const fetchLessonById = async (lessonId: string): Promise<Lesson> => {
   const response = await api.get(`/api/lessons/${lessonId}`);
+  return response.data;
+};
+
+export const updateLesson = async (lessonId: string, lessonData: any): Promise<Lesson> => {
+  const response = await api.put(`/api/lessons/${lessonId}`, lessonData);
+  return response.data;
+};
+
+export const deleteLesson = async (lessonId: string): Promise<{ message: string }> => {
+  const response = await api.delete(`/api/lessons/${lessonId}`);
   return response.data;
 };
 
@@ -451,6 +483,18 @@ export interface QuestionResponse {
 // Create a new quiz
 export const createQuiz = async (quizData: QuizCreate): Promise<QuizResponse> => {
   const response = await api.post('/api/admin/quizzes', quizData);
+  return response.data;
+};
+
+// Update an existing quiz
+export const updateQuiz = async (quizId: string, data: {
+  title?: string;
+  description?: string;
+  default_num_questions?: number;
+  passing_score?: number;
+  allow_rl_adaptation?: boolean;
+}): Promise<QuizResponse> => {
+  const response = await api.put(`/api/admin/quizzes/${quizId}`, data);
   return response.data;
 };
 

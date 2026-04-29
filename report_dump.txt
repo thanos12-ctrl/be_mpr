@@ -1,0 +1,228 @@
+[1] Reinforcement Learning for Personalized Student Support in                     Academics
+[3] Submitted in partial fulfillment of the requirements of the degree of
+[5] BACHELOR OF ENGINEERING
+[7] In
+[9] COMPUTER ENGINEERING
+[11] By
+[15] Manish Ghindwani 2203049 
+[16] Vikas Ghindwani 2104049 
+[17] Hiren Khatri 2203083 
+[18] Sourav Mitrani 2203111 
+[20] Supervisor:
+[24] Rupali Sarode
+[25] (Professor, Department of Computer Engineering, TSEC)
+[27] Computer Engineering Department Thadomal Shahani Engineering College University of Mumbai
+[28] 2024 - 2025
+[31] CERTIFICATE
+[33] This is to certify that the project entitled “Reinforcement Learning for Personalized Student Support in Academics” is a bonafide work of
+[36] 			2203049.	Manish Ghindwani
+[38] 			2104049.	Vikas Ghindwani
+[40] 			2203083. 	Hiren Khatri
+[42] 			2203111.	Sourav Mitrani
+[45] Submitted to the University of Mumbai in partial fulfillment of the requirement for the award of the degree of “BACHELOR OF ENGINEERING” in “COMPUTER ENGINEERING”.
+[50] Name and sign   Rupali Sarode
+[56]        Name and sign		Name and sign
+[57]    Tanuja Sarode	Dr. G T Thampi
+[59] Project Report Approval for B.E
+[62] Project report entitled Reinforcement Learning for Personalized Student Support in Academics by
+[64] 			2203049.	Manish Ghindwani
+[66] 			2104049.	Vikas Ghindwani
+[68] 			2203083. 	Hiren Khatri
+[70] 			2203111.	Sourav Mitrani
+[72] is approved for the degree of “BACHELOR OF ENGINEERING” in “COMPUTER ENGINEERING”.
+[76] Examiners
+[79] 1. 	
+[84] 2. 	
+[89] Date:
+[91] Place:
+[93] Declaration
+[95] I declare that this written submission represents our ideas in our own words and where others' ideas or words have been included, we have adequately cited and referenced the original sources. We also declare that we have adhered to all principles of academic honesty and integrity and   have not     misrepresented or   fabricated    or   falsified    any   idea/data/fact/source in   our   submission.   We understand that any violation of the above will be cause for disciplinary action by the Institute and can also evoke penal action from the sources which have thus not been properly cited or from whom proper permission has not been taken when needed.
+[98] 1)	____________________
+[99] (Signature)
+[100] Manish Ghindwani 2203049	
+[102] 2)	____________________
+[103] (Signature)
+[104] Vikas Ghindwani 2104049 
+[106] 3)	____________________
+[107] (Signature)
+[108] Hiren Khatri 2203083 
+[110] 4)	____________________
+[111] (Signature)
+[112] Sourav Mitrani 2203111 
+[122] Date:
+[124] Abstract
+[127] The rapid expansion of Massive Open Online Courses (MOOCs) has made education widely accessible, yet their prevalent "one-size-fits-all" structure fails to address individual learner needs. This research gap highlights the demand for more dynamic and responsive educational systems. This project proposes an intelligent tutoring platform that leverages artificial intelligence to bridge this personalization gap. We employ a Reinforcement Learning (RL) model to create truly adaptive learning journeys for students. The RL agent analyzes real-time user interactions, such as answer correctness and time spent, to construct a comprehensive state representation of the student's knowledge. Based on this state, the agent's policy determines the optimal subsequent action, whether to introduce new material, recommend revision, or assign a quiz. The system's reward function is designed to incentivize actions that lead to efficient mastery and long-term knowledge retention. By learning an effective teaching strategy from data, the platform moves beyond the static curricula of existing systems. The ultimate goal is to develop a scalable solution that acts as a personal AI tutor for every learner, making education more engaging, effective, and tailored to individual learning paces and styles. This work demonstrates a practical application of RL to adapt educational content, addressing a key limitation in the worldwide digital classroom.
+[159] List of Figures
+[193] ii
+[194] List of Tables
+[234] iii
+[235] Chapter 1
+[236]  Introduction
+[237] 1.1 Introduction
+[238] The field of digital education is undergoing a significant transformation, with the global online education market experiencing unprecedented growth. Projections indicate a market value of over $880 billion by 2032, expanding at a notable annual rate [2]. This digital revolution in learning presents immense opportunities to reshape how knowledge is delivered and acquired, not only by making education more accessible across geography and time, but also by enabling data-driven teaching strategies that were impossible in conventional classrooms. However, despite this rapid expansion, a critical deficiency persists within the majority of existing e-learning platforms. Most of these systems are built on traditional, outdated pedagogical models that offer a static, one-size-fits-all curriculum and rely heavily on fixed sequences of lessons, generic quizzes, and uniform pacing. This approach fundamentally fails to acknowledge the diverse and individual nature of learning. Each student possesses a unique pace, distinct learning style, and varying levels of prior knowledge, which are largely ignored by rigid, linear educational paths. As a result, advanced learners are often under-challenged while struggling learners are pushed forward without sufficient reinforcement, causing disengagement, frustration, and weak long-term retention. 
+[239] This creates a significant “personalization gap,” where the full potential of digital education to cater to individual learners remains largely untapped, leading to inefficiencies and suboptimal learning outcomes. To close this gap, modern systems must move beyond passive content delivery toward adaptive learning architectures that continuously model student performance, estimate concept mastery, and dynamically adjust question difficulty and learning flow in real time. Integrating intelligent feedback loops, progress analytics, and instructor-facing intervention tools can transform digital platforms from static repositories into responsive learning ecosystems. 
+[240] In this emerging paradigm, personalization is no longer a premium feature but a foundational requirement for improving engagement, learning efficiency, and measurable academic success at scale.
+[241] 1.2 Aims & Objective
+[242] The primary aim of this project is to bridge the critical personalization gap in the current e-learning landscape by replacing static instruction with intelligent adaptation. We propose to develop an AI-driven adaptive learning platform that creates genuinely personalized educational journeys for every student, rather than forcing all learners through the same fixed sequence of lessons and assessments.
+[243] Our system is designed to move beyond the constraints of traditional, linear curricula and provide a dynamic learning environment that continuously responds to learner behavior in real time. By analyzing performance patterns, pace, response confidence, and concept-level mastery signals, the platform will tailor both what the student learns next and how that content is delivered. In doing so, the project aims to improve not only short-term quiz performance but also deeper understanding, sustained engagement, and long-term academic progress.
+[244] The core objectives to achieve this aim are:
+[245] To design and build an intelligent system that accurately understands and models each student’s individual learning pace, current knowledge state, and evolving mastery profile over time.
+[246] To implement a Reinforcement Learning (RL) model capable of identifying specific knowledge gaps, conceptual misunderstandings, and difficulty mismatches as a student interacts with the platform.
+[247] To develop a mechanism that dynamically guides each learner along the most efficient and effective path to subject mastery, using AI recommendations to sequence lessons, adjust challenge levels, and optimize progression decisions.
+[248] To create a seamless and intuitive user-facing portal that delivers this personalized experience, thereby increasing student engagement, improving long-term knowledge retention, and reducing dropout rates.
+[252] 1.3 Scope
+[253] The scope of this project encompasses the end-to-end design, development, and initial evaluation of a web-based platform for personalized academic support that can adapt to individual learner behavior in real time. The system’s core functionality will be powered by a Reinforcement Learning engine trained on the large-scale EdNet dataset, which includes over 130 million real-world student interaction logs and provides a strong empirical foundation for modeling learning dynamics at scale. 
+[254] Within the platform, students will engage with structured educational content and assessments, while the system continuously analyzes performance indicators such as answer correctness, response time, and interaction history to infer mastery levels and learning pace. Based on this evidence, the platform will generate a personalized learning trajectory for each user instead of following a fixed, one-directional curriculum. 
+[255] The system will be designed to recommend whether a learner should progress to new concepts, revisit prior material for reinforcement, or attempt targeted quizzes to consolidate understanding and improve retention. The initial implementation will focus on subjects and concept structures aligned with the EdNet dataset to ensure reliable training and practical deployment feasibility. The intended user base is broad and inclusive, covering learners who need additional support with difficult concepts as well as high-performing students who want to move faster through content with appropriately challenging recommendations.
+[264] Chapter 2
+[265]  Review of Literature
+[266] 2.1 Domain Explanation
+[267] This project is positioned at the intersection of three critical and rapidly converging domains: e-learning, adaptive learning systems, and artificial intelligence. E-learning, or electronic learning, refers to the delivery of instructional content, assessments, and academic support through digital platforms and online resources.
+[268]  Although this model has significantly broadened access to education by reducing geographic and logistical barriers, its pedagogical impact is often constrained by static content sequencing and uniform instructional pathways. Adaptive learning systems represent the next major step in this evolution by introducing responsiveness into the educational process. Rather than presenting identical material to every learner, these systems continuously personalize the learning experience by adjusting content order, difficulty level, and reinforcement strategy according to each student’s observed performance. The intelligence that enables this dynamic adaptation is typically provided by AI-driven decision models. In this project, we specifically focus on Reinforcement Learning (RL), a machine learning paradigm centered on sequential decision-making under uncertainty.
+[269]  In an RL framework, an “agent” (our AI model) interacts with an “environment” (the learning platform and student interaction flow), takes actions, and receives feedback in the form of rewards. Over repeated interactions, the agent learns a policy that maximizes cumulative long-term reward rather than short-term correctness alone. In educational terms, this means the system can learn to choose the most effective pedagogical action at each moment, such as introducing a new concept, assigning targeted revision, or selecting an appropriately challenging quiz item. This makes RL especially suitable for personalized education, where the goal is not only to answer what a student should learn, but also when and at what level of difficulty they should learn it for the best long-term outcomes.
+[271] 2.2 Review of Existing Systems
+[272] The current landscape of online education is primarily shaped by Learning Management Systems (LMS) such as Moodle, Canvas, and Blackboard, along with large-scale MOOC platforms like Coursera and edX [4]. 
+[273] These ecosystems are highly effective in delivering, organizing, and scaling educational content, enabling millions of learners to access structured courses across disciplines and institutions. Their infrastructure supports curriculum management, assessment workflows, instructor coordination, and broad content distribution with strong operational reliability. In most cases, however, the instructional model remains standardized: students are guided through the same predefined sequence of lectures, readings, and assignments, regardless of individual differences in prior knowledge, learning speed, or conceptual difficulty patterns.
+[274]  Although some platforms now include limited personalization features, such as elective pathways, recommended courses, or basic progress dashboards, these enhancements are generally layered on top of a fundamentally static pedagogical core. The underlying learning trajectory itself is rarely adaptive. In practice, this means the system does not continuously interpret real-time learner signals to re-order topics, calibrate challenge levels, or provide strategically timed reinforcement. As a result, content progression is mostly rule-based rather than intelligence-driven, and the platform cannot respond dynamically when a student needs remediation, acceleration, or concept-specific intervention. This fixed-path design is one of the central limitations of current online learning systems and highlights the need for AI-powered adaptive frameworks that personalize instructional decisions at the level of each learner interaction.
+[275] 2.3 Limitations of Existing Systems/ Research Gaps
+[276] The core weakness of most current e-learning platforms lies in their persistent “one-size-fits-all” design. By enforcing a uniform pace and sequence for all learners, these systems systematically misalign instruction with individual needs. Students who struggle with foundational concepts are pushed forward before achieving mastery, allowing early misconceptions to accumulate into larger knowledge deficits. At the same time, high-performing learners are constrained by repetitive, low-challenge material, which reduces motivation and undermines meaningful progression. The result is a predictable pattern of reduced engagement, shallow retention, and elevated dropout risk.
+[277] This exposes a critical research gap: education systems need to move beyond static adaptivity and toward continuously personalized learning trajectories. Although adaptive testing and rule-based recommendation are well established, they remain episodic and limited in scope. What is still underexplored is the use of a continuous, self-optimizing Reinforcement Learning framework that can dynamically sequence an entire curriculum in real time, grounded in a rich and evolving model of each learner’s knowledge state. Addressing this gap is essential for building intelligent platforms that do not merely assess performance, but actively shape the most effective path to long-term mastery for every student.
+[278] Table 2.1 Limitation of Current Systems
+[279] Chapter 3
+[280] Proposed System
+[281] 3.1 Analysis/Framework
+[282] The proposed system is built upon three foundational pillars designed to deliver a truly adaptive and personalized educational experience. The first pillar is the EdNet Dataset, a massive collection of over 130 million real-world student-item interactions [1]. This rich dataset provides the essential historical data needed to train a robust AI model that understands the intricate patterns of how students learn, progress, and struggle. By leveraging such a comprehensive dataset, the system can capture subtle trends and variations in student behavior across diverse backgrounds, subjects, and learning contexts, enabling more accurate modeling of individual learning trajectories. The second pillar is the AI Engine, which is powered by a Reinforcement Learning (RL) model. This engine acts as the brain of the system, continuously optimizing its teaching strategy. It takes the student's current knowledge state as input, decides on the optimal next action (e.g., advance, revise, or quiz), and learns from the outcome of that action. Through this ongoing process of feedback and adaptation, the AI engine becomes increasingly effective at personalizing instruction, identifying knowledge gaps, and maximizing each learner’s potential. The third and final pillar is the Interactive Platform, a seamless, user-friendly web portal that serves as the student's gateway to their personalized learning journey. This platform facilitates the interaction between the student and the AI engine, creating a fluid and intuitive educational experience. It not only delivers tailored content and assessments but also provides real-time feedback, progress tracking, and motivational support, ensuring that learners remain engaged and empowered throughout their educational journey.
+[283] 3.2 Design Details
+[284] The design of the system ensures a continuous and responsive loop between the student, the platform, and the AI engine. As students interact with the platform by completing lessons, answering questions, or seeking clarification, their actions and responses are instantly captured and analyzed. This real-time data is fed back into the AI engine, which dynamically updates its understanding of each learner’s knowledge state and adapts its instructional strategy accordingly. The platform then delivers new, tailored content or feedback based on these insights, creating an ongoing cycle of assessment, adaptation, and personalized support. This seamless feedback loop not only maximizes learning efficiency but also keeps students engaged and motivated by ensuring that every interaction is relevant to their unique needs and progress.
+[285] GUI Design: The user interface will be a clean, modern, and intuitive web portal developed using React. Its design will prioritize simplicity and clarity, minimizing distractions to help students concentrate fully on their learning tasks. Interactive elements and navigation will be streamlined, ensuring that users can easily access lessons, quizzes, and progress information without unnecessary clutter. 
+[286] After completing a question or module, the interface will prominently display the AI-recommended next step, guiding students seamlessly through their personalized learning journey. This approach makes the adaptive experience feel natural and engaging, fostering a sense of progression and motivation as students interact with the platform..
+[287] System Architecture: The overall architecture separates the user-facing components from the core data processing and AI logic to ensure modularity and scalability. Students interact exclusively with the frontend portal, which is responsible for delivering a seamless and engaging user experience. This portal communicates with a backend API that acts as the intermediary between the user interface and the system’s core functionalities. 
+[288] The API manages user authentication, stores and retrieves user data, and fetches relevant educational content as needed. Most importantly, it interfaces directly with the AI Reinforcement Learning engine to obtain the next recommended action or learning activity for each student. 
+[289] As students progress, their real-time interaction data is continuously recorded and transmitted to the backend, where it is used to update the student’s knowledge state within the AI core, enabling the system to adapt and personalize the learning path dynamically.
+[291] Figure 3.1 System Architecture Diagram
+[292] Sequence of Operations: The sequence diagram illustrates the flow of information for a single student interaction. The student submits an answer through the frontend. The backend receives this, computes correctness, updates the student's history, and builds a "state vector" representing the student's current mastery. This state vector is sent to the RL model, which returns the best next action (i.e., the next question ID). The backend then fetches the corresponding question content and delivers it to the student.
+[294] Figure 3.2 Sequence Diagram of the proposed system
+[295] 3.3 Methodology
+[296] The core methodology of our system is based on a Reinforcement Learning framework. 
+[297] State Representation: The "state" is a snapshot of the student's current knowledge and progress. It is represented as a feature vector that includes metrics such as the student's performance on recent questions, the time taken to answer, their historical mastery of different concepts (tags), and their current streak of correct or incorrect answers. This vector is constructed by the backend after each interaction.
+[298] Table 3.1 Snapshot of State Representation of a Single Instance 
+[299] To illustrate how the state vector works in practice, consider the following snapshot for a single student immediately after they have answered a question tagged with 'linear-equations' and 'algebra'. This vector is constructed by the backend and sent to the RL agent to decide the next action.
+[300] Action Selection: The “actions” represent the possible next steps the system can recommend to the student at any given moment. This set of actions includes advancing to a new concept when the student is ready, presenting a targeted question to help revise a topic that appears weakly understood, or assigning a focused quiz to reinforce and solidify knowledge across a bundle of related questions. The policy network within the Reinforcement Learning model analyzes the current state of the student-capturing their progress, strengths, and areas for improvement-and determines which action is most likely to produce a positive learning outcome. By continuously selecting and adapting these actions, the system ensures that each student receives guidance tailored to their evolving needs and learning trajectory.
+[301] Example Scenario: Consider a student who has just incorrectly answered a question on 'linear-equations'. The system constructs the following state vector st​: {Last Answer Correctness: 0, Time Taken: 1.2 (20% slower than average), Correct Streak: 0, Mastery 'algebra': 0.85, Mastery 'linear-equations': 0.45, Recent Accuracy: 0.60}.
+[302] Given this state, the agent's policy network analyzes the situation. It recognizes that while the student's general 'algebra' knowledge is strong (85% mastery), their understanding of 'linear-equations' is weak (45% mastery). The recent incorrect answer and slow response time confirm this. Therefore, taking the Advance action would be detrimental, as it would build new knowledge on a shaky foundation. The agent concludes that the most effective action, at​, is to Revise, selecting another 'linear-equations' problem to directly address and remediate this specific knowledge gap.
+[304] Reward Function: The "reward" is a feedback signal that tells the AI engine how effective its last action was. The reward function is designed to incentivize actions that lead to improved student performance. For example, the agent receives a positive reward if the student successfully answers a question on a topic they previously struggled with after a revision action was recommended. This continuous cycle of state-action-reward allows the RL agent to refine its teaching strategy over time, becoming progressively better at personalizing the learning path.
+[306] Figure 3.3 Reward Function
+[325] Chapter 4
+[326] Implementation Details
+[327] 4.1 Experimental Setup
+[328] 4.1.1 Dataset Description/Database Details
+[329] The foundation of our AI model is the EdNet dataset, a large-scale, hierarchical dataset containing 131,663,742 interactions from 784,309 students. The data is structured into two primary components:
+[330] Student Logs (Knowledge Transfer 1 - Knowledge Transfer 4): These files contain the per-user interaction logs, which record detailed, timestamped data on each question a student attempts. Each entry includes information about the specific question solved, the time of the interaction, and mappings to relevant learning concepts and tags. This structure enables the system to track individual learning progress, identify patterns in student performance, and associate each response with particular knowledge areas, providing a rich foundation for personalized analysis and adaptive instruction.
+[331] Question Metadata: This component provides detailed information about each question, including:
+[332] question_id: A unique identifier for each question.
+[333] bundle_id: Groups related questions into a single topic or lesson.
+[334] part: A broader subject or chapter designation.
+[335] tags: Specific, granular concepts tested by the question.
+[336] To illustrate how this structure works in practice, consider a set of questions designed to teach the topic of "Java Variables".
+[337] Part: Java Basics This represents the highest-level grouping, similar to a chapter in a textbook. It encompasses foundational concepts of the Java programming language, including variables, data types, operators, and control flow.
+[338] Bundle ID: B_JAVA_VARS_01 This unique identifier represents a specific concept or lesson within the "Java Basics" part. In this case, it groups all questions related to the core concept of "Java Variables". This allows the system to identify that different questions are all testing the same fundamental skill.
+[339] Questions and Tags: Within a single bundle, there are multiple individual questions, each with its own unique question_id and a set of descriptive tags. This granular level of detail is what allows the AI to discern specific knowledge gaps.
+[340] Question 1: "What is the correct syntax to declare an integer variable named 'score'?"
+[341] question_id: Q_JV_001 (A unique identifier for this specific question)
+[342] tags: [java, variables, declaration, syntax, int]
+[344] Analysis of the dataset shows a varied distribution of questions. Some parts consist of granular topics with a one-to-one question-to-bundle ratio, representing individual knowledge points. Other parts are structured as concept clusters, with 3-4 questions per bundle, acting as mini-quizzes on cohesive concepts. This rich, structured data is crucial for training a model that can understand the relationships between different topics.
+[345] Figure 4.1 illustrates the distribution of questions across the seven different parts of the dataset, revealing a significant imbalance in how topics are represented. "Part 5" is the most substantial section, containing 43.3% of all questions, which is more than the combined total of the next four largest parts. The other sections are considerably smaller, with "Part 2" being the second-largest at 12.6%, followed by "Part 7" and "Part 6" at 10.6% and 10.1% respectively, while the remaining parts each contribute less than 10% to the total question pool.
+[348] Figure 4.1 Question Distribution Across Parts
+[350] Figure 4.2 Part, Bundles, Questions, Avg Q/Bundle
+[351] 4.2 Performance Evaluation
+[352] The performance of the system will be evaluated during the final phase of the project after the platform has been launched. This evaluation process will be ongoing and grounded in data, with a focus on key metrics that directly reflect the effectiveness and impact of the personalized learning experience. The primary success metrics to be monitored include improvements in student engagement, rates of knowledge retention over time, reduction in dropout rates, and measurable learning gains as students progress through the curriculum. Additional indicators such as user satisfaction, frequency of platform usage, and the system’s ability to accurately identify and address individual learning gaps will also be tracked to ensure a comprehensive assessment of the platform’s real-world performance and educational value.
+[353] Student Engagement Rate: Measuring the frequency and duration of student interactions with the platform compared to baseline non-adaptive systems.
+[354] Engagement Rate=  ​
+[355] Knowledge Retention: Assessing long-term retention by re-quizzing students on concepts after a certain period has elapsed.
+[356] Knowledge Retention=​×100%
+[357] Rate of Mastery: Tracking the time and number of interactions it takes for a student to achieve mastery in a given topic, with the goal of demonstrating a more efficient path compared to a linear curriculum.
+[358] Rate of Mastery=  ​
+[359] 4.3 Software and Hardware Setup
+[360] The project will utilize a modern technology stack to build a robust and scalable platform. The backend will be developed using FastAPI, providing efficient, asynchronous API endpoints for seamless communication between the frontend and the AI engine. The frontend will be implemented with React, ensuring a responsive and intuitive user interface. Data storage and management will rely on a reliable relational database, while the AI and machine learning components will leverage frameworks such as PyTorch and Stable-Baselines3 for model training and inference. This combination of technologies is chosen to support high performance, flexibility, and future scalability as the platform evolves.
+[361] Software Setup:
+[362] Frontend: The user-facing web portal will be developed using React, a popular JavaScript library for building dynamic and interactive user interfaces. React’s component-based architecture enables efficient rendering and easy management of complex UI states, ensuring that the platform remains responsive and user-friendly. This approach allows for rapid development, seamless updates, and a consistent user experience across different devices and screen sizes.
+[363] Backend: The backend API server will be developed using Python with a framework such as FastAPI to efficiently handle business logic, manage data operations, and facilitate communication with the AI model. FastAPI’s asynchronous capabilities and intuitive design make it well-suited for building scalable APIs that can process user requests, interact with the database, and integrate seamlessly with machine learning components. This ensures that the platform remains robust, maintainable, and capable of supporting real-time adaptive learning experiences.
+[364] Database: A relational database, specifically PostgreSQL, will be used to store user data, educational content, and detailed interaction history.
+[365] This choice ensures reliable data integrity, efficient querying, and scalability, supporting the platform’s need to manage complex relationships between users, learning materials, and their ongoing activity logs.
+[366] Data Pipeline: Apache Kafka will be architected to create an asynchronous data pipeline for handling the high volume of real-time student interaction data efficiently.
+[367] AI/ML Libraries: The Reinforcement Learning model will be developed and trained using established machine learning libraries such as PyTorch in Python. This approach provides flexibility and powerful tools for building, training, and fine-tuning complex neural network architectures, ensuring that the AI engine can effectively learn and adapt to diverse student behaviors and learning patterns.
+[369] Hardware Setup:
+[370] Development: Standard desktop or laptop computers will be sufficient for both frontend and backend development. These systems provide the necessary resources for coding, testing, and running the platform’s core components during the development phase without requiring specialized hardware.
+[371] Training: Training the Reinforcement Learning model on the large EdNet dataset will require a machine equipped with a powerful GPU to accelerate computation. Utilizing GPU resources significantly speeds up the processing of large volumes of data and the training of complex neural network models, making it feasible to efficiently handle the scale and complexity of the dataset.
+[372] Deployment: The final platform will be deployed on a cloud service provider such as AWS, GCP, or Azure to ensure scalability, reliability, and accessibility. Cloud deployment enables the system to handle varying user loads, maintain high availability, and provide secure access to users from different locations.
+[382] Chapter 5
+[383]  Results and Discussion
+[384] 5.1 Data Preprocessing and Feature Engineering
+[385] The EdNet dataset, consisting of over 130 million student-item interactions, was preprocessed to extract meaningful features for both the Student Simulator (LSTM) and the Reinforcement Learning agent (PPO). The preprocessing pipeline extracted five core features per interaction: correctness (binary), question difficulty (continuous, 0–1), response time (normalized), time lag (between interactions), and concept index (categorical). These features were organized into fixed-length sequences of 20 timesteps and saved as NumPy arrays.
+[386] A difficulty map was computed from historical student performance data and stored, containing difficulty scores for all questions. Analysis of the dataset revealed a significant imbalance across the seven parts, with Part 5 alone containing 43.3% of all questions  more than the combined total of the next four largest parts. This distribution was accounted for during training to avoid bias toward over-represented topics.
+[387] The state vector used by the RL agent was constructed as a composite feature vector of dimension 6 + N_concepts, comprising:
+[389] 
+Table 5.1 Feature description 
+[393] 5.2 Student Simulator (LSTM) Training Results
+[394] The Student Simulator is a 2-layer LSTM-based Knowledge Tracing model trained on the preprocessed EdNet sequences. It takes the 5-dimensional feature vector as input and predicts the probability of a student answering the next question correctly. The model was trained for 25 epochs using Binary Cross-Entropy (BCE) loss with the Adam optimizer.
+[395] 5.2.1 Training Convergence
+[396] The training and validation loss curves demonstrate stable convergence with no signs of overfitting. The training loss decreased from an initial value of ~0.606 to ~0.594, while the validation loss converged from ~0.608 to ~0.592, with both curves remaining closely aligned throughout training.
+[397] Figure 5.1 LSTM Training History Loss, Accuracy, and AUC-ROC over 25 epochs
+[398] 5.2.2 Performance Metrics
+[399] The final model achieved the following performance on the held-out validation set:
+[401] Table 5.2 Performance metrics
+[402] The validation accuracy of 69.8% and AUC-ROC of 0.635 are consistent with published knowledge tracing benchmarks on large-scale educational datasets, where the inherent stochasticity of student behavior limits achievable accuracy. Critically, the validation loss being lower than the training loss suggests effective regularization via dropout (p=0.3) and indicates that the model generalizes well to unseen student sequences.
+[404] Figure 5.2 Simulator Training Performance BCE loss convergence over 10 epochs
+[405] 5.3 PPO Teacher Agent Training Results
+[406] The Proximal Policy Optimization (PPO) agent was trained for 100,000 timesteps (~2,000 episodes of 50 questions each) in the EdNet Gymnasium environment. The agent's action space consists of 10 discrete difficulty bins (0.0–1.0), and it receives composite rewards based on correctness, flow state alignment, difficulty matching, frustration avoidance, boredom prevention, and task appropriateness.
+[407] 5.3.1 Reward Function Design
+[408] The reward function was engineered with six components to encode pedagogical principles:
+[409] Table 5.3 Reward Function Design
+[414] 5.3.2 Learning Curve
+[415] The learning curve shows clear policy improvement over training. The agent's total episode reward increased from approximately 17 (comparable to random selection) in early episodes to a stable plateau of approximately 35 by episode 750, representing a ~106% improvement. The 20-episode moving average confirms stable convergence with minimal variance after the plateau, indicating that the learned policy is robust.
+[417] Figure 5.3 PPO Training Progress  Learning curve and episode length over 2,000 episodes
+[418] The episode length remained constant at 50 steps throughout training (as expected, since each episode represents a complete tutoring session), confirming that the environment functioned correctly and episodes were not prematurely terminated.
+[419] 5.3.3 Hyperparameter Configuration
+[420] Table 5.4 Hyperparameter Configuration
+[422] 5.4 Comparative Evaluation Against Baselines
+[423] The trained AI Teacher was evaluated against two baseline strategies over 20 episodes each:
+[424] Random: The difficulty is selected uniformly at random for each question.
+[425] Fixed Medium: Every question is assigned a fixed medium difficulty (action = 5, corresponding to difficulty 0.5–0.6).
+[426] 5.4.1 Total Reward Distribution
+[427] Table 5.5 Total Reward Distribution
+[429] Figure 5.4 Evaluation Results Total reward box plots
+[430] The AI Teacher achieved a ~106% improvement over Random and a ~89% improvement over Fixed Medium in average total reward. Notably, the AI Teacher also exhibited the lowest variance (Std Dev ~1.5 vs ~2.5 and ~3.0 for the baselines), indicating more consistent and reliable tutoring performance.
+[431] 5.4.2 Adaptive Difficulty Path Analysis
+[432] The right panel of the evaluation figure shows the AI's difficulty selection pattern for a single episode. The agent consistently selected questions at the upper end of the difficulty scale (~0.9), which is above the "flow zone" (0.6–0.8) but maximizes the difficulty bonus component of the reward. This behavior indicates the agent learned to exploit the reward structure effectively.
+[433] 5.5 Simulation and Validation Analysis
+[434] 5.5.1 Simulation Log
+[435] A detailed 50-step simulation log was recorded to analyze the agent's real-time decision-making. Key observations from the simulation data:
+[436] Early Phase (Steps 1–10): The agent assigned medium-difficulty questions (bin 5, ~0.5 difficulty). The student answered 8 out of 10 correctly, with the LSTM confidence rising from 0.62 to 0.68. When the student answered incorrectly at step 6 (mastery dropped from 1.0 to 0.9), the agent immediately escalated to a harder question (bin 9) to test limits.
+[437] Mid Phase (Steps 11–25): The agent alternated between difficulty bins 5 and 9 depending on correctness streaks. The LSTM-predicted probability remained in the 0.55–0.68 range, keeping the student in the flow zone.
+[438] Late Phase (Steps 26–50): As the student began failing more frequently (mastery dropping to 0.2–0.4), the agent consistently selected bin 9 (hardest difficulty). This resulted in extended failure streaks, suggesting a potential area for reward tuning: the current penalty structure reduced difficulty only after multiple failures at steps 30+.
+[439] 5.5.2 Validation Log
+[440] The validation log tracked additional metrics including flow and frustration reward components over 100 steps:
+[441] Correct Answer Rate: 57 out of 100 (57%)
+[442] Longest Correct Streak: 10 (steps 22–31), which accumulated flow bonuses
+[443] Longest Failure Streak: 6 (steps 88–93), triggering difficulty reduction to bins 3–4
+[444] Flow Bonus Frequency: Active in 43 of 57 correct steps (75.4%), indicating the agent kept students in the optimal challenge zone for the majority of successful interactions
+[445] Frustration Penalty: Triggered 0 times (frustration reward column was 0 throughout), suggesting the agent avoided sustained failure scenarios
+[447] 5.6 Discussion
+[448] 5.6.1 Strengths of the System
+[449] 1. Superiority Over Baselines: The AI Teacher's 106% reward improvement over random selection and 89% over fixed-difficulty strategies demonstrates that the RL-based approach learns a meaningfully better teaching policy than naive alternatives.
+[450] 2. Adaptive Responsiveness: The difficulty path visualizations confirm that the agent dynamically adjusts question difficulty based on student performance. The trained policy encodes the pedagogical principle of scaffolding-reducing difficulty after failures and increasing it after successes.
+[451] 3. LSTM-RL Synergy: The two-stage architecture (LSTM simulator → PPO agent) proves effective. The LSTM provides a reasonably accurate student model (69.8% accuracy), and the PPO agent learns to leverage these predictions to select optimal difficulty levels.
+[452] 4. Consistency: The AI Teacher's low variance in evaluation (Std Dev ~1.5) compared to baselines indicates that the learned policy is robust across different simulated student profiles, providing a consistently high-quality educational experience.
+[453] 5.6.2 Limitations and Future Work
+[454] 1. Difficulty Bias: The evaluation shows a tendency for the agent to favor high-difficulty questions (~0.9), which may not correspond to an optimal pedagogical strategy for all students. This could be mitigated by strengthening the flow zone bonus or introducing explicit curriculum constraints.
+[455] 2. Simulator Accuracy Ceiling: The LSTM achieves ~69.8% accuracy, which means approximately 30% of simulated student responses are mismodeled. Future work could explore transformer-based architectures (e.g., SAINT, AKT) for improved knowledge tracing.
+[456] 3. Limited Action Space: The current 10-bin difficulty discretization is relatively coarse. A continuous action space (using PPO with continuous actions) could allow for finer-grained difficulty tuning.
+[457] 4. Single-Concept Sequencing: The current system selects difficulty but does not explicitly optimize the sequence of concepts. Future iterations could extend the action space to include concept selection alongside difficulty.
+[467] Chapter 6
+[468] Conclusion
+[469] This project addresses a fundamental flaw in the rapidly growing e-learning industry: the prevalent "one-size-fits-all" approach to education. By treating all learners as a monolith, existing platforms fail to unlock the full potential of individual students, leading to disengagement and knowledge gaps. Our proposed solution is an intelligent platform that leverages a sophisticated Reinforcement Learning engine to provide a truly personalized and adaptive learning experience. By analyzing each student's unique interaction patterns, the system dynamically tailors the curriculum, guiding them on the most efficient path to mastery. This project's successful implementation will demonstrate the transformative potential of AI in education, creating a more effective, engaging, and equitable learning environment. The ultimate vision is to provide every learner with a personal AI tutor that understands their needs and helps them achieve their academic goals.
+[481] References
+[482] [1] Y. Choi, Y. Lee, D. Shin, J. Cho, S. Park, S. Lee, J. Baek, C. Bae, B. Kim, and J. Heo, “EdNet: A Large-Scale Hierarchical Dataset in Education,” arXiv preprint arXiv:1912.03072, 2020. [Online]. Available: https://doi.org/10.48550/arXiv.1912.03072
+[483] [2] Renub Research, “Online Education Market,” Renub Research website, [Online]. Available: https://www.renub.com/online-education-market-p.php. [Accessed: Oct. 16, 2025].
+[484] [3] S. Wang, H. He, and Y. Wang, "Reinforcement learning for adapting the difficulty of educational games," in Proc. IEEE Int. Conf. on Advanced Learning Technologies (ICALT), 2018, pp. 95-99.
+[485] [4] L. Breslow, D. E. Pritchard, J. DeBoer, G. S. Stump, A. D. Ho, and D. T. Seaton, "Studying learning in the worldwide classroom: Research into edX's first MOOC," Research & Practice in Assessment, vol. 8, pp. 13-25, 2013.

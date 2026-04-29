@@ -1,0 +1,1085 @@
+[
+  {
+    "lesson_number": 1,
+    "title": "Introduction to Python & Basic Syntax",
+    "slug": "intro-to-python-basic-syntax",
+    "difficulty_level": "beginner",
+    "estimated_time_minutes": 45,
+    "introduction": "Welcome to the exciting world of Python! In this first lesson, we will lay the foundation for your programming journey by exploring what Python is and how to write your very first lines of code. Python is renowned for its clean, readable syntax, which closely resembles everyday English. This makes it an incredibly popular language for beginners, yet powerful enough to run some of the world's most complex software systems.\n\nThroughout this lesson, you will learn how to create variables, which act as storage containers for your data. We will also explore basic data types like integers (whole numbers), floats (decimals), strings (text), and booleans (True/False). Understanding these core concepts is crucial, as they form the building blocks of almost every Python script you will ever write.\n\nIn the real world, these fundamental concepts are used everywhere. Whether you are building a simple calculator, writing a script to automate organizing files on your computer, or starting a complex data science project, variables and data types are your primary tools. Let's dive in, write some code, and start communicating with the computer!",
+    "code_example": "# === Introduction to Python & Basic Syntax ===\n\n# 1. Variables and Naming Conventions\n# Variables store data. Use descriptive, snake_case names.\nuser_age = 25\nuser_name = \"Alice\"\nis_student = True\n\n# 2. Print Statements\n# The print() function displays output to the console.\nprint(\"Welcome to Python!\") # Output: Welcome to Python!\nprint(\"Name:\", user_name)   # Output: Name: Alice\n\n# 3. Basic Data Types and type()\n# Python automatically determines the data type (Dynamic Typing).\nmy_integer = 10\nmy_float = 3.14\nmy_string = \"Hello\"\nmy_boolean = False\n\n# Let's check their types using the type() function\nprint(type(my_integer)) # Output: <class 'int'>\nprint(type(my_float))   # Output: <class 'float'>\nprint(type(my_string))  # Output: <class 'str'>\n\n# 4. Simple Input and Type Conversion (Casting)\n# input() asks the user for data and ALWAYS returns a string.\n# Example: age_input = input(\"Enter your age: \")\n\n# We must convert (cast) strings to numbers to do math on them\nage_string = \"30\"\nage_integer = int(age_string)\nprint(\"In 5 years, you will be:\", age_integer + 5) # Output: In 5 years, you will be: 35\n\n# 5. String Operations\n# You can concatenate (join) strings using the + operator\ngreeting = \"Hello, \" + user_name\nprint(greeting) # Output: Hello, Alice",
+    "key_takeaways": [
+      "Variables are named containers used to store data in your computer's memory.",
+      "Python is dynamically typed, meaning you don't need to explicitly declare a variable's data type before using it.",
+      "The four basic data types in Python are integers (int), floating-point numbers (float), strings (str), and booleans (bool).",
+      "The type() function is incredibly useful for debugging and checking what kind of data a variable currently holds.",
+      "The input() function always returns text (a string), so you must use functions like int() or float() to convert it if you need numbers."
+    ],
+    "topics": [
+      "Variables",
+      "Basic Data Types",
+      "Naming Conventions",
+      "The type() Function",
+      "Simple Input and Output"
+    ],
+    "quiz_questions": [
+      {
+        "question_number": 1,
+        "question_text": "Which of the following is a valid variable name in Python?",
+        "options": [
+          "1st_name",
+          "first-name",
+          "first_name",
+          "first name"
+        ],
+        "correct_answer": 2,
+        "explanation": "Python variable names must start with a letter or an underscore, and can only contain letters, numbers, and underscores. Spaces and hyphens are not allowed, making 'first_name' the only valid option.",
+        "difficulty": "easy"
+      },
+      {
+        "question_number": 2,
+        "question_text": "What function is used to output text to the console in Python?",
+        "options": [
+          "echo()",
+          "console.log()",
+          "print()",
+          "output()"
+        ],
+        "correct_answer": 2,
+        "explanation": "In Python, the print() function is the standard way to display text or variable values to the user's console.",
+        "difficulty": "easy"
+      },
+      {
+        "question_number": 3,
+        "question_text": "What data type is the value 3.14?",
+        "options": [
+          "Integer (int)",
+          "String (str)",
+          "Boolean (bool)",
+          "Floating-point (float)"
+        ],
+        "correct_answer": 3,
+        "explanation": "Numbers that contain a decimal point are represented in Python as floating-point numbers, or 'float' for short.",
+        "difficulty": "easy"
+      },
+      {
+        "question_number": 4,
+        "question_text": "Which of the following values is a Boolean?",
+        "options": [
+          "\"True\"",
+          "False",
+          "0",
+          "\"False\""
+        ],
+        "correct_answer": 1,
+        "explanation": "Booleans in Python are explicitly represented by the keywords True and False (without quotes). \"True\" and \"False\" with quotes are strings.",
+        "difficulty": "easy"
+      },
+      {
+        "question_number": 5,
+        "question_text": "What will be the output of type(\"100\")?",
+        "options": [
+          "<class 'int'>",
+          "<class 'float'>",
+          "<class 'str'>",
+          "<class 'number'>"
+        ],
+        "correct_answer": 2,
+        "explanation": "Because the number 100 is enclosed in quotation marks, Python interprets it as text. Therefore, its type is 'str' (string).",
+        "difficulty": "medium"
+      },
+      {
+        "question_number": 6,
+        "question_text": "If user_input = input(\"Enter a number: \") and the user types 5, what happens if you try to run user_input + 10?",
+        "options": [
+          "The program outputs 15",
+          "The program throws a TypeError",
+          "The program outputs 510",
+          "The program outputs \"15\""
+        ],
+        "correct_answer": 1,
+        "explanation": "The input() function always returns a string. Attempting to add an integer (10) directly to a string (\"5\") causes a TypeError. You must cast it first: int(user_input) + 10.",
+        "difficulty": "medium"
+      },
+      {
+        "question_number": 7,
+        "question_text": "Which is the recommended naming convention for variables in Python according to PEP 8?",
+        "options": [
+          "camelCase",
+          "PascalCase",
+          "snake_case",
+          "kebab-case"
+        ],
+        "correct_answer": 2,
+        "explanation": "PEP 8, the style guide for Python, recommends using snake_case (lowercase words separated by underscores) for variable and function names.",
+        "difficulty": "medium"
+      },
+      {
+        "question_number": 8,
+        "question_text": "What will be the output of this code?\nx = 5\nx = \"Hello\"\nprint(x)",
+        "options": [
+          "5",
+          "Hello",
+          "Error: variable type cannot change",
+          "5Hello"
+        ],
+        "correct_answer": 1,
+        "explanation": "Because Python is dynamically typed, a variable can be reassigned to a different data type at any time. The variable 'x' initially holds an integer, but is then overwritten with a string.",
+        "difficulty": "medium"
+      },
+      {
+        "question_number": 9,
+        "question_text": "What is the result of the following string operation: print(\"3\" * 3)?",
+        "options": [
+          "9",
+          "\"9\"",
+          "\"333\"",
+          "TypeError"
+        ],
+        "correct_answer": 2,
+        "explanation": "When you multiply a string by an integer in Python, it performs string replication. The string \"3\" is repeated 3 times, resulting in \"333\".",
+        "difficulty": "hard"
+      },
+      {
+        "question_number": 10,
+        "question_text": "Consider the code: a = 10; b = a; a = 20. What is the value of b?",
+        "options": [
+          "10",
+          "20",
+          "None",
+          "Error"
+        ],
+        "correct_answer": 0,
+        "explanation": "Variables are references to objects. When 'b = a' executes, 'b' points to the integer object 10. Reassigning 'a' to 20 changes where 'a' points, but does not affect 'b'. Therefore, 'b' remains 10.",
+        "difficulty": "hard"
+      }
+    ]
+  },
+  {
+    "lesson_number": 2,
+    "title": "Operators & Expressions",
+    "slug": "operators-and-expressions",
+    "difficulty_level": "beginner",
+    "estimated_time_minutes": 45,
+    "introduction": "Now that you know how to store data in variables, it's time to learn how to manipulate that data. In programming, we do this using operators. Operators are special symbols that perform computations or evaluate conditions. In this lesson, we will explore the different types of operators available in Python and how to combine them into powerful expressions.\n\nWe will cover arithmetic operators for math, comparison operators for testing equality or size, and logical operators for combining multiple conditions. We'll also dive into operator precedence—the rules Python follows to decide which operation to perform first, similar to PEMDAS in traditional mathematics.\n\nOperators are the engines of your code. You will use them to calculate the total price in an e-commerce shopping cart, determine if a user's password meets security requirements, or format output text beautifully using f-strings. Let's learn how to crunch numbers and make comparisons!",
+    "code_example": "# === Operators and Expressions ===\n\n# 1. Arithmetic Operators\nx = 15\ny = 4\n\nprint(f\"Addition: {x + y}\")       # Output: 19\nprint(f\"Subtraction: {x - y}\")    # Output: 11\nprint(f\"Multiplication: {x * y}\") # Output: 60\nprint(f\"Division: {x / y}\")       # Output: 3.75 (Always returns a float)\nprint(f\"Floor Division: {x // y}\")# Output: 3 (Rounds down to nearest whole number)\nprint(f\"Modulo: {x % y}\")         # Output: 3 (Returns the remainder)\nprint(f\"Exponentiation: {2 ** 3}\")# Output: 8 (2 to the power of 3)\n\n# 2. Comparison Operators (Returns True or False)\na = 10\nb = 20\n\nprint(f\"Equal to: {a == b}\")      # Output: False\nprint(f\"Not equal: {a != b}\")     # Output: True\nprint(f\"Greater than: {a > 5}\")   # Output: True\nprint(f\"Less than or eq: {a <= 10}\") # Output: True\n\n# 3. Logical Operators (Combine conditions)\nis_weekend = True\nis_sunny = False\n\n# AND: True only if BOTH are True\nprint(f\"Beach day? {is_weekend and is_sunny}\") # Output: False\n# OR: True if AT LEAST ONE is True\nprint(f\"Relaxing? {is_weekend or is_sunny}\")   # Output: True\n# NOT: Reverses the boolean value\nprint(f\"Not sunny? {not is_sunny}\")            # Output: True\n\n# 4. Assignment Operators\nscore = 100\nscore += 50  # Same as: score = score + 50\nprint(f\"New Score: {score}\") # Output: 150\n\n# 5. f-strings (Formatted String Literals)\n# A modern, readable way to inject variables into strings\nname = \"David\"\nage = 28\nprint(f\"{name} is {age} years old and his score is {score}.\")",
+    "key_takeaways": [
+      "Standard division (/) always results in a float, whereas floor division (//) truncates the decimal to return an integer.",
+      "The modulo operator (%) is incredibly useful for finding remainders, determining if a number is even or odd, and wrapping values.",
+      "Comparison operators always evaluate to a Boolean value (True or False).",
+      "Logical operators (and, or, not) allow you to chain multiple conditions together to create complex logic.",
+      "f-strings (prefixed with an 'f') are the most Pythonic and efficient way to format text and variables together."
+    ],
+    "topics": [
+      "Arithmetic Operators",
+      "Comparison Operators",
+      "Logical Operators",
+      "Operator Precedence",
+      "f-strings"
+    ],
+    "quiz_questions": [
+      {
+        "question_number": 1,
+        "question_text": "Which operator is used for exponentiation (power) in Python?",
+        "options": [
+          "^",
+          "**",
+          "//",
+          "%"
+        ],
+        "correct_answer": 1,
+        "explanation": "In Python, the double asterisk (**) is used for exponentiation. The caret symbol (^) is a bitwise XOR operator, not exponentiation.",
+        "difficulty": "easy"
+      },
+      {
+        "question_number": 2,
+        "question_text": "What will be the output of 10 == \"10\"?",
+        "options": [
+          "True",
+          "False",
+          "TypeError",
+          "None"
+        ],
+        "correct_answer": 1,
+        "explanation": "The integer 10 and the string \"10\" are of different data types. In Python, comparing different data types with == generally evaluates to False.",
+        "difficulty": "easy"
+      },
+      {
+        "question_number": 3,
+        "question_text": "Which logical operator returns True only if both operands are True?",
+        "options": [
+          "or",
+          "not",
+          "and",
+          "xor"
+        ],
+        "correct_answer": 2,
+        "explanation": "The 'and' operator requires both the left and right conditions to be True in order to evaluate to True overall.",
+        "difficulty": "easy"
+      },
+      {
+        "question_number": 4,
+        "question_text": "What does the += assignment operator do?",
+        "options": [
+          "Compares two variables",
+          "Adds the right operand to the left operand and assigns the result to the left operand",
+          "Assigns a positive value to a variable",
+          "Checks if a variable is positive"
+        ],
+        "correct_answer": 1,
+        "explanation": "x += 5 is a shorthand assignment operator that means x = x + 5.",
+        "difficulty": "easy"
+      },
+      {
+        "question_number": 5,
+        "question_text": "What is the output of 17 % 5?",
+        "options": [
+          "3",
+          "3.4",
+          "2",
+          "15"
+        ],
+        "correct_answer": 2,
+        "explanation": "The modulo operator (%) returns the remainder of a division. 17 divided by 5 is 3, with a remainder of 2.",
+        "difficulty": "medium"
+      },
+      {
+        "question_number": 6,
+        "question_text": "What is the output of the following code?\nx = 5\ny = 2\nprint(x / y)",
+        "options": [
+          "2",
+          "2.5",
+          "2.0",
+          "Error"
+        ],
+        "correct_answer": 1,
+        "explanation": "In Python 3, the / operator performs true division and always returns a float, even when dividing integers. The result is 2.5.",
+        "difficulty": "medium"
+      },
+      {
+        "question_number": 7,
+        "question_text": "How do you properly write an f-string to include the variable `score`?",
+        "options": [
+          "f\"Your score is score\"",
+          "\"Your score is {score}\"",
+          "f\"Your score is {score}\"",
+          "format(\"Your score is\", score)"
+        ],
+        "correct_answer": 2,
+        "explanation": "An f-string requires an 'f' or 'F' before the opening quote, and variables must be placed inside curly braces {}.",
+        "difficulty": "medium"
+      },
+      {
+        "question_number": 8,
+        "question_text": "According to operator precedence, what is the result of 2 + 3 * 4?",
+        "options": [
+          "20",
+          "14",
+          "24",
+          "9"
+        ],
+        "correct_answer": 1,
+        "explanation": "Multiplication has a higher precedence than addition. So, 3 * 4 is evaluated first (12), and then 2 is added, resulting in 14.",
+        "difficulty": "medium"
+      },
+      {
+        "question_number": 9,
+        "question_text": "What is the output of: print(False and True or True)?",
+        "options": [
+          "True",
+          "False",
+          "None",
+          "TypeError"
+        ],
+        "correct_answer": 0,
+        "explanation": "The 'and' operator has higher precedence than 'or'. First, 'False and True' evaluates to False. Then 'False or True' evaluates to True.",
+        "difficulty": "hard"
+      },
+      {
+        "question_number": 10,
+        "question_text": "Due to short-circuit evaluation, what happens in the expression: (5 > 10) and (1 / 0 == 0)?",
+        "options": [
+          "It returns False",
+          "It throws a ZeroDivisionError",
+          "It returns True",
+          "It throws a SyntaxError"
+        ],
+        "correct_answer": 0,
+        "explanation": "Python evaluates 'and' statements lazily. Since 5 > 10 is False, the entire 'and' statement must be False. Python stops evaluating immediately and never reaches the 1 / 0, thus preventing the ZeroDivisionError.",
+        "difficulty": "hard"
+      }
+    ]
+  },
+  {
+    "lesson_number": 3,
+    "title": "Control Flow - Conditionals",
+    "slug": "control-flow-conditionals",
+    "difficulty_level": "intermediate",
+    "estimated_time_minutes": 50,
+    "introduction": "Programs would be very boring if they only executed top-to-bottom without reacting to anything. To make applications intelligent and interactive, we need 'control flow'—specifically, conditional statements. Conditionals allow your code to make decisions and execute different blocks of code based on specific conditions.\n\nIn this lesson, we will build upon the comparison and logical operators you just learned to create if, elif (else if), and else statements. We will also explore the concept of 'truthiness'—how Python interprets non-boolean data types as True or False. Lastly, we'll look at the ternary operator, a concise way to write simple conditionals.\n\nEvery time you log into a website (if password is correct, grant access, else show error), play a video game (if health <= 0, game over), or use an app, conditionals are working behind the scenes. They are the primary way to give your code logic and behavior.",
+    "code_example": "# === Control Flow: Conditionals ===\n\n# 1. Basic if statement\ntemperature = 75\n\n# Note the colon at the end, and the indentation of the next line!\nif temperature > 70:\n    print(\"It's a nice day outside.\") # This will run\n\n# 2. if-else statement\nuser_age = 16\n\nif user_age >= 18:\n    print(\"You are old enough to vote.\")\nelse:\n    print(f\"You must wait {18 - user_age} more years to vote.\") # This will run\n\n# 3. elif chains (Checking multiple conditions)\n# Creates a grading calculator\nscore = 85\n\nif score >= 90:\n    grade = \"A\"\nelif score >= 80:\n    grade = \"B\" # This block executes\nelif score >= 70:\n    grade = \"C\"\nelse:\n    grade = \"F\"\n    \nprint(f\"Your grade is: {grade}\") # Output: Your grade is: B\n\n# 4. Nested Conditionals\nis_raining = True\nhas_umbrella = False\n\nif is_raining:\n    if has_umbrella:\n        print(\"You can go outside.\")\n    else:\n        print(\"Stay inside! You'll get wet.\") # This will run\n\n# 5. Truthiness\n# In Python, empty strings, 0, and None evaluate to False. \n# Most other things evaluate to True.\nname_input = \"\"\n\nif name_input:\n    print(f\"Hello, {name_input}!\")\nelse:\n    print(\"You didn't enter a name.\") # This runs because \"\" is 'falsy'\n\n# 6. Ternary Operator (One-line if/else)\nage = 20\nstatus = \"Adult\" if age >= 18 else \"Minor\"\nprint(f\"Status: {status}\") # Output: Status: Adult",
+    "key_takeaways": [
+      "Python uses indentation (usually 4 spaces) to define code blocks inside conditionals, replacing the brackets {} used in other languages.",
+      "An if statement can exist on its own, but elif and else must always follow an if statement.",
+      "Only the first matching condition in an if-elif-else chain will execute. Once a match is found, the rest of the chain is skipped.",
+      "Understanding 'truthiness' allows you to write cleaner code (e.g., 'if name:' instead of 'if name != \"\":').",
+      "The ternary operator is excellent for simple, single-line conditional variable assignments, but should be avoided for complex logic."
+    ],
+    "topics": [
+      "if statements",
+      "if-else structures",
+      "elif chains",
+      "Nested conditionals",
+      "Truthiness"
+    ],
+    "quiz_questions": [
+      {
+        "question_number": 1,
+        "question_text": "What symbol is required at the end of an 'if', 'elif', or 'else' statement line?",
+        "options": [
+          "; (semicolon)",
+          ": (colon)",
+          ". (period)",
+          "} (closing bracket)"
+        ],
+        "correct_answer": 1,
+        "explanation": "Python requires a colon (:) at the end of control flow statements to indicate the start of an indented code block.",
+        "difficulty": "easy"
+      },
+      {
+        "question_number": 2,
+        "question_text": "How does Python determine which lines of code belong inside an if statement?",
+        "options": [
+          "By using curly brackets {}",
+          "By using the 'end' keyword",
+          "By the indentation level of the code",
+          "By using parentheses ()"
+        ],
+        "correct_answer": 2,
+        "explanation": "Python uses whitespace indentation (typically 4 spaces) to define the scope of a code block.",
+        "difficulty": "easy"
+      },
+      {
+        "question_number": 3,
+        "question_text": "Which keyword is used to check an additional condition if the previous 'if' condition was False?",
+        "options": [
+          "else if",
+          "elseif",
+          "elif",
+          "then"
+        ],
+        "correct_answer": 2,
+        "explanation": "Python uses the 'elif' keyword as a shorthand for 'else if' to check multiple conditions sequentially.",
+        "difficulty": "easy"
+      },
+      {
+        "question_number": 4,
+        "question_text": "Can an 'else' statement have a condition attached to it (e.g., else x > 5:)?",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "correct_answer": 1,
+        "explanation": "No. An 'else' block acts as a catch-all if none of the preceding 'if' or 'elif' conditions are true. It cannot evaluate a condition itself.",
+        "difficulty": "easy"
+      },
+      {
+        "question_number": 5,
+        "question_text": "What will be printed?\nx = 10\nif x > 5:\n    print(\"A\")\nelif x > 8:\n    print(\"B\")",
+        "options": [
+          "A",
+          "B",
+          "A and B",
+          "Nothing"
+        ],
+        "correct_answer": 0,
+        "explanation": "In an if-elif chain, Python executes only the FIRST block where the condition is True. Since 10 > 5 is True, \"A\" prints and the 'elif' is completely skipped.",
+        "difficulty": "medium"
+      },
+      {
+        "question_number": 6,
+        "question_text": "Which of the following values is considered 'falsy' in Python?",
+        "options": [
+          "\"False\"",
+          "[1, 2, 3]",
+          "0",
+          "-1"
+        ],
+        "correct_answer": 2,
+        "explanation": "In Python, the integer 0 evaluates to False in a boolean context. The string \"False\", negative numbers, and populated lists all evaluate to True.",
+        "difficulty": "medium"
+      },
+      {
+        "question_number": 7,
+        "question_text": "What is the output of the following code?\nmsg = \"Hello\"\nif msg:\n    print(\"Truthy\")\nelse:\n    print(\"Falsy\")",
+        "options": [
+          "Truthy",
+          "Falsy",
+          "TypeError",
+          "Hello"
+        ],
+        "correct_answer": 0,
+        "explanation": "A non-empty string is considered 'truthy' in Python. Because \"Hello\" is not empty, the if condition evaluates to True.",
+        "difficulty": "medium"
+      },
+      {
+        "question_number": 8,
+        "question_text": "Identify the correct ternary operator syntax to assign 'Even' or 'Odd' to `result` based on the variable `num`.",
+        "options": [
+          "result = 'Even' if num % 2 == 0 else 'Odd'",
+          "result = if num % 2 == 0 'Even' else 'Odd'",
+          "result = (num % 2 == 0) ? 'Even' : 'Odd'",
+          "if num % 2 == 0 result = 'Even' else result = 'Odd'"
+        ],
+        "correct_answer": 0,
+        "explanation": "Python's ternary operator syntax is: [value_if_true] if [condition] else [value_if_false].",
+        "difficulty": "medium"
+      },
+      {
+        "question_number": 9,
+        "question_text": "What will be printed by the following nested conditionals?\nx = 5\ny = 10\nif x > 0:\n    if y < 5:\n        print(\"One\")\nelse:\n    print(\"Two\")",
+        "options": [
+          "One",
+          "Two",
+          "Nothing is printed",
+          "SyntaxError"
+        ],
+        "correct_answer": 2,
+        "explanation": "The outer if (x > 0) is True, so we enter the nested block. The inner if (y < 5) is False, so nothing happens. The outer 'else' is tied to the first 'if', so it is skipped. Thus, nothing is printed.",
+        "difficulty": "hard"
+      },
+      {
+        "question_number": 10,
+        "question_text": "What will print?\nval = None\nif val == False:\n    print(\"A\")\nelif not val:\n    print(\"B\")\nelse:\n    print(\"C\")",
+        "options": [
+          "A",
+          "B",
+          "C",
+          "TypeError"
+        ],
+        "correct_answer": 1,
+        "explanation": "None is 'falsy', but None is not equal to the boolean False (so val == False is False). However, 'not val' applies the not operator to a falsy value, returning True. Thus, \"B\" is printed.",
+        "difficulty": "hard"
+      }
+    ]
+  },
+  {
+    "lesson_number": 4,
+    "title": "Control Flow - Loops",
+    "slug": "control-flow-loops",
+    "difficulty_level": "intermediate",
+    "estimated_time_minutes": 55,
+    "introduction": "A core principle of programming is DRY: Don't Repeat Yourself. If you need to perform the same action 100 times, you shouldn't write the code 100 times. Instead, you use loops. Loops allow you to iterate over a block of code multiple times, saving you time and drastically reducing the potential for errors.\n\nPython features two main types of loops. The `for` loop is used when you know exactly how many times you want to iterate, or when you are iterating through a sequence like a string or a list. The `while` loop is used when you want to keep repeating an action as long as a certain condition remains True. We'll also cover loop control statements like `break` and `continue`, which give you fine-grained control over loop execution.\n\nLoops are fundamental to data processing. You'll use them to read every line in a text file, update the positions of hundreds of enemies in a game every frame, or search through a database until you find a specific user.",
+    "code_example": "# === Control Flow: Loops ===\n\n# 1. The 'for' Loop with range()\n# range(start, stop) generates numbers from start up to, BUT NOT INCLUDING, stop.\nprint(\"Counting 1 to 5:\")\nfor i in range(1, 6):\n    print(i)\n\n# 2. Iterating over a sequence (String)\nprint(\"\\nSpelling it out:\")\nword = \"Python\"\nfor letter in word:\n    print(letter.upper())\n\n# 3. The 'while' Loop\n# Runs as long as the condition is True\nprint(\"\\nCountdown:\")\ncounter = 3\nwhile counter > 0:\n    print(counter)\n    counter -= 1 # Crucial: Update the condition to prevent an infinite loop!\nprint(\"Liftoff!\")\n\n# 4. Loop Control: break\n# 'break' completely exits the loop immediately.\nprint(\"\\nSearching for 5:\")\nfor num in range(1, 10):\n    if num == 5:\n        print(\"Found it!\")\n        break # Stops the loop here\n    print(f\"Checking {num}...\")\n\n# 5. Loop Control: continue\n# 'continue' skips the rest of the current iteration and moves to the next one.\nprint(\"\\nPrinting only odd numbers:\")\nfor num in range(1, 6):\n    if num % 2 == 0:\n        continue # Skip even numbers\n    print(num) # This only runs for odd numbers\n\n# 6. Nested Loops\n# A loop inside a loop. \nprint(\"\\nMultiplication grid (3x3):\")\nfor row in range(1, 4):\n    for col in range(1, 4):\n        print(f\"{row * col:2}\", end=\" \") # end=\" \" prevents printing a new line\n    print() # Moves to the next line after the inner loop finishes",
+    "key_takeaways": [
+      "Use 'for' loops when you are iterating over a known sequence or a specific number of times.",
+      "Use 'while' loops when the number of iterations is unknown and depends on a condition remaining True.",
+      "The range(stop) function goes up to, but never includes, the stop number.",
+      "Always ensure your 'while' loops have a way to eventually make their condition False; otherwise, you will create an infinite loop that crashes your program.",
+      "The 'break' keyword stops a loop entirely, while the 'continue' keyword only skips the current iteration."
+    ],
+    "topics": [
+      "for loops",
+      "while loops",
+      "The range() function",
+      "Loop control (break/continue)",
+      "Nested loops"
+    ],
+    "quiz_questions": [
+      {
+        "question_number": 1,
+        "question_text": "Which loop is best used when you want to iterate a specific, known number of times?",
+        "options": [
+          "while loop",
+          "for loop",
+          "do-while loop",
+          "if loop"
+        ],
+        "correct_answer": 1,
+        "explanation": "The 'for' loop, especially combined with the range() function, is designed for iterating a predetermined number of times.",
+        "difficulty": "easy"
+      },
+      {
+        "question_number": 2,
+        "question_text": "What does the range(5) function generate?",
+        "options": [
+          "1, 2, 3, 4, 5",
+          "0, 1, 2, 3, 4, 5",
+          "0, 1, 2, 3, 4",
+          "1, 2, 3, 4"
+        ],
+        "correct_answer": 2,
+        "explanation": "range(n) starts at 0 by default and goes up to, but does not include, n.",
+        "difficulty": "easy"
+      },
+      {
+        "question_number": 3,
+        "question_text": "What keyword is used to exit a loop entirely before it has naturally finished iterating?",
+        "options": [
+          "stop",
+          "exit",
+          "continue",
+          "break"
+        ],
+        "correct_answer": 3,
+        "explanation": "The 'break' keyword immediately terminates the innermost enclosing loop.",
+        "difficulty": "easy"
+      },
+      {
+        "question_number": 4,
+        "question_text": "What does the 'continue' keyword do inside a loop?",
+        "options": [
+          "Exits the loop entirely",
+          "Skips the rest of the current iteration and jumps to the next one",
+          "Pauses the code execution for 1 second",
+          "Restarts the loop from the very beginning"
+        ],
+        "correct_answer": 1,
+        "explanation": "Unlike 'break' which stops the loop, 'continue' just skips the remaining code in the current cycle and moves to the next evaluation of the loop.",
+        "difficulty": "easy"
+      },
+      {
+        "question_number": 5,
+        "question_text": "What will be printed by the following code?\nfor i in range(2, 8, 2):\n    print(i)",
+        "options": [
+          "2, 3, 4, 5, 6, 7",
+          "2, 4, 6",
+          "2, 4, 6, 8",
+          "4, 6, 8"
+        ],
+        "correct_answer": 1,
+        "explanation": "The range(start, stop, step) function takes a step argument. Starting at 2, stepping by 2, and stopping before 8 gives 2, 4, and 6.",
+        "difficulty": "medium"
+      },
+      {
+        "question_number": 6,
+        "question_text": "What is the primary danger of using a 'while' loop?",
+        "options": [
+          "They execute much slower than for loops",
+          "They cannot iterate over strings",
+          "Creating an infinite loop if the condition never becomes False",
+          "They require a break statement to function"
+        ],
+        "correct_answer": 2,
+        "explanation": "If the condition inside a 'while' loop is never modified to evaluate to False, the loop will run endlessly, tying up system resources and crashing the application.",
+        "difficulty": "medium"
+      },
+      {
+        "question_number": 7,
+        "question_text": "How many times will the string \"Hi\" be printed?\nfor x in range(3):\n    for y in range(2):\n        print(\"Hi\")",
+        "options": [
+          "5",
+          "6",
+          "3",
+          "2"
+        ],
+        "correct_answer": 1,
+        "explanation": "This is a nested loop. The outer loop runs 3 times. For EACH of those 3 times, the inner loop runs 2 times. 3 * 2 = 6 total iterations.",
+        "difficulty": "medium"
+      },
+      {
+        "question_number": 8,
+        "question_text": "What is the output of this code?\nx = 0\nwhile x < 3:\n    x += 1\nelse:\n    print(x)",
+        "options": [
+          "0",
+          "2",
+          "3",
+          "SyntaxError"
+        ],
+        "correct_answer": 2,
+        "explanation": "Python loops can have an 'else' block which executes when the loop condition becomes False naturally (not stopped by a break). x becomes 3, condition fails, else block prints 3.",
+        "difficulty": "medium"
+      },
+      {
+        "question_number": 9,
+        "question_text": "What is the output?\nfor i in range(5):\n    if i == 3:\n        break\n    print(i, end='')",
+        "options": [
+          "01234",
+          "012",
+          "12",
+          "0124"
+        ],
+        "correct_answer": 1,
+        "explanation": "The loop prints 0, 1, and 2. When i reaches 3, the 'break' statement executes, terminating the loop before 3 is printed.",
+        "difficulty": "hard"
+      },
+      {
+        "question_number": 10,
+        "question_text": "What is the output?\ncount = 0\nwhile count < 3:\n    if count == 1:\n        count += 1\n        continue\n    print(count, end='')\n    count += 1",
+        "options": [
+          "012",
+          "02",
+          "0",
+          "Infinite loop"
+        ],
+        "correct_answer": 1,
+        "explanation": "When count is 0, it prints '0'. When count is 1, it increments to 2 and uses 'continue' (skipping the print). When count is 2, it prints '2'. So the output is 02.",
+        "difficulty": "hard"
+      }
+    ]
+  },
+  {
+    "lesson_number": 5,
+    "title": "Functions",
+    "slug": "python-functions",
+    "difficulty_level": "intermediate",
+    "estimated_time_minutes": 60,
+    "introduction": "As your programs grow larger, writing everything in a single, long script becomes unmanageable. This is where functions come in. A function is a reusable block of code designed to perform a specific, single task. You can think of a function like a mini-program within your program: you feed it inputs (parameters), it does some work, and it gives you back an output (return value).\n\nIn this lesson, we will learn how to define custom functions using the `def` keyword. We'll explore how to pass data into functions using arguments, how to set default parameters, and the critical concept of variable scope (understanding which parts of your code can see which variables). We will also touch on lambda functions for quick, anonymous operations.\n\nFunctions are the foundation of modular programming. Instead of writing the math for calculating sales tax in 50 different places across an e-commerce app, you write one `calculate_tax()` function and call it 50 times. This makes your code cleaner, easier to read, and much easier to fix if a bug arises.",
+    "code_example": "# === Functions in Python ===\n\n# 1. Basic Function Definition\ndef greet(name):\n    # The string below is a docstring, used to document what the function does.\n    \"\"\"Prints a personalized greeting.\"\"\"\n    print(f\"Hello, {name}!\")\n\ngreet(\"Alice\") # Output: Hello, Alice!\n\n# 2. Return Values and Multiple Parameters\ndef calculate_area(length, width):\n    \"\"\"Calculates area and RETURNS the result instead of printing it.\"\"\"\n    area = length * width\n    return area\n\n# We catch the returned value in a variable\nmy_room_area = calculate_area(5, 3)\nprint(f\"Room area: {my_room_area}\") # Output: Room area: 15\n\n# 3. Default Parameters\n# If no exponent is provided when called, it defaults to 2.\ndef power(base, exponent=2):\n    return base ** exponent\n\nprint(power(3))    # Output: 9 (uses default exponent 2)\nprint(power(3, 3)) # Output: 27 (overrides default with 3)\n\n# 4. *args (Variable number of positional arguments)\n# Packs extra arguments into a tuple.\ndef sum_all(*args):\n    return sum(args)\n\nprint(f\"Sum: {sum_all(1, 2, 3, 4, 5)}\") # Output: Sum: 15\n\n# 5. Variable Scope (Local vs Global)\nglobal_var = \"I am visible everywhere\"\n\ndef scope_test():\n    local_var = \"I only exist inside this function\"\n    print(global_var) # Can access global\n    print(local_var)  # Can access local\n\nscope_test()\n# print(local_var) # ERROR: NameError! local_var is destroyed after function finishes.\n\n# 6. Lambda Functions (Anonymous, one-line functions)\n# Syntax: lambda arguments: expression\nmultiply = lambda x, y: x * y\nprint(f\"Lambda output: {multiply(4, 5)}\") # Output: Lambda output: 20",
+    "key_takeaways": [
+      "Functions are defined using the 'def' keyword, followed by the function name, parentheses, and a colon.",
+      "The 'return' keyword exits the function and sends a specific value back to the caller. A function without a return statement implicitly returns 'None'.",
+      "Parameters with default values must always be placed AFTER parameters without default values in the function definition.",
+      "Variables created inside a function are 'local' and cannot be accessed from outside the function. This prevents naming conflicts.",
+      "Lambda functions are useful for short, throwaway operations where defining a full function with 'def' would be unnecessarily verbose."
+    ],
+    "topics": [
+      "Function definition",
+      "Parameters and arguments",
+      "Return statements",
+      "Variable scope",
+      "Lambda functions"
+    ],
+    "quiz_questions": [
+      {
+        "question_number": 1,
+        "question_text": "Which keyword is used to start defining a function in Python?",
+        "options": [
+          "function",
+          "def",
+          "func",
+          "define"
+        ],
+        "correct_answer": 1,
+        "explanation": "Python uses the 'def' keyword, short for 'define', to create a new function.",
+        "difficulty": "easy"
+      },
+      {
+        "question_number": 2,
+        "question_text": "What keyword is used to send a value back from a function to the place where it was called?",
+        "options": [
+          "send",
+          "output",
+          "return",
+          "export"
+        ],
+        "correct_answer": 2,
+        "explanation": "The 'return' keyword halts function execution and passes the specified value back to the caller.",
+        "difficulty": "easy"
+      },
+      {
+        "question_number": 3,
+        "question_text": "If a function does not have a return statement, what does it return by default?",
+        "options": [
+          "0",
+          "False",
+          "None",
+          "An empty string"
+        ],
+        "correct_answer": 2,
+        "explanation": "In Python, if execution reaches the end of a function without encountering a return statement, it automatically returns the special value None.",
+        "difficulty": "easy"
+      },
+      {
+        "question_number": 4,
+        "question_text": "What are the variables defined inside the parentheses of a function definition called?",
+        "options": [
+          "Arguments",
+          "Parameters",
+          "Attributes",
+          "Properties"
+        ],
+        "correct_answer": 1,
+        "explanation": "The variables defined in the function signature are called parameters. The actual data passed in when calling the function are called arguments.",
+        "difficulty": "easy"
+      },
+      {
+        "question_number": 5,
+        "question_text": "What will happen if you run this code?\ndef greet(name=\"Guest\"):\n    print(name)\n\ngreet()",
+        "options": [
+          "It prints 'name'",
+          "It throws a TypeError for missing arguments",
+          "It prints 'Guest'",
+          "It prints None"
+        ],
+        "correct_answer": 2,
+        "explanation": "The function has a default parameter 'Guest'. Because no argument was provided when the function was called, it falls back to the default value.",
+        "difficulty": "medium"
+      },
+      {
+        "question_number": 6,
+        "question_text": "Which of the following is an invalid function definition?",
+        "options": [
+          "def my_func(a, b):",
+          "def my_func(a=1, b=2):",
+          "def my_func(a, b=2):",
+          "def my_func(a=1, b):"
+        ],
+        "correct_answer": 3,
+        "explanation": "In Python, parameters with default values (optional parameters) must always come AFTER parameters without default values (required parameters).",
+        "difficulty": "medium"
+      },
+      {
+        "question_number": 7,
+        "question_text": "What does the *args syntax allow a function to do?",
+        "options": [
+          "Accept a variable number of keyword arguments",
+          "Accept a variable number of positional arguments",
+          "Multiply all arguments together",
+          "Force arguments to be passed by reference"
+        ],
+        "correct_answer": 1,
+        "explanation": "The *args syntax collects any number of extra positional arguments passed to the function and packs them into a tuple.",
+        "difficulty": "medium"
+      },
+      {
+        "question_number": 8,
+        "question_text": "What is the output of the following lambda function assignment?\nsquare = lambda x: x * x\nprint(square(4))",
+        "options": [
+          "8",
+          "16",
+          "lambda 16",
+          "SyntaxError"
+        ],
+        "correct_answer": 1,
+        "explanation": "A lambda function is just an anonymous function. lambda x: x * x takes one argument 'x' and returns x * x. Passing 4 results in 16.",
+        "difficulty": "medium"
+      },
+      {
+        "question_number": 9,
+        "question_text": "What is the output?\nx = 10\ndef modify():\n    x = 20\nmodify()\nprint(x)",
+        "options": [
+          "10",
+          "20",
+          "None",
+          "NameError"
+        ],
+        "correct_answer": 0,
+        "explanation": "Inside modify(), 'x = 20' creates a NEW local variable named x, rather than modifying the global x. The global x remains 10, which is what gets printed.",
+        "difficulty": "hard"
+      },
+      {
+        "question_number": 10,
+        "question_text": "What is the danger of using mutable types (like lists) as default parameter values? e.g., def add_item(item, my_list=[]):",
+        "options": [
+          "It causes a SyntaxError.",
+          "The list becomes immutable.",
+          "The list is created only once when the function is defined, causing subsequent calls to share the same list.",
+          "It slows down the execution of the function significantly."
+        ],
+        "correct_answer": 2,
+        "explanation": "Default parameter values are evaluated only ONCE when the function is defined, not every time it is called. If you use a mutable object like a list, all calls that rely on the default will modify the exact same list in memory.",
+        "difficulty": "hard"
+      }
+    ]
+  },
+  {
+    "lesson_number": 6,
+    "title": "Data Structures - Lists & Tuples",
+    "slug": "data-structures-lists-tuples",
+    "difficulty_level": "intermediate",
+    "estimated_time_minutes": 60,
+    "introduction": "So far, we have been storing single pieces of data in variables. But what if you need to store 100 usernames, or a sequence of coordinate points? Creating 100 separate variables would be a nightmare. Enter Data Structures. Data structures are specialized formats for organizing and storing collections of data.\n\nIn this lesson, we will explore the two most fundamental ordered data structures in Python: Lists and Tuples. A List is a collection of items that is ordered and mutable, meaning you can add, remove, or change items after the list is created. A Tuple is similar to a list, but it is immutable—once created, its contents cannot be altered.\n\nWe will learn how to access individual items using indices, slice out portions of the collection, and use Pythonic tools like 'List Comprehensions' to generate lists dynamically. You will use lists for almost everything in Python, from processing columns in a spreadsheet to holding the inventory of a player in a game.",
+    "code_example": "# === Lists and Tuples ===\n\n# 1. List Creation and Indexing\n# Lists use square brackets []\nfruits = [\"apple\", \"banana\", \"cherry\", \"date\"]\n\n# Python is 0-indexed. The first item is at index 0.\nprint(fruits[0])  # Output: apple\n# Negative indexing counts from the end.\nprint(fruits[-1]) # Output: date\n\n# 2. List Slicing [start:stop:step]\n# Extracts a portion of the list. Stop is non-inclusive.\nprint(fruits[1:3]) # Output: ['banana', 'cherry']\nprint(fruits[:2])  # Output: ['apple', 'banana'] (From start up to index 2)\nprint(fruits[::-1])# Output: ['date', 'cherry', 'banana', 'apple'] (Reverses list)\n\n# 3. List Methods (Lists are MUTABLE)\nfruits.append(\"elderberry\")    # Adds to the very end\nfruits.insert(1, \"blueberry\")  # Inserts at index 1, shifting others right\nfruits.remove(\"cherry\")        # Removes the first matching value\npopped_item = fruits.pop()     # Removes and returns the last item\n\nprint(fruits) # Output: ['apple', 'blueberry', 'banana', 'date']\n\n# 4. List Comprehensions\n# A concise, powerful way to create lists.\nnumbers = [1, 2, 3, 4, 5]\n\n# Create a new list with the square of each number\nsquares = [n**2 for n in numbers]\nprint(squares) # Output: [1, 4, 9, 16, 25]\n\n# Comprehension with a condition (Filtering)\nevens = [n for n in numbers if n % 2 == 0]\nprint(evens)   # Output: [2, 4]\n\n# 5. Tuples (IMMUTABLE collections)\n# Tuples use parentheses ()\ncoordinates = (10, 20)\nprint(coordinates[0]) # Output: 10\n\n# coordinates[0] = 15 # ERROR! TypeError: 'tuple' object does not support item assignment\n\n# 6. Tuple Unpacking\nperson = (\"Alice\", 28, \"Engineer\")\nname, age, profession = person\nprint(f\"{name} is a {profession}.\") # Output: Alice is a Engineer.",
+    "key_takeaways": [
+      "Lists are defined with square brackets [], while tuples are defined with parentheses ().",
+      "Python sequences are 0-indexed, meaning the first element is at index 0, not 1.",
+      "Lists are mutable (changeable), whereas tuples are immutable (read-only after creation). Use tuples to protect data that shouldn't change.",
+      "List slicing [start:stop] is a powerful feature for extracting sub-lists without modifying the original.",
+      "List comprehensions provide a shorter, more readable, and often faster syntax for creating a new list based on the values of an existing sequence."
+    ],
+    "topics": [
+      "List creation and indexing",
+      "List slicing",
+      "List mutability and methods",
+      "List comprehensions",
+      "Tuples and unpacking"
+    ],
+    "quiz_questions": [
+      {
+        "question_number": 1,
+        "question_text": "Which brackets are used to define a List in Python?",
+        "options": [
+          "( ) Parentheses",
+          "{ } Curly braces",
+          "[ ] Square brackets",
+          "< > Angle brackets"
+        ],
+        "correct_answer": 2,
+        "explanation": "In Python, square brackets [] are used to create lists. Parentheses are for tuples, and curly braces are for dictionaries or sets.",
+        "difficulty": "easy"
+      },
+      {
+        "question_number": 2,
+        "question_text": "What is the primary difference between a List and a Tuple?",
+        "options": [
+          "Lists can hold different data types, tuples can only hold one type.",
+          "Lists are mutable (can be changed), tuples are immutable (cannot be changed).",
+          "Lists are ordered, tuples are unordered.",
+          "Lists use parentheses, tuples use square brackets."
+        ],
+        "correct_answer": 1,
+        "explanation": "The defining feature of a tuple is its immutability. Once a tuple is created, you cannot append, remove, or alter its elements.",
+        "difficulty": "easy"
+      },
+      {
+        "question_number": 3,
+        "question_text": "If `my_list = ['a', 'b', 'c', 'd']`, how do you access the letter 'c'?",
+        "options": [
+          "my_list[3]",
+          "my_list[2]",
+          "my_list.get('c')",
+          "my_list(2)"
+        ],
+        "correct_answer": 1,
+        "explanation": "Because Python is 0-indexed, 'a' is at index 0, 'b' is at index 1, and 'c' is at index 2.",
+        "difficulty": "easy"
+      },
+      {
+        "question_number": 4,
+        "question_text": "Which list method adds a single item to the very end of an existing list?",
+        "options": [
+          ".insert()",
+          ".add()",
+          ".append()",
+          ".extend()"
+        ],
+        "correct_answer": 2,
+        "explanation": "The .append() method is the standard way to add one element to the end of a list.",
+        "difficulty": "easy"
+      },
+      {
+        "question_number": 5,
+        "question_text": "What is the output of `[1, 2, 3, 4, 5][1:4]`?",
+        "options": [
+          "[1, 2, 3, 4]",
+          "[2, 3, 4]",
+          "[2, 3, 4, 5]",
+          "[1, 2, 3]"
+        ],
+        "correct_answer": 1,
+        "explanation": "Slicing [start:stop] begins at the start index (inclusive) and goes up to the stop index (exclusive). Index 1 is 2, index 2 is 3, index 3 is 4.",
+        "difficulty": "medium"
+      },
+      {
+        "question_number": 6,
+        "question_text": "What does the following list comprehension do? `[x for x in range(10) if x % 2 != 0]`",
+        "options": [
+          "Creates a list of all numbers from 0 to 9.",
+          "Creates a list of even numbers from 0 to 9.",
+          "Creates a list of odd numbers from 0 to 9.",
+          "Throws a SyntaxError."
+        ],
+        "correct_answer": 2,
+        "explanation": "It iterates through numbers 0-9. The condition `if x % 2 != 0` filters out even numbers, leaving only odd numbers in the generated list.",
+        "difficulty": "medium"
+      },
+      {
+        "question_number": 7,
+        "question_text": "What happens if you try to create a tuple with a single element like this: `t = (5)`?",
+        "options": [
+          "It creates a tuple with one element.",
+          "It creates an integer, not a tuple.",
+          "It throws a TypeError.",
+          "It creates an empty tuple."
+        ],
+        "correct_answer": 1,
+        "explanation": "Parentheses are also used for mathematical grouping. To tell Python you want a single-element tuple, you MUST include a trailing comma: `t = (5,)`.",
+        "difficulty": "medium"
+      },
+      {
+        "question_number": 8,
+        "question_text": "What is the result of `\"hello\"[::-1]`?",
+        "options": [
+          "hello",
+          "olleh",
+          "h",
+          "o"
+        ],
+        "correct_answer": 1,
+        "explanation": "Slicing works on strings just like lists. Leaving start and stop blank defaults to the whole sequence. A step of -1 iterates backwards, effectively reversing the string.",
+        "difficulty": "medium"
+      },
+      {
+        "question_number": 9,
+        "question_text": "Consider: list_a = [1, 2, 3]; list_b = list_a; list_b.append(4). What is list_a now?",
+        "options": [
+          "[1, 2, 3]",
+          "[1, 2, 3, 4]",
+          "None",
+          "[4]"
+        ],
+        "correct_answer": 1,
+        "explanation": "Lists are mutable and assigned by reference. `list_b = list_a` does NOT create a copy; it creates a second label pointing to the exact same list in memory. Modifying one modifies both.",
+        "difficulty": "hard"
+      },
+      {
+        "question_number": 10,
+        "question_text": "Which method is used to combine two separate lists by appending all elements of the second list onto the first?",
+        "options": [
+          "list1.append(list2)",
+          "list1.insert(list2)",
+          "list1.combine(list2)",
+          "list1.extend(list2)"
+        ],
+        "correct_answer": 3,
+        "explanation": "`.extend()` iterates over the passed sequence and appends each item individually. If you used `.append(list2)`, the entire second list would be added as a single sub-list at the end of the first.",
+        "difficulty": "hard"
+      }
+    ]
+  },
+  {
+    "lesson_number": 7,
+    "title": "Data Structures - Dictionaries & Sets",
+    "slug": "data-structures-dictionaries-sets",
+    "difficulty_level": "advanced",
+    "estimated_time_minutes": 65,
+    "introduction": "While Lists are great for ordered sequences, they are inefficient when you need to look up specific items quickly, especially in large datasets. This brings us to Dictionaries and Sets, Python's incredibly powerful hash-based data structures.\n\nA Dictionary (dict) stores data in 'Key-Value' pairs. Instead of looking up an item by its numerical index, you look it up by a unique name (the key). This makes dictionaries perfect for representing structured data, like a user profile or configuration settings. A Set is an unordered collection of unique elements. Sets are mathematically inspired and are highly optimized for fast membership testing (checking if an item exists) and removing duplicates.\n\nMastering Dictionaries and Sets elevates your Python code from beginner scripts to professional, efficient software. You'll use dictionaries to parse JSON data from web APIs, and sets to rapidly find common elements between two large groups.",
+    "code_example": "# === Dictionaries and Sets ===\n\n# 1. Dictionary Creation (Key-Value pairs)\n# Dictionaries use curly braces {} with colons separating keys/values\nstudent = {\n    \"name\": \"John Doe\",\n    \"age\": 22,\n    \"major\": \"Computer Science\"\n}\n\n# 2. Accessing and Modifying Dictionary Values\n# Access via key\nprint(student[\"name\"]) # Output: John Doe\n\n# Safe access using .get() (Prevents KeyError if key doesn't exist)\nprint(student.get(\"gpa\", \"Not Found\")) # Output: Not Found\n\n# Modifying and Adding new pairs\nstudent[\"age\"] = 23             # Modifies existing\nstudent[\"graduating\"] = True    # Adds new key-value\n\n# 3. Dictionary Iteration\nprint(\"\\nStudent Info:\")\nfor key, value in student.items():\n    print(f\"{key.capitalize()}: {value}\")\n\n# 4. Dictionary Comprehension\n# Create a dict mapping numbers to their cubes\ncubes = {x: x**3 for x in range(1, 4)}\nprint(f\"\\nCubes: {cubes}\") # Output: Cubes: {1: 1, 2: 8, 3: 27}\n\n# 5. Sets (Unordered, Unique collections)\n# Sets also use {} but without colons.\ncolors = {\"red\", \"blue\", \"green\", \"red\"}\n\n# Duplicates are automatically removed!\nprint(f\"\\nColors Set: {colors}\") # Output: {'green', 'red', 'blue'} (Order varies)\n\n# Practical use: Removing duplicates from a list\nraw_list = [1, 2, 2, 3, 3, 3, 4]\nunique_list = list(set(raw_list))\nprint(f\"Unique List: {unique_list}\") # Output: [1, 2, 3, 4]\n\n# 6. Set Operations (Blazing fast compared to lists)\nset_a = {1, 2, 3, 4}\nset_b = {3, 4, 5, 6}\n\nprint(\"\\nSet Operations:\")\nprint(f\"Union (All): {set_a.union(set_b)}\")                 # {1, 2, 3, 4, 5, 6}\nprint(f\"Intersection (Common): {set_a.intersection(set_b)}\") # {3, 4}\nprint(f\"Difference (A minus B): {set_a.difference(set_b)}\")   # {1, 2}",
+    "key_takeaways": [
+      "Dictionaries store data as Key-Value pairs, allowing for incredibly fast data retrieval using the Key.",
+      "Always use the dictionary .get() method when you aren't sure if a key exists; it prevents your program from crashing with a KeyError.",
+      "Dictionary keys must be immutable types (like strings, numbers, or tuples), but values can be any data type.",
+      "Sets automatically discard duplicate values, making them the easiest way to find unique elements in a sequence.",
+      "Checking if an item exists using `in` is much faster in a Set or Dictionary than it is in a List, especially for large amounts of data."
+    ],
+    "topics": [
+      "Dictionary structure and creation",
+      "Accessing and modifying dicts safely",
+      "Iterating through dicts (.items())",
+      "Set creation and unique property",
+      "Set math operations (Union/Intersection)"
+    ],
+    "quiz_questions": [
+      {
+        "question_number": 1,
+        "question_text": "How are elements structured inside a Python dictionary?",
+        "options": [
+          "As numbered indices",
+          "As key-value pairs",
+          "As a multi-dimensional array",
+          "As immutable nodes"
+        ],
+        "correct_answer": 1,
+        "explanation": "Dictionaries associate a unique 'Key' with a specific 'Value', forming key-value pairs.",
+        "difficulty": "easy"
+      },
+      {
+        "question_number": 2,
+        "question_text": "Which brackets are used to create both Dictionaries and Sets?",
+        "options": [
+          "[ ]",
+          "( )",
+          "{ }",
+          "< >"
+        ],
+        "correct_answer": 2,
+        "explanation": "Curly braces {} are used for both. If they contain key:value pairs, it's a dict. If they contain single elements, it's a set.",
+        "difficulty": "easy"
+      },
+      {
+        "question_number": 3,
+        "question_text": "What happens when you define a Set with duplicate values, e.g., `s = {1, 1, 2, 2}`?",
+        "options": [
+          "It throws a SyntaxError",
+          "It keeps all values: {1, 1, 2, 2}",
+          "It automatically removes duplicates: {1, 2}",
+          "It crashes the Python interpreter"
+        ],
+        "correct_answer": 2,
+        "explanation": "Sets are mathematically defined to only hold unique elements. Any duplicates provided during creation are silently discarded.",
+        "difficulty": "easy"
+      },
+      {
+        "question_number": 4,
+        "question_text": "If `user = {\"name\": \"Alice\"}`, what happens if you try to execute `print(user[\"age\"])`?",
+        "options": [
+          "It prints None",
+          "It throws a KeyError",
+          "It prints 'Unknown'",
+          "It adds the key 'age' to the dictionary"
+        ],
+        "correct_answer": 1,
+        "explanation": "Accessing a dictionary directly with bracket notation for a key that does not exist will raise a KeyError and stop your program.",
+        "difficulty": "easy"
+      },
+      {
+        "question_number": 5,
+        "question_text": "What is the benefit of using `user.get(\"age\")` instead of `user[\"age\"]`?",
+        "options": [
+          "It is faster to execute",
+          "It returns None instead of crashing if the key doesn't exist",
+          "It automatically creates the key if it's missing",
+          "It converts the value to a string"
+        ],
+        "correct_answer": 1,
+        "explanation": "The .get() method is safer. If the key is missing, it gently returns None (or a default value you specify) rather than throwing a fatal KeyError.",
+        "difficulty": "medium"
+      },
+      {
+        "question_number": 6,
+        "question_text": "How do you loop through both the keys and values of a dictionary simultaneously?",
+        "options": [
+          "for k, v in my_dict.items():",
+          "for k, v in my_dict:",
+          "for k, v in my_dict.all():",
+          "for k, v in my_dict.keys_values():"
+        ],
+        "correct_answer": 0,
+        "explanation": "The .items() method returns a view object that yields tuples containing the (key, value) pairs, which can be unpacked in the for loop.",
+        "difficulty": "medium"
+      },
+      {
+        "question_number": 7,
+        "question_text": "Which set operation returns elements that are present in BOTH sets?",
+        "options": [
+          "Union",
+          "Difference",
+          "Intersection",
+          "Symmetric Difference"
+        ],
+        "correct_answer": 2,
+        "explanation": "Intersection returns a new set containing only the elements that exist in both of the sets being compared.",
+        "difficulty": "medium"
+      },
+      {
+        "question_number": 8,
+        "question_text": "Which of the following data types CANNOT be used as a Dictionary key?",
+        "options": [
+          "Integer",
+          "String",
+          "Tuple",
+          "List"
+        ],
+        "correct_answer": 3,
+        "explanation": "Dictionary keys must be hashable, which requires them to be immutable. Because lists can be changed (mutable), they cannot be used as dictionary keys.",
+        "difficulty": "medium"
+      },
+      {
+        "question_number": 9,
+        "question_text": "How do you create an empty Set?",
+        "options": [
+          "s = {}",
+          "s = set()",
+          "s = []",
+          "s = empty_set()"
+        ],
+        "correct_answer": 1,
+        "explanation": "While sets use {}, empty curly braces `s = {}` in Python actually create an empty Dictionary. You MUST use the `set()` constructor to create an empty set.",
+        "difficulty": "hard"
+      },
+      {
+        "question_number": 10,
+        "question_text": "Consider dictionary comprehension: `d = {x: x%2 == 0 for x in range(1, 4)}`. What is the value of `d`?",
+        "options": [
+          "{1: False, 2: True, 3: False}",
+          "{1: True, 2: False, 3: True}",
+          "{2: True}",
+          "{1: 1, 2: 0, 3: 1}"
+        ],
+        "correct_answer": 0,
+        "explanation": "The loop iterates 1, 2, 3. The key is the number 'x'. The value is the evaluation of 'x%2 == 0'. So, 1 maps to False, 2 maps to True, and 3 maps to False.",
+        "difficulty": "hard"
+      }
+    ]
+  }
+]

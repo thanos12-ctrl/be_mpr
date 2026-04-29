@@ -24,6 +24,16 @@ async def create_lesson(
 ):
     """Create a new lesson (Admin/Teacher only)"""
     
+    # Verify subject exists and user has permission
+    subject_query = "SELECT created_by FROM subjects WHERE id = :subject_id"
+    subject = await database.fetch_one(query=subject_query, values={"subject_id": str(lesson_data.subject_id)})
+    
+    if not subject:
+        raise HTTPException(status_code=404, detail="Subject not found")
+        
+    if current_user["role"] != "admin" and subject["created_by"] != current_user["id"]:
+        raise HTTPException(status_code=403, detail="Not authorized to add lessons to this subject")
+
     lesson_id = uuid.uuid4()
     query = """
         INSERT INTO lessons (
@@ -131,6 +141,21 @@ async def update_lesson(
     current_user: dict = Depends(require_role(m.UserRole.ADMIN, m.UserRole.TEACHER))
 ):
     """Update a lesson (Admin/Teacher only)"""
+
+    # Verify lesson exists and user has permission
+    check_query = """
+        SELECT l.id, s.created_by 
+        FROM lessons l
+        JOIN subjects s ON l.subject_id = s.id
+        WHERE l.id = :lesson_id
+    """
+    existing = await database.fetch_one(query=check_query, values={"lesson_id": str(lesson_id)})
+    
+    if not existing:
+        raise HTTPException(status_code=404, detail="Lesson not found")
+        
+    if current_user["role"] != "admin" and existing["created_by"] != current_user["id"]:
+        raise HTTPException(status_code=403, detail="Not authorized to update lessons in this subject")
     
     # Build dynamic update query
     updates = []
@@ -162,6 +187,21 @@ async def toggle_lesson_publish(
 ):
     """Toggle lesson publish status"""
     
+    # Verify lesson exists and user has permission
+    check_query = """
+        SELECT l.id, s.created_by 
+        FROM lessons l
+        JOIN subjects s ON l.subject_id = s.id
+        WHERE l.id = :lesson_id
+    """
+    existing = await database.fetch_one(query=check_query, values={"lesson_id": str(lesson_id)})
+    
+    if not existing:
+        raise HTTPException(status_code=404, detail="Lesson not found")
+        
+    if current_user["role"] != "admin" and existing["created_by"] != current_user["id"]:
+        raise HTTPException(status_code=403, detail="Not authorized to modify publish status of lessons in this subject")
+
     query = """
         UPDATE lessons
         SET is_published = NOT is_published, updated_at = :updated_at
@@ -185,3 +225,33 @@ def format_lesson_response(lesson_row):
     if data.get("prerequisites") is None:
         data["prerequisites"] = []
     return data
+
+@router.delete("/{lesson_id}")
+async def delete_lesson(
+    lesson_id: UUID4,
+    current_user: dict = Depends(require_role(m.UserRole.ADMIN, m.UserRole.TEACHER))
+):
+    """Delete an existing lesson (Admin/Teacher only)"""
+    
+    # Verify lesson exists and user has permission
+    check_query = """
+        SELECT l.id, s.created_by 
+        FROM lessons l
+        JOIN subjects s ON l.subject_id = s.id
+        WHERE l.id = :lesson_id
+    """
+    existing = await database.fetch_one(query=check_query, values={"lesson_id": str(lesson_id)})
+    
+    if not existing:
+        raise HTTPException(status_code=404, detail="Lesson not found")
+        
+    if current_user["role"] != "admin" and existing["created_by"] != current_user["id"]:
+        raise HTTPException(status_code=403, detail="Not authorized to delete lessons in this subject")
+    
+    # Delete the lesson (cascades or handle relations appropriately depending on DB schema)
+    # If quizzes are tied to lessons, deleting the lesson might need to cascade to quizzes.
+    # We will just delete the lesson for now.
+    query = "DELETE FROM lessons WHERE id = :lesson_id"
+    await database.execute(query=query, values={"lesson_id": str(lesson_id)})
+    
+    return {"message": "Lesson deleted successfully"}

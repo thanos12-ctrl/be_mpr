@@ -79,6 +79,21 @@ async def toggle_rl_for_enrollment(
 ):
     """Toggle RL agent for a student's enrollment (Teacher only)"""
     
+    # Verify enrollment exists and user has permission
+    check_query = """
+        SELECT e.id, s.created_by
+        FROM enrollments e
+        JOIN subjects s ON e.subject_id = s.id
+        WHERE e.id = :enrollment_id
+    """
+    existing = await database.fetch_one(query=check_query, values={"enrollment_id": str(enrollment_id)})
+    
+    if not existing:
+        raise HTTPException(status_code=404, detail="Enrollment not found")
+        
+    if current_user["role"] != "admin" and existing["created_by"] != current_user["id"]:
+        raise HTTPException(status_code=403, detail="Not authorized to modify enrollments for this subject")
+
     query = """
         UPDATE enrollments
         SET rl_enabled = :rl_enabled

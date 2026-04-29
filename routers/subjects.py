@@ -105,6 +105,30 @@ async def update_subject(
     return m.SubjectResponse(**dict(subject))
 
 
+@router.delete("/admin/subjects/{subject_id}")
+async def delete_subject(
+    subject_id: UUID4,
+    current_user: dict = Depends(require_role(m.UserRole.ADMIN, m.UserRole.TEACHER))
+):
+    """Delete an existing subject (Admin/Teacher only)"""
+    
+    # Verify subject exists and user has permission
+    check_query = "SELECT id, created_by FROM subjects WHERE id = :subject_id"
+    existing = await database.fetch_one(query=check_query, values={"subject_id": str(subject_id)})
+    
+    if not existing:
+        raise HTTPException(status_code=404, detail="Subject not found")
+    
+    # Only allow creator or admin to delete
+    if current_user["role"] != "admin" and existing["created_by"] != current_user["id"]:
+        raise HTTPException(status_code=403, detail="Not authorized to delete this subject")
+    
+    query = "DELETE FROM subjects WHERE id = :subject_id"
+    await database.execute(query=query, values={"subject_id": str(subject_id)})
+    
+    return {"message": "Subject deleted successfully"}
+
+
 @router.get("/subjects/published", response_model=List[m.SubjectResponse])
 async def get_published_subjects():
     """Get all published subjects (public endpoint)"""
@@ -117,4 +141,17 @@ async def get_published_subjects():
     """
     
     subjects = await database.fetch_all(query=query)
+    return [m.SubjectResponse(**dict(s)) for s in subjects]
+
+@router.get("/admin/subjects", response_model=List[m.SubjectResponse])
+async def get_teacher_subjects(current_user: dict = Depends(require_role(m.UserRole.ADMIN, m.UserRole.TEACHER))):
+    """Get all subjects for a teacher (Admin gets all)"""
+    
+    if current_user["role"] == "admin":
+        query = "SELECT id, subject_id, name, description, icon, is_published, created_by, created_at FROM subjects ORDER BY created_at DESC"
+        subjects = await database.fetch_all(query=query)
+    else:
+        query = "SELECT id, subject_id, name, description, icon, is_published, created_by, created_at FROM subjects WHERE created_by = :teacher_id ORDER BY created_at DESC"
+        subjects = await database.fetch_all(query=query, values={"teacher_id": current_user["id"]})
+        
     return [m.SubjectResponse(**dict(s)) for s in subjects]

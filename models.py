@@ -111,6 +111,15 @@ class QuizCreate(BaseModel):
     passing_score: float = Field(0.70, ge=0.0, le=1.0)
 
 
+class QuizUpdate(BaseModel):
+    title: Optional[str] = None
+    description: Optional[str] = None
+    default_num_questions: Optional[int] = None
+    passing_score: Optional[float] = Field(None, ge=0.0, le=1.0)
+    allow_rl_adaptation: Optional[bool] = None
+
+
+
 class QuizResponse(BaseModel):
     id: UUID4
     lesson_id: UUID4
@@ -218,6 +227,12 @@ class SubjectProgressBreakdown(BaseModel):
     subject_name: str
     completed_lessons: int
     total_lessons: int
+
+
+class LessonProgressSummary(BaseModel):
+    lesson_id: UUID4
+    is_completed: bool
+    completed_at: Optional[datetime]
 
 
 # ==========================================

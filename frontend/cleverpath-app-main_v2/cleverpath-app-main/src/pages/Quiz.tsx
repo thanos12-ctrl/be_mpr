@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { CheckCircle2, Circle, ArrowRight, Brain } from 'lucide-react';
+import { CheckCircle2, Circle, ArrowRight, Brain, XCircle, Lightbulb } from 'lucide-react';
 import { startLessonQuizSession, getNextQuestion, submitAnswer, QuizQuestion, QuizFeedback } from '@/services/api';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -16,6 +16,7 @@ const Quiz = () => {
   const [selectedAnswer, setSelectedAnswer] = useState<string>('');
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
+  const [feedback, setFeedback] = useState<QuizFeedback | null>(null);
   const [questionStartTime, setQuestionStartTime] = useState<number>(Date.now());
 
   useEffect(() => {
@@ -51,35 +52,34 @@ const Quiz = () => {
     const timeElapsed = Date.now() - questionStartTime;
 
     try {
-      const feedback: QuizFeedback = await submitAnswer(
+      const feedbackData: QuizFeedback = await submitAnswer(
         sessionId,
         currentQuestion.question_id,
         selectedAnswer,
         timeElapsed
       );
 
-      // Show feedback
-      if (feedback.is_correct) {
-        toast.success('Correct! ' + feedback.explanation);
-      } else {
-        toast.error(`Incorrect. Correct answer: ${feedback.correct_answer}. ${feedback.explanation}`);
-      }
-
-      // Check if quiz should continue
-      if (feedback.should_continue && feedback.next_question) {
-        setCurrentQuestion(feedback.next_question);
-        setSelectedAnswer('');
-        setQuestionStartTime(Date.now());
-      } else {
-        // Quiz completed, navigate to results
-        toast.success('Quiz completed!');
-        navigate(`/results/${sessionId}`);
-      }
+      setFeedback(feedbackData);
     } catch (error) {
       console.error('Failed to submit answer:', error);
       toast.error('Failed to submit answer');
     } finally {
       setSubmitting(false);
+    }
+  };
+
+  const handleNextQuestion = () => {
+    if (!feedback) return;
+
+    if (feedback.should_continue && feedback.next_question) {
+      setCurrentQuestion(feedback.next_question);
+      setSelectedAnswer('');
+      setFeedback(null);
+      setQuestionStartTime(Date.now());
+    } else {
+      // Quiz completed, navigate to results
+      toast.success('Quiz completed!');
+      navigate(`/results/${sessionId}`);
     }
   };
 
@@ -143,42 +143,97 @@ const Quiz = () => {
           </div>
 
           <div className="space-y-3">
-            {Object.entries(currentQuestion.options).map(([key, value]) => (
-              <button
-                key={key}
-                onClick={() => handleSelectAnswer(key)}
-                disabled={submitting}
-                className={`w-full text-left p-4 rounded-lg border-2 transition-all duration-200 ${selectedAnswer === key
-                  ? 'border-primary bg-primary/5'
-                  : 'border-border hover:border-primary/50 hover:bg-muted/50'
-                  }`}
-              >
-                <div className="flex items-center space-x-3">
-                  {selectedAnswer === key ? (
-                    <CheckCircle2 className="h-5 w-5 text-primary flex-shrink-0" />
-                  ) : (
-                    <Circle className="h-5 w-5 text-muted-foreground flex-shrink-0" />
-                  )}
-                  <span className="text-base">
-                    <strong>{key}:</strong> {value}
-                  </span>
-                </div>
-              </button>
-            ))}
+            {Object.entries(currentQuestion.options).map(([key, value]) => {
+              const isSelected = selectedAnswer === key;
+              const isSubmitted = !!feedback;
+              const isCorrectOption = isSubmitted && feedback.correct_answer === key;
+              const isIncorrectSelected = isSubmitted && isSelected && !feedback.is_correct;
+
+              let buttonClass = 'border-border hover:border-primary/50 hover:bg-muted/50';
+              let iconClass = 'text-muted-foreground';
+              let Icon = Circle;
+
+              if (isSubmitted) {
+                if (isCorrectOption) {
+                  buttonClass = 'border-green-500 bg-green-50/20';
+                  iconClass = 'text-green-600';
+                  Icon = CheckCircle2;
+                } else if (isIncorrectSelected) {
+                  buttonClass = 'border-red-500 bg-red-50/20';
+                  iconClass = 'text-red-600';
+                  Icon = XCircle;
+                } else {
+                  buttonClass = 'border-border opacity-50';
+                  iconClass = 'text-muted-foreground';
+                }
+              } else if (isSelected) {
+                buttonClass = 'border-primary bg-primary/5';
+                iconClass = 'text-primary';
+                Icon = CheckCircle2;
+              }
+
+              return (
+                <button
+                  key={key}
+                  onClick={() => !isSubmitted && handleSelectAnswer(key)}
+                  disabled={submitting || isSubmitted}
+                  className={`w-full text-left p-4 rounded-lg border-2 transition-all duration-200 ${buttonClass}`}
+                >
+                  <div className="flex items-center space-x-3">
+                    <Icon className={`h-5 w-5 flex-shrink-0 ${iconClass}`} />
+                    <span className="text-base">
+                      <strong>{key}:</strong> {value}
+                    </span>
+                  </div>
+                </button>
+              );
+            })}
           </div>
+          
+          {feedback && (
+            <div className="mt-6 p-5 rounded-lg border bg-yellow-50/50 border-yellow-200">
+              <div className="flex gap-4">
+                <div className="mt-1">
+                  <Lightbulb className="h-6 w-6 text-yellow-500" />
+                </div>
+                <div>
+                  <h4 className="text-yellow-600 font-bold text-xs tracking-wider mb-2 uppercase">Explanation</h4>
+                  <p className="text-gray-800 leading-relaxed">
+                    {feedback.is_correct ? (
+                      <span className="text-green-600 font-semibold mr-2">Correct!</span>
+                    ) : (
+                      <span className="text-red-600 font-semibold mr-2">Incorrect.</span>
+                    )}
+                    {feedback.explanation}
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </Card>
 
       <div className="flex justify-end">
-        <Button
-          onClick={handleSubmitAnswer}
-          disabled={!canProceed || submitting}
-          size="lg"
-          className="bg-gradient-to-r from-primary to-primary-glow hover:opacity-90 transition-opacity"
-        >
-          {submitting ? 'Submitting...' : 'Submit Answer'}
-          <ArrowRight className="ml-2 h-4 w-4" />
-        </Button>
+        {!feedback ? (
+          <Button
+            onClick={handleSubmitAnswer}
+            disabled={!canProceed || submitting}
+            size="lg"
+            className="bg-gradient-to-r from-primary to-primary-glow hover:opacity-90 transition-opacity"
+          >
+            {submitting ? 'Submitting...' : 'Submit Answer'}
+            <ArrowRight className="ml-2 h-4 w-4" />
+          </Button>
+        ) : (
+          <Button
+            onClick={handleNextQuestion}
+            size="lg"
+            className="bg-gradient-to-r from-primary to-primary-glow hover:opacity-90 transition-opacity"
+          >
+            {feedback.should_continue ? 'Next Question' : 'Finish Quiz'}
+            <ArrowRight className="ml-2 h-4 w-4" />
+          </Button>
+        )}
       </div>
     </div>
   );

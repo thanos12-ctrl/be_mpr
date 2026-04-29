@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Layout from "./components/Layout";
+import TeacherLayout from "./components/TeacherLayout";
 import Index from "./pages/Index";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -15,12 +16,11 @@ import TopicContent from "./pages/TopicContent";
 import Quiz from "./pages/Quiz";
 import Results from "./pages/Results";
 import StudentProfile from "./pages/StudentProfile";
-import TeacherProfile from "./pages/TeacherProfile";
-import ManageContent from "./pages/teacher/ManageContent";
 import SubjectManager from "./pages/teacher/SubjectManager";
 import LessonEditor from "./pages/teacher/LessonEditor";
 import QuestionBank from "./pages/teacher/QuestionBank";
 import GroupManager from "./pages/teacher/GroupManager";
+import StudentProgress from "./pages/teacher/StudentProgress";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -99,25 +99,29 @@ const App = () => (
                 </ProtectedRoute>
               }
             />
+
+            {/* Teacher Content Management */}
+            <Route
+              path="/teacher"
+              element={
+                <ProtectedRoute requireRole="teacher">
+                  <Navigate to="/teacher/subjects" replace />
+                </ProtectedRoute>
+              }
+            />
             <Route
               path="/profile/teacher"
               element={
                 <ProtectedRoute requireRole="teacher">
-                  <Layout>
-                    <TeacherProfile />
-                  </Layout>
+                  <Navigate to="/teacher/subjects" replace />
                 </ProtectedRoute>
               }
             />
-
-            {/* Teacher Content Management */}
             <Route
               path="/teacher/content"
               element={
                 <ProtectedRoute requireRole="teacher">
-                  <Layout>
-                    <ManageContent />
-                  </Layout>
+                  <Navigate to="/teacher/subjects" replace />
                 </ProtectedRoute>
               }
             />
@@ -125,9 +129,9 @@ const App = () => (
               path="/teacher/subjects"
               element={
                 <ProtectedRoute requireRole="teacher">
-                  <Layout>
+                  <TeacherLayout>
                     <SubjectManager />
-                  </Layout>
+                  </TeacherLayout>
                 </ProtectedRoute>
               }
             />
@@ -135,9 +139,9 @@ const App = () => (
               path="/teacher/lessons"
               element={
                 <ProtectedRoute requireRole="teacher">
-                  <Layout>
+                  <TeacherLayout>
                     <LessonEditor />
-                  </Layout>
+                  </TeacherLayout>
                 </ProtectedRoute>
               }
             />
@@ -145,9 +149,19 @@ const App = () => (
               path="/teacher/questions"
               element={
                 <ProtectedRoute requireRole="teacher">
-                  <Layout>
+                  <TeacherLayout>
                     <QuestionBank />
-                  </Layout>
+                  </TeacherLayout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/teacher/progress"
+              element={
+                <ProtectedRoute requireRole="teacher">
+                  <TeacherLayout>
+                    <StudentProgress />
+                  </TeacherLayout>
                 </ProtectedRoute>
               }
             />
@@ -155,9 +169,9 @@ const App = () => (
               path="/teacher/groups"
               element={
                 <ProtectedRoute requireRole="teacher">
-                  <Layout>
+                  <TeacherLayout>
                     <GroupManager />
-                  </Layout>
+                  </TeacherLayout>
                 </ProtectedRoute>
               }
             />

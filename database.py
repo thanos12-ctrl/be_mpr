@@ -15,13 +15,13 @@ metadata = sqlalchemy.MetaData()
 async def connect_db():
     """Connect to database"""
     await database.connect()
-    print("✅ Database connected")
+    print("[SUCCESS] Database connected")
 
 
 async def disconnect_db():
     """Disconnect from database"""
     await database.disconnect()
-    print("📴 Database disconnected")
+    print("[OFF] Database disconnected")
 
 
 async def get_db():

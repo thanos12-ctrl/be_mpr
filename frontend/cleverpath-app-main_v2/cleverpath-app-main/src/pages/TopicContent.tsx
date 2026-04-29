@@ -48,7 +48,7 @@ const TopicContent = () => {
     };
 
     try {
-      const response = await axios.post('https://emkc.org/api/v2/piston/execute', program, {
+      const response = await axios.post('/api/v2/execute', program, {
         headers: {
           'Content-Type': 'application/json',
         },

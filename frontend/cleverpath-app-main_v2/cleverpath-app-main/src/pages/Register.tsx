@@ -37,7 +37,7 @@ const Register = () => {
         try {
             await register(email, password, fullName, role);
             toast.success('Registration successful!');
-            navigate('/subjects');
+            navigate('/browse-subjects');
         } catch (error: any) {
             toast.error(error.response?.data?.detail || 'Registration failed. Please try again.');
         } finally {
