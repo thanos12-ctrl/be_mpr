@@ -104,7 +104,46 @@ async def get_progress_overview(current_user: dict = Depends(get_current_student
         WHERE student_id = :student_id
     """
     quiz_stats = await database.fetch_one(query=quiz_query, values={"student_id": current_user["id"]})
-    
+
+    # ──────────────────────────────────────────────────────
+    # STREAK: consecutive calendar days with quiz activity,
+    # working backwards from today (or yesterday if not yet
+    # active today).
+    # ──────────────────────────────────────────────────────
+    streak_query = """
+        WITH daily_activity AS (
+            SELECT DISTINCT DATE(completed_at) AS activity_date
+            FROM quiz_sessions
+            WHERE student_id  = :student_id
+              AND is_completed = TRUE
+              AND completed_at IS NOT NULL
+        ),
+        numbered AS (
+            SELECT
+                activity_date,
+                ROW_NUMBER() OVER (ORDER BY activity_date DESC) AS rn
+            FROM daily_activity
+        ),
+        streak_rows AS (
+            SELECT activity_date
+            FROM numbered
+            WHERE activity_date = CURRENT_DATE - (rn - 1) * INTERVAL '1 day'
+               OR activity_date = (CURRENT_DATE - INTERVAL '1 day') - (rn - 1) * INTERVAL '1 day'
+        )
+        SELECT COUNT(DISTINCT activity_date) AS streak_days
+        FROM streak_rows
+    """
+    # The query above counts rows where the date equals
+    # (today - (rank-1)) OR (yesterday - (rank-1)).
+    # That handles both "already quizzed today" and
+    # "haven't quizzed yet today but did yesterday".
+    # We take the max so we don't double-count.
+    streak_result = await database.fetch_one(
+        query=streak_query,
+        values={"student_id": current_user["id"]}
+    )
+    current_streak = int(streak_result["streak_days"]) if streak_result else 0
+
     return m.ProgressOverview(
         total_lessons=lesson_stats["total_lessons"] or 0,
         completed_lessons=lesson_stats["completed_lessons"] or 0,
@@ -112,7 +151,7 @@ async def get_progress_overview(current_user: dict = Depends(get_current_student
         completed_quizzes=quiz_stats["completed_quizzes"] or 0,
         average_quiz_score=float(quiz_stats["avg_score"] or 0.0),
         total_time_spent_seconds=int(lesson_stats["total_time"] or 0),
-        current_streak_days=0  # TODO: Implement streak calculation
+        current_streak_days=current_streak
     )
 
 @router.get("/subjects-breakdown", response_model=list[m.SubjectProgressBreakdown])
